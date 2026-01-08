@@ -58,6 +58,8 @@ export class PaginasService {
         esPublica: true,
         contenido: 'Contenido de la página de inicio',
         meta: {
+          browserTitle: 'Alvaro Vaca - Candidato al Senado 2026',
+          browserDescription: 'Elecciones Congreso, Marzo 8. Sitio oficial de Alvaro Vaca, candidato al Senado 2026.',
           hero: {
             badge: 'Elecciones Congreso 2026, Marzo 8',
             title: 'Un Senador que <br><span class="text-gradient">Conecte con la Gente</span>',
