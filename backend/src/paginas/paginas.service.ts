@@ -10,7 +10,7 @@ export class PaginasService {
   constructor(
     @InjectRepository(Pagina)
     private paginaRepository: Repository<Pagina>,
-  ) {}
+  ) { }
 
   create(createPaginaDto: CreatePaginaDto) {
     const pagina = this.paginaRepository.create(createPaginaDto);
@@ -42,5 +42,62 @@ export class PaginasService {
     if (result.affected === 0)
       throw new NotFoundException('Página no encontrada');
     return { message: 'Página eliminada' };
+  }
+  async onModuleInit() {
+    await this.seedPaginaInicio();
+  }
+
+  private async seedPaginaInicio() {
+    const slug = 'inicio';
+    const existing = await this.paginaRepository.findOneBy({ slug });
+    if (!existing) {
+      console.log('--- SEEDING HOME PAGE ---');
+      const paginaInicio = this.paginaRepository.create({
+        titulo: 'Inicio',
+        slug: 'inicio',
+        esPublica: true,
+        contenido: 'Contenido de la página de inicio',
+        meta: {
+          hero: {
+            badge: 'Elecciones Congreso 2026, Marzo 8',
+            title: 'Un Senador que <br><span class="text-gradient">Conecte con la Gente</span>',
+            description: 'Soy Álvaro Vaca, un candidato nuevo, que no hace parte de la politiquería tradicional. Vengo del sector transporte, empresa privada, y entiendo las necesidades reales de los colombianos.',
+            ctaPrimary: { text: 'Conoce mis Propuestas', url: '#propuestas' },
+            ctaSecondary: { text: 'Ver Historia', url: '#biografia' },
+            image: '/assets/FOTO CAMPAÑA.png',
+            mobileImage: '/assets/FOTO CAMPAÑA.png'
+          },
+          bio: {
+            title: 'Una Vida de Servicio',
+            description: 'Reservista de la Fuerza Aérea Colombiana, Ingeniero de Transportes y Vías, Especialista en Gobierno y Gestión Pública, Magíster en Logística Integral y Doctorando en Administración de Empresas (DBA). Gerente del Consorcio MOVITRANS durante 14 años, generando empleo y desarrollo en el Meta.',
+            image: '/assets/alvaro.png',
+            linkText: 'Leer Biografía Completa',
+            linkUrl: 'biografia.html'
+          },
+          propuestas: [
+            {
+              title: 'Educación para emprender',
+              description: 'Desde la primaria enseñamos a los nuevos emprendedores. Fomentar la mentalidad empresarial desde niños.',
+              icon: 'lightbulb',
+              color: 'primary'
+            },
+            {
+              title: 'Cero impunidad',
+              description: 'El hacinamiento en las cárceles es la principal causa de la impunidad en Colombia. Proponemos reforma carcelaria efectiva.',
+              icon: 'balance',
+              color: 'sunflower'
+            },
+            {
+              title: 'Ley de Seguridad Digital e IA',
+              description: 'Las redes sociales y la IA requieren una regulación estricta para proteger a los ciudadanos y empresas.',
+              icon: 'security',
+              color: 'accent'
+            }
+          ]
+        }
+      });
+      await this.paginaRepository.save(paginaInicio);
+      console.log('--- HOME PAGE SEEDED ---');
+    }
   }
 }
