@@ -98,9 +98,9 @@ export class PaginasService {
         titulo: 'Biografía',
         meta: {
           browserTitle: 'Biografía - Alvaro Vaca Senado 2026',
-          browserDescription: 'Conoce la historia de Alvaro Vaca: Reservista FAC, Ingeniero de Transportes, Empresario y Candidato al Senado.',
+          browserDescription: 'De Paratebueno para Colombia: nacido en este municipio, hoy vive en Restrepo y trabaja en Villavicencio, donde lidera la oficina principal de HOLA INTERNET; una historia de superación, servicio y emprendimiento.',
           title: 'Una Vida de Servicio',
-          description: 'Reservista de la Fuerza Aérea Colombiana, Ingeniero de Transportes y Vías...',
+          description: 'De Paratebueno para Colombia: nacido en este municipio, hoy vive en Restrepo y trabaja en Villavicencio, donde lidera la oficina principal de HOLA INTERNET; una historia de superación, servicio y emprendimiento.',
           image: '/assets/alvaro.png'
         }
       },
