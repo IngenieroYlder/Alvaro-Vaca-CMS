@@ -14,7 +14,7 @@ import * as path from 'path';
     TypeOrmModule.forFeature([Medio, Carpeta]),
     MulterModule.register({
       storage: diskStorage({
-        destination: './uploads', // Carpeta donde se guardan los archivos
+        destination: './public/uploads', // Guardar en public/uploads para que sean accesibles
         filename: (req, file, cb) => {
           const filename = uuidv4();
           const extension = path.extname(file.originalname);
@@ -27,4 +27,4 @@ import * as path from 'path';
   providers: [MediosService],
   exports: [MediosService],
 })
-export class MediosModule {}
+export class MediosModule { }
