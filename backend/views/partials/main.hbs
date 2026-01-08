@@ -4,13 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{title}}</title>
-    {{#if meta.description}}
-    <meta name="description" content="{{meta.description}}" />
-    {{/if}}
-    {{#if meta.image}}
-    <meta property="og:image" content="{{meta.image}}" />
-    {{/if}}
+    {{> seo}}
 
     {{!-- Style Theme Variables --}}
     <style>

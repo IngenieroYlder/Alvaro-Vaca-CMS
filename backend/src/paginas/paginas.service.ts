@@ -44,19 +44,14 @@ export class PaginasService {
     return { message: 'Página eliminada' };
   }
   async onModuleInit() {
-    await this.seedPaginaInicio();
+    await this.seedPaginas();
   }
 
-  private async seedPaginaInicio() {
-    const slug = 'inicio';
-    const existing = await this.paginaRepository.findOneBy({ slug });
-    if (!existing) {
-      console.log('--- SEEDING HOME PAGE ---');
-      const paginaInicio = this.paginaRepository.create({
-        titulo: 'Inicio',
+  private async seedPaginas() {
+    const paginas = [
+      {
         slug: 'inicio',
-        esPublica: true,
-        contenido: 'Contenido de la página de inicio',
+        titulo: 'Inicio',
         meta: {
           browserTitle: 'Alvaro Vaca - Candidato al Senado 2026',
           browserDescription: 'Elecciones Congreso, Marzo 8. Sitio oficial de Alvaro Vaca, candidato al Senado 2026.',
@@ -97,9 +92,43 @@ export class PaginasService {
             }
           ]
         }
-      });
-      await this.paginaRepository.save(paginaInicio);
-      console.log('--- HOME PAGE SEEDED ---');
+      },
+      {
+        slug: 'biografia',
+        titulo: 'Biografía',
+        meta: {
+          browserTitle: 'Biografía - Alvaro Vaca Senado 2026',
+          browserDescription: 'Conoce la historia de Alvaro Vaca: Reservista FAC, Ingeniero de Transportes, Empresario y Candidato al Senado.',
+          title: 'Una Vida de Servicio',
+          description: 'Reservista de la Fuerza Aérea Colombiana, Ingeniero de Transportes y Vías...',
+          image: '/assets/alvaro.png'
+        }
+      },
+      {
+        slug: 'propuestas',
+        titulo: 'Propuestas',
+        meta: {
+          browserTitle: 'Propuestas - Alvaro Vaca Senado 2026',
+          browserDescription: 'Conoce las propuestas de Alvaro Vaca: Educación para emprender, Cero impunidad y Seguridad Digital.',
+          title: 'Propuestas para Transformar Colombia',
+          description: 'Ideas claras y ejecutables nacidas de la experiencia.',
+          image: '/assets/FOTO CAMPAÑA.png'
+        }
+      }
+    ];
+
+    for (const p of paginas) {
+      const existing = await this.paginaRepository.findOneBy({ slug: p.slug });
+      if (!existing) {
+        console.log(`--- SEEDING PAGE: ${p.slug} ---`);
+        await this.paginaRepository.save(this.paginaRepository.create({
+          slug: p.slug,
+          titulo: p.titulo,
+          esPublica: true,
+          contenido: `Contenido por defecto para ${p.titulo}`,
+          meta: p.meta
+        }));
+      }
     }
   }
 }
