@@ -45,6 +45,33 @@ export class PaginasService {
   }
   async onModuleInit() {
     await this.seedPaginas();
+    await this.fixHeroImage();
+  }
+
+  private async fixHeroImage() {
+    try {
+      const inicio = await this.paginaRepository.findOneBy({ slug: 'inicio' });
+      if (inicio && inicio.meta && inicio.meta.hero) {
+        let changed = false;
+        // Fix Desktop Image
+        if (inicio.meta.hero.image === '/assets/FOTO CAMPAÑA.png') {
+          inicio.meta.hero.image = '/assets/FOTO_CAMPANA_V2.png';
+          changed = true;
+        }
+        // Fix Mobile Image
+        if (inicio.meta.hero.mobileImage === '/assets/FOTO CAMPAÑA.png') {
+          inicio.meta.hero.mobileImage = '/assets/FOTO_CAMPANA_V2.png';
+          changed = true;
+        }
+
+        if (changed) {
+          console.log('--- MIGRATION: UPDATING HERO IMAGE TO V2 ---');
+          await this.paginaRepository.save(inicio);
+        }
+      }
+    } catch (error) {
+      console.error('Error migrating hero image:', error);
+    }
   }
 
   private async seedPaginas() {
