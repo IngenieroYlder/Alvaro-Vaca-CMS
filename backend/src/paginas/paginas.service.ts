@@ -61,8 +61,8 @@ export class PaginasService {
             description: 'Soy Álvaro Vaca, un candidato nuevo, que no hace parte de la politiquería tradicional. Vengo del sector transporte, empresa privada, y entiendo las necesidades reales de los colombianos.',
             ctaPrimary: { text: 'Conoce mis Propuestas', url: '#propuestas' },
             ctaSecondary: { text: 'Ver Historia', url: '#biografia' },
-            image: '/assets/FOTO CAMPAÑA.png',
-            mobileImage: '/assets/FOTO CAMPAÑA.png'
+            image: '/assets/FOTO_CAMPANA_V2.png',
+            mobileImage: '/assets/FOTO_CAMPANA_V2.png'
           },
           bio: {
             title: 'Una Vida de Servicio',
