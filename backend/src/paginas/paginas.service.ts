@@ -66,7 +66,7 @@ export class PaginasService {
           },
           bio: {
             title: 'Una Vida de Servicio',
-            description: 'Reservista de la Fuerza Aérea Colombiana, Ingeniero de Transportes y Vías, Especialista en Gobierno y Gestión Pública, Magíster en Logística Integral y Doctorando en Administración de Empresas (DBA). Gerente del Consorcio MOVITRANS durante 14 años, generando empleo y desarrollo en el Meta.',
+            description: 'Reservista de la Fuerza Aérea Colombiana, Ingeniero de Transportes y Vías, Especialista en Gobierno y Gestión Pública, Magíster en Logística Integral y Doctorando en Administración de Empresas (DBA). Gerente de importantes empresas de transporte durante 14 años, generando empleo y desarrollo en el Meta.',
             image: '/assets/alvaro.png',
             linkText: 'Leer Biografía Completa',
             linkUrl: '/biografia'

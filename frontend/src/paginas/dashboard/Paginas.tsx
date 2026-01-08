@@ -379,7 +379,7 @@ export default function Paginas() {
                                                             value={form.meta.heroTitle || ''}
                                                             onChange={e => updateMeta('heroTitle', e.target.value)}
                                                             className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 outline-none text-xl font-bold font-serif"
-                                                            placeholder="CONSORCIO MOVITRANS..."
+                                                            placeholder="ALVARO VACA 2026..."
                                                         ></textarea>
                                                         <p className="text-xs text-gray-400 mt-1">Soporta HTML básico.</p>
                                                     </div>

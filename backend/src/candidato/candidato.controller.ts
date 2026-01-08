@@ -48,13 +48,13 @@ export class CandidatoController {
         };
 
         return {
-            title: theme.tituloPagina || 'Consorcio Movitrans',
+            title: theme.tituloPagina || 'Alvaro Vaca - Senado 2026',
             faviconUrl,
             googleFontsUrl,
             logoUrl,
             logoBlancoUrl,
             theme: safeTheme,
-            empresaNombre: business?.nombre || 'Consorcio Movitrans',
+            empresaNombre: business?.nombre || 'Alvaro Vaca',
             empresaSlogan: business?.slogan || 'Líderes en gestión integral de movilidad',
             telefono: business?.telefono || '+57 300 000 0000',
             email: business?.email || 'contacto@ejemplo.com',

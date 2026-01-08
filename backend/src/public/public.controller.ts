@@ -83,7 +83,7 @@ export class PublicController {
     };
 
     return {
-      title: theme.tituloPagina || 'Consorcio Movitrans',
+      title: theme.tituloPagina || 'Alvaro Vaca - Senado 2026',
       faviconUrl,
       googleFontsUrl,
       logoUrl,
