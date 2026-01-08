@@ -1,9 +1,7 @@
 import axios from 'axios';
 
 const clienteAxios = axios.create({
-    baseURL: import.meta.env.PROD
-        ? ''
-        : (import.meta.env.VITE_API_URL || 'http://localhost:3000'),
+    baseURL: import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '' : 'http://localhost:3000'),
 });
 
 // Interceptor para agregar el token a cada petición
