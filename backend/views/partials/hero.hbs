@@ -1,0 +1,92 @@
+<section class="relative pt-32 pb-20 px-6 overflow-hidden bg-primary min-h-[70vh] flex items-center">
+    <!-- Abstract Background -->
+    <div class="absolute inset-0 z-0 bg-grid-pattern opacity-10"></div>
+    <div class="absolute inset-0 opacity-30">
+        <div
+            class="absolute top-0 right-0 w-[600px] h-[600px] bg-secondary rounded-full blur-[140px] -mr-48 -mt-48 animate-pulse">
+        </div>
+        <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-tertiary rounded-full blur-[120px] -ml-24 -mb-24">
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto relative z-10 w-full">
+        <div class="grid lg:grid-cols-2 gap-16 items-center">
+            <div class="space-y-10 animate-in fade-in slide-in-from-left duration-1000">
+                <!-- Label -->
+                <div
+                    class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20 text-white text-xs font-bold tracking-[0.2em] uppercase">
+                    <span class="w-2 h-2 bg-secondary rounded-full animate-pulse"></span>
+                    {{label}}
+                </div>
+
+                <!-- Title -->
+                <h1 class="text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.1] tracking-tighter">
+                    {{{title}}}
+                </h1>
+
+                <!-- Subtitle -->
+                <p class="text-xl text-white/70 font-light leading-relaxed max-w-xl">
+                    {{{subtitle}}}
+                </p>
+
+                <!-- Conditional Footer Content -->
+                {{#if isSst}}
+                <div class="flex items-center gap-8">
+                    <div class="flex flex-col">
+                        <span class="text-3xl font-black text-white">100%</span>
+                        <span class="text-[10px] uppercase tracking-widest text-white/40 font-bold">Cumplimiento</span>
+                    </div>
+                    <div class="w-px h-10 bg-white/10"></div>
+                    <div class="flex flex-col">
+                        <span class="text-3xl font-black text-secondary">Cero</span>
+                        <span class="text-[10px] uppercase tracking-widest text-white/40 font-bold">Incidentes</span>
+                    </div>
+                </div>
+                {{else}}
+                <div class="flex items-center gap-6 pt-4">
+                    {{#if ctaText}}
+                    <button class="btn-pill btn-lg bg-white text-primary hover:bg-gray-100 font-bold shadow-xl">
+                        {{ctaText}}
+                    </button>
+                    {{/if}}
+                    <!-- Small Avatars/Bubbles -->
+                    <div class="flex -space-x-3">
+                        <div
+                            class="w-12 h-12 rounded-full border-2 border-primary bg-gray-100 flex items-center justify-center text-primary font-bold text-xs shadow-sm">
+                            MT</div>
+                        <div
+                            class="w-12 h-12 rounded-full border-2 border-primary bg-secondary flex items-center justify-center text-white font-bold text-xs shadow-sm">
+                            CP</div>
+                    </div>
+                </div>
+                {{/if}}
+            </div>
+
+            <!-- Right Image -->
+            {{#if image}}
+            <div class="relative animate-in fade-in slide-in-from-right duration-1000 hidden lg:block">
+                <div
+                    class="aspect-square rounded-[60px] overflow-hidden shadow-2xl shadow-black/40 border border-white/10 group">
+                    <img src="{{image}}" alt="{{title}}"
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000">
+                </div>
+
+                {{#if isSst}}
+                <div class="absolute -bottom-6 -right-6 p-8 bg-secondary rounded-3xl shadow-2xl animate-bounce-slow">
+                    <span class="material-symbols-outlined text-4xl text-primary">shield_with_heart</span>
+                </div>
+                {{/if}}
+            </div>
+            {{else}}
+            <!-- Placeholder if no image -->
+            <div
+                class="relative hidden lg:flex items-center justify-center animate-in fade-in slide-in-from-right duration-1000">
+                <div
+                    class="w-80 h-80 border-2 border-white/10 rounded-full flex items-center justify-center animate-spin-slow">
+                    <span class="material-symbols-outlined text-8xl text-white/20">image</span>
+                </div>
+            </div>
+            {{/if}}
+        </div>
+    </div>
+</section>

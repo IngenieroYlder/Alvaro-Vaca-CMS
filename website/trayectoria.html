@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trayectoria - Alvaro Vaca Senado 2025</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#006838",
+                        secondary: "#0D9A49",
+                        sunflower: "#D7DF23",
+                        accent: "#F89621",
+                        "background-light": "#F9FAFB",
+                    },
+                    fontFamily: {
+                        display: ["Montserrat", "sans-serif"],
+                        body: ["Open Sans", "sans-serif"],
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light text-gray-800 font-body antialiased">
+
+    <!-- Navigation (Global Component) -->
+    <div id="global-header"></div>
+
+    <!-- Header / Hero -->
+    <header class="pt-32 pb-16 bg-gradient-to-b from-green-50 to-white text-center">
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-primary font-bold text-xs mb-6 uppercase tracking-wider">
+                Compromiso Real
+            </div>
+            <h1 class="font-display font-black text-5xl md:text-6xl text-gray-900 mb-6">
+                Trabajo en <span class="text-primary">Territorio</span>
+            </h1>
+            <p class="text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto">
+                No somos políticos de escritorio. Nuestra gestión se construye caminando las calles, escuchando a la comunidad y entregando resultados tangibles en cada municipio.
+            </p>
+        </div>
+    </header>
+
+    <!-- Main Section: 2 Columns (Sticky Left + Scrollable Right) -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+        <div class="flex flex-col lg:flex-row gap-16">
+            
+            <!-- Left Column: Sticky Content -->
+            <div class="lg:w-1/2">
+                <div class="sticky top-28 space-y-8">
+                    <div class="bg-white rounded-3xl shadow-xl p-8 border border-gray-100">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="font-display font-bold text-xl text-gray-900 flex items-center">
+                                <span class="material-icons-round text-primary mr-2">map</span>
+                                Mapa de Gestión
+                            </h3>
+                            <div class="flex space-x-2 text-xs font-bold">
+                                <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-green-500 mr-1"></span> Proyectos</div>
+                                <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-sunflower mr-1"></span> Visitas</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Interactive Map Container -->
+                        <div id="map-meta" class="bg-gray-100 rounded-2xl aspect-square relative overflow-hidden shadow-inner z-0"></div>
+                        
+                        <div class="mt-6 p-4 bg-green-50 rounded-xl border border-green-100">
+                            <p class="text-sm text-gray-600">
+                                <strong>Cobertura:</strong> Hemos impactado en más de 25 municipios con proyectos de ley y gestión directa.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Vertical Slider / Timeline -->
+            <div class="lg:w-1/2">
+                <h3 class="font-display font-bold text-2xl text-gray-900 mb-8 border-l-4 border-primary pl-4">
+                    Nuestra Trayectoria
+                </h3>
+
+                <!-- Single Sided Timeline Container -->
+                <div class="space-y-8 relative before:absolute before:inset-0 before:left-5 md:before:left-8 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-gray-300 before:to-transparent">
+                    
+                    <!-- Card 1 -->
+                    <div class="relative flex items-start gap-6 group timeline-card" data-municipio="Puerto López">
+                        <div class="absolute left-5 md:left-8 -translate-x-1/2 flex items-center justify-center w-10 h-10 rounded-full border border-white bg-green-500 shadow shrink-0 z-10">
+                             <span class="w-3 h-3 bg-white rounded-full"></span>
+                        </div>
+                        <div class="w-full ml-12 md:ml-16 bg-white p-6 rounded-3xl shadow-lg border border-gray-100">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <div class="flex justify-between items-start mb-2">
+                                        <span class="bg-green-100 text-primary text-xs font-bold px-2 py-1 rounded">2024 - Presente</span>
+                                        <span class="material-icons-round text-gray-400 text-sm">campaign</span>
+                                    </div>
+                                    <h4 class="font-bold text-lg text-gray-900 mb-2">Defensa del Medio Ambiente</h4>
+                                    <p class="text-gray-600 text-sm mb-4">Liderazgo en la campaña "Verde Vida", logrando la protección de 3 humedales críticos y gestionando recursos para reforestación local.</p>
+                                </div>
+                                <div class="md:sticky md:top-24 h-fit">
+                                    <img src="assets/alvaro.png" class="w-full min-h-[400px] object-cover rounded-xl opacity-90 shadow-sm" style="object-position: top;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="relative flex items-start gap-6 group timeline-card" data-municipio="Granada">
+                        <div class="absolute left-5 md:left-8 -translate-x-1/2 flex items-center justify-center w-10 h-10 rounded-full border border-white bg-gray-300 shadow shrink-0 z-10">
+                             <span class="w-3 h-3 bg-white rounded-full"></span>
+                        </div>
+                        <div class="w-full ml-12 md:ml-16 bg-white p-6 rounded-3xl shadow-lg border border-gray-100">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <div class="flex justify-between items-start mb-2">
+                                        <span class="bg-gray-100 text-gray-600 text-xs font-bold px-2 py-1 rounded">2023</span>
+                                        <span class="material-icons-round text-gray-400 text-sm">school</span>
+                                    </div>
+                                    <h4 class="font-bold text-lg text-gray-900 mb-2">Educación Rural</h4>
+                                    <p class="text-gray-600 text-sm">Gestión para la mejora de infraestructura en 12 escuelas rurales. Entrega de kits escolares y tecnología para cerrar la brecha digital.</p>
+                                </div>
+                                <div class="md:sticky md:top-24 h-fit">
+                                    <img src="assets/hero_v2.png" class="w-full min-h-[400px] object-cover rounded-xl opacity-90 shadow-sm" style="object-position: top;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="relative flex items-start gap-6 group">
+                        <div class="absolute left-5 md:left-8 -translate-x-1/2 flex items-center justify-center w-10 h-10 rounded-full border border-white bg-gray-300 shadow shrink-0 z-10">
+                             <span class="w-3 h-3 bg-white rounded-full"></span>
+                        </div>
+                        <div class="w-full ml-12 md:ml-16 bg-white p-6 rounded-3xl shadow-lg border border-gray-100">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <div class="flex justify-between items-start mb-2">
+                                        <span class="bg-gray-100 text-gray-600 text-xs font-bold px-2 py-1 rounded">2021 - 2022</span>
+                                        <span class="material-icons-round text-gray-400 text-sm">groups</span>
+                                    </div>
+                                    <h4 class="font-bold text-lg text-gray-900 mb-2">Líder Comunitario</h4>
+                                    <p class="text-gray-600 text-sm mb-3">Fundador de la red de jóvenes emprendedores. Facilitamos microcréditos para pequeños negocios familiares afectados por la pandemia.</p>
+                                    <div class="flex -space-x-2 overflow-hidden">
+                                        <img class="inline-block h-8 w-8 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt=""/>
+                                        <img class="inline-block h-8 w-8 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt=""/>
+                                        <img class="inline-block h-8 w-8 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.25&w=256&h=256&q=80" alt=""/>
+                                        <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 ring-2 ring-white text-xs font-medium text-gray-500">+150</span>
+                                    </div>
+                                </div>
+                                <div class="md:sticky md:top-24 h-fit">
+                                    <img src="assets/hero_variant_1.png" class="w-full min-h-[400px] object-cover rounded-xl opacity-90 shadow-sm" style="object-position: top;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="relative flex items-start gap-6 group">
+                        <div class="absolute left-5 md:left-8 -translate-x-1/2 flex items-center justify-center w-10 h-10 rounded-full border border-white bg-gray-300 shadow shrink-0 z-10">
+                             <span class="w-3 h-3 bg-white rounded-full"></span>
+                        </div>
+                        <div class="w-full ml-12 md:ml-16 bg-white p-6 rounded-3xl shadow-lg border border-gray-100">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <div class="flex justify-between items-start mb-2">
+                                        <span class="bg-gray-100 text-gray-600 text-xs font-bold px-2 py-1 rounded">2019</span>
+                                        <span class="material-icons-round text-gray-400 text-sm">router</span>
+                                    </div>
+                                    <h4 class="font-bold text-lg text-gray-900 mb-2">Conectividad Regional</h4>
+                                    <p class="text-gray-600 text-sm">Expansión de la red de fibra óptica a 3 nuevos municipios del Meta, conectando a más de 5,000 familias.</p>
+                                </div>
+                                <div class="md:sticky md:top-24 h-fit">
+                                    <img src="assets/hero_variant_2.png" class="w-full min-h-[400px] object-cover rounded-xl opacity-90 shadow-sm" style="object-position: top;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 5 -->
+                    <div class="relative flex items-start gap-6 group timeline-card" data-municipio="Villavicencio">
+                        <div class="absolute left-5 md:left-8 -translate-x-1/2 flex items-center justify-center w-10 h-10 rounded-full border border-white bg-gray-300 shadow shrink-0 z-10">
+                             <span class="w-3 h-3 bg-white rounded-full"></span>
+                        </div>
+                        <div class="w-full ml-12 md:ml-16 bg-white p-6 rounded-3xl shadow-lg border border-gray-100">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <div class="flex justify-between items-start mb-2">
+                                        <span class="bg-gray-100 text-gray-600 text-xs font-bold px-2 py-1 rounded">2013</span>
+                                        <span class="material-icons-round text-gray-400 text-sm">rocket_launch</span>
+                                    </div>
+                                    <h4 class="font-bold text-lg text-gray-900 mb-2">Inicio del Emprendimiento</h4>
+                                    <p class="text-gray-600 text-sm">Fundación de la primera empresa proveedora de internet en Paratebueno.</p>
+                                </div>
+                                <div class="md:sticky md:top-24 h-fit">
+                                    <img src="assets/alvaro.png" class="w-full min-h-[400px] object-cover rounded-xl opacity-90 shadow-sm" style="object-position: top;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="mt-12 text-center">
+                    <a href="noticias.html" class="inline-flex items-center px-8 py-3 border border-primary text-primary font-bold rounded-full hover:bg-primary hover:text-white transition-all shadow-md group">
+                        Ver más noticias
+                        <span class="material-icons-round ml-2 group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-primary text-white py-12 border-t border-green-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="flex items-center justify-center space-x-3 mb-6">
+                <img src="assets/1_LOGO.png" alt="Logo" class="h-16 w-auto brightness-0 invert opacity-90">
+            </div>
+            <div class="flex justify-center mb-8">
+                <img src="assets/4_LOGO.png" alt="Partido Alianza Verde #75" class="h-12 w-auto object-contain">
+            </div>
+            <p class="text-xs text-green-300">© 2025 Campaña Oficial. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Join Modal -->
+    <div id="joinModal" class="fixed inset-0 z-[100] hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="fixed inset-0 bg-gray-900/75 backdrop-blur-sm transition-opacity" onclick="closeJoinModal()"></div>
+        <div class="fixed inset-0 z-10 overflow-y-auto">
+            <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+                <div class="relative transform overflow-hidden rounded-3xl bg-white text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-5xl">
+                    <button onclick="closeJoinModal()" class="absolute top-4 right-4 z-20 p-2 rounded-full bg-white/50 hover:bg-white text-gray-500 hover:text-gray-800 transition-colors">
+                        <span class="material-icons-round">close</span>
+                    </button>
+                    <div class="grid grid-cols-1 lg:grid-cols-2">
+                        <div class="relative hidden lg:block bg-gray-900">
+                            <img src="assets/alvaro.png" alt="Alvaro Vaca" class="absolute inset-0 h-full w-full object-cover opacity-60">
+                            <div class="absolute inset-0 bg-gradient-to-t from-primary/90 to-transparent"></div>
+                            <div class="relative h-full flex flex-col justify-end p-12 text-white">
+                                <div class="mb-4">
+                                    <span class="inline-block px-3 py-1 rounded-full bg-sunflower text-primary font-bold text-xs mb-4">Cercanía y Compromiso</span>
+                                    <h3 class="font-display font-bold text-4xl mb-2">Alvaro Vaca</h3>
+                                    <img src="assets/4_LOGO.png" alt="Partido Alianza Verde #75" class="h-12 w-auto object-contain mt-2">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-8 lg:p-12 bg-white">
+                            <div class="bg-primary text-white p-6 rounded-2xl mb-8 -mt-20 lg:mt-0 shadow-lg relative z-10">
+                                <h3 class="font-display font-bold text-2xl mb-1">Súmate al Equipo</h3>
+                                <p class="text-green-100 text-sm">Completa el formulario para ser voluntario o líder.</p>
+                            </div>
+                            <form class="space-y-5" onsubmit="event.preventDefault(); alert('Gracias por sumarte al equipo! Pronto te contactaremos.'); closeJoinModal();">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Nombre Completo</label>
+                                        <input type="text" placeholder="Juan Pérez" class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all bg-gray-50 focus:bg-white" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Correo Electrónico</label>
+                                        <input type="email" placeholder="juan@ejemplo.com" class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all bg-gray-50 focus:bg-white" required>
+                                    </div>
+                                </div>
+                                <button type="submit" class="w-full py-4 bg-primary text-white font-bold rounded-xl shadow-lg hover:bg-green-800 transform hover:-translate-y-0.5 transition-all">
+                                    ¡Me Sumo!
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Global Header Component -->
+    <script src="js/components/header.js"></script>
+    <script>
+        renderHeader('trayectoria');
+    </script>
+    <script src="js/main.js"></script>
+</body>
+</html>

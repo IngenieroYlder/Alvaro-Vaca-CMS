@@ -1,0 +1,80 @@
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Param,
+  Patch,
+  Delete,
+  UseGuards,
+  Res,
+} from '@nestjs/common';
+import type { Response } from 'express';
+import { Roles } from '../autenticacion/decorators/roles.decorator';
+import { JwtAuthGuard } from '../autenticacion/guards/jwt-auth.guard';
+import { RolesGuard } from '../autenticacion/guards/roles.guard';
+import { UsuariosService } from './usuarios.service';
+import { CrearUsuarioDto } from './dto/crear-usuario.dto';
+import { ActualizarUsuarioDto } from './dto/actualizar-usuario.dto';
+
+@Controller('usuarios')
+export class UsuariosController {
+  constructor(private readonly usuariosService: UsuariosService) { }
+
+  @Post()
+  crear(@Body() crearUsuarioDto: CrearUsuarioDto) {
+    return this.usuariosService.crear(crearUsuarioDto);
+  }
+
+  // TODO: Proteger esta ruta con Guards más adelantes
+  @Get(':id')
+  buscarUno(@Param('id') id: string) {
+    return this.usuariosService.buscarPorId(id);
+  }
+
+  @Get()
+  listarTodos() {
+    return this.usuariosService.listarTodos();
+  }
+
+  @Patch(':id')
+  actualizar(
+    @Param('id') id: string,
+    @Body() actualizarUsuarioDto: ActualizarUsuarioDto,
+  ) {
+    return this.usuariosService.actualizar(id, actualizarUsuarioDto);
+  }
+
+  @Get('exportar/excel')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  async exportarExcel(@Res() res: Response) {
+    const buffer = await this.usuariosService.exportarExcel();
+    res.set({
+      'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'Content-Disposition': 'attachment; filename=usuarios.xlsx',
+      'Content-Length': String(buffer.length),
+    });
+    res.end(buffer);
+  }
+
+  @Get('exportar/pdf')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  async exportarPdf(@Res() res: Response) {
+    const buffer = await this.usuariosService.exportarPdf();
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': 'attachment; filename=usuarios.pdf',
+      'Content-Length': String(buffer.length),
+    });
+    res.end(buffer);
+  }
+
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  eliminar(@Param('id') id: string) {
+    return this.usuariosService.eliminar(id);
+  }
+}

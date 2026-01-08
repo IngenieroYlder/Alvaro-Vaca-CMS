@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    {{> head}}
+    <title>{{meta.title}} | {{empresaNombre}}</title>
+    {{> styles}}
+</head>
+
+<body class="bg-gray-50 font-sans text-gray-900 overflow-x-hidden">
+
+    {{> header}}
+
+    <!-- Hero Section -->
+    <div class="relative bg-primary overflow-hidden isolate" style="padding-top: 8rem; padding-bottom: 6rem;">
+        <!-- Decorative Elements -->
+        <div
+            class="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-[800px] h-[800px] bg-secondary/10 rounded-full blur-3xl">
+        </div>
+        <div
+            class="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/4 w-[600px] h-[600px] bg-tertiary/10 rounded-full blur-3xl">
+        </div>
+
+        <!-- Grid Pattern -->
+        <div class="absolute inset-0 opacity-10"
+            style="background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.5) 1px, transparent 0); background-size: 32px 32px;">
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-6">
+            <div class="max-w-3xl">
+                <!-- Badge -->
+                <div
+                    class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20 text-white text-xs font-bold tracking-[0.2em] uppercase mb-8 animate-fade-in-up">
+                    <span class="w-2 h-2 bg-secondary rounded-full animate-pulse"></span>
+                    Transparencia & Legalidad
+                </div>
+
+                <!-- Title -->
+                <h1
+                    class="text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tighter leading-[1.1] mb-8 animate-fade-in-up delay-100">
+                    Tarifas Grúas & Patios 2025
+                </h1>
+
+                <!-- Description -->
+                <p class="text-xl text-gray-300 leading-relaxed max-w-2xl text-shadow-sm animate-fade-in-up delay-200">
+                    Consulte los valores oficiales regulados por el Decreto No. 1000-24 / 383 de 2024.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Section -->
+    <section class="py-20 px-6 relative bg-white">
+        <div class="max-w-5xl mx-auto">
+            <!-- Contract Info Card -->
+            {{#if numeroContrato}}
+            <div
+                class="mb-12 p-8 bg-blue-50 border border-blue-100 rounded-3xl flex items-center gap-6 animate-fade-in-up delay-300">
+                <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 shrink-0">
+                    <span class="material-symbols-outlined text-3xl">verified</span>
+                </div>
+                <div>
+                    <h3 class="text-blue-900 font-bold text-lg mb-1">Contrato Vigente</h3>
+                    <p class="text-blue-700 font-mono text-xl">{{numeroContrato}}</p>
+                </div>
+            </div>
+            {{/if}}
+
+            <!-- Tariffs Image Display -->
+            {{#if tarifasImage}}
+            <div
+                class="glass-panel p-4 md:p-8 rounded-[40px] shadow-2xl shadow-gray-200/50 border border-gray-100 relative overflow-hidden group animate-fade-in-up delay-400">
+                <div class="absolute inset-0 bg-gradient-to-b from-gray-50/50 to-white pointer-events-none"></div>
+                <div class="relative z-10">
+                    <div class="flex justify-between items-center mb-8 px-4">
+                        <h2 class="text-3xl font-black text-primary tracking-tight">Tabla de Tarifas</h2>
+                        <a href="{{tarifasImage}}" target="_blank"
+                            class="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-bold text-gray-600 transition-colors">
+                            <span class="material-symbols-outlined">open_in_new</span>
+                            Ver Original
+                        </a>
+                    </div>
+                    <img src="{{tarifasImage}}" alt="Tarifas Oficiales 2025"
+                        class="w-full h-auto rounded-3xl shadow-lg transform group-hover:scale-[1.01] transition-transform duration-700">
+                </div>
+            </div>
+            {{else}}
+            <div class="text-center py-20 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200">
+                <span class="material-symbols-outlined text-6xl text-gray-300 mb-4">image_not_supported</span>
+                <p class="text-gray-500 font-medium">La imagen de tarifas no ha sido cargada aún.</p>
+                <p class="text-xs text-gray-400 mt-2">Configurela desde Dashboard > Información del Negocio</p>
+            </div>
+            {{/if}}
+        </div>
+    </section>
+
+    {{> footer}}
+
+</body>
+
+</html>

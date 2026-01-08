@@ -1,0 +1,352 @@
+{{#> main}}
+
+<div class="bg-gray-50 border-b border-gray-200 pt-32 pb-8">
+    <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+                <h1 class="text-2xl md:text-4xl font-black text-gray-900">Hola, {{usuario.nombre}}</h1>
+                <p class="text-gray-500">Gestiona tus procesos de selección.</p>
+                <button onclick="document.getElementById('editProfileModal').showModal()"
+                    class="mt-2 text-sm text-secondary font-bold hover:underline flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm">edit</span> Editar mis datos
+                </button>
+            </div>
+            <a href="/vacantes"
+                class="px-6 py-3 bg-white border border-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition-all">
+                Ver más vacantes
+            </a>
+        </div>
+    </div>
+</div>
+
+<dialog id="editProfileModal" class="backdrop:bg-black/50 bg-transparent p-0 rounded-2xl shadow-xl w-full max-w-md">
+    <div class="bg-white p-6 rounded-2xl">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-bold">Editar Perfil</h3>
+            <button onclick="document.getElementById('editProfileModal').close()"
+                class="p-1 hover:bg-gray-100 rounded-full">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <form action="/candidato/perfil" method="POST" class="space-y-4">
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">Nombre</label>
+                <input type="text" name="nombre" value="{{usuario.nombre}}" required
+                    class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-secondary focus:border-secondary outline-none transition-all">
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">Apellido</label>
+                <input type="text" name="apellido" value="{{usuario.apellido}}"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-secondary focus:border-secondary outline-none transition-all">
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">Teléfono / Celular</label>
+                <input type="tel" name="telefono" value="{{usuario.telefono}}" required
+                    class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-secondary focus:border-secondary outline-none transition-all">
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">WhatsApp</label>
+                <input type="tel" name="whatsapp" value="{{usuario.whatsapp}}" required
+                    class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-secondary focus:border-secondary outline-none transition-all">
+            </div>
+            <div class="pt-4 flex flex-col gap-3">
+                <button type="submit"
+                    class="w-full bg-secondary text-white font-bold py-3 rounded-xl hover:bg-secondary/90 transition-all shadow-lg shadow-secondary/20">
+                    Guardar Cambios
+                </button>
+                <button type="button" onclick="openDeleteModal()"
+                    class="w-full text-red-500 font-bold text-sm hover:underline py-2">
+                    Deseo eliminar mi cuenta
+                </button>
+            </div>
+        </form>
+    </div>
+</dialog>
+
+<!-- Delete Account Modal (Safe Delete) -->
+<dialog id="deleteAccountModal" class="backdrop:bg-black/60 bg-transparent p-0 rounded-2xl shadow-xl w-full max-w-md">
+    <div class="bg-white rounded-2xl overflow-hidden border border-red-100">
+        <div class="bg-red-50 px-6 py-4 border-b border-red-100 flex items-start gap-3">
+            <div class="p-2 bg-red-100 rounded-lg text-red-600">
+                <span class="material-symbols-outlined">warning</span>
+            </div>
+            <div class="flex-1">
+                <h2 class="text-lg font-bold text-red-900 leading-tight">Eliminar Cuenta</h2>
+                <p class="text-xs text-red-700 mt-1">Acción irreversible.</p>
+            </div>
+            <button onclick="document.getElementById('deleteAccountModal').close()"
+                class="text-red-400 hover:text-red-700">
+                <span class="material-symbols-outlined text-lg">close</span>
+            </button>
+        </div>
+
+        <form action="/candidato/eliminar-cuenta" method="POST" class="p-6 space-y-5" id="deleteForm">
+            <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 text-sm text-gray-600">
+                Estás a punto de eliminar tu cuenta y todas tus postulaciones.
+                <br />
+                <span class="font-bold text-gray-900 mt-1 block">Esta acción no se puede deshacer.</span>
+            </div>
+
+            <div class="space-y-3">
+                <div class="flex items-start gap-3">
+                    <input type="checkbox" id="confirmDeleteCheck" onchange="validateDeleteForm()"
+                        class="mt-1 w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500 cursor-pointer">
+                    <label for="confirmDeleteCheck" class="text-sm text-gray-700 cursor-pointer select-none">
+                        Entiendo las consecuencias y deseo continuar.
+                    </label>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">
+                        Escribe "<span class="text-red-600">BORRAR</span>" para confirmar
+                    </label>
+                    <input type="text" id="confirmDeleteWord" onkeyup="validateDeleteForm()" placeholder="BORRAR"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 outline-none font-mono text-center uppercase tracking-widest">
+                </div>
+            </div>
+
+            <div class="flex gap-3 pt-2">
+                <button type="button" onclick="document.getElementById('deleteAccountModal').close()"
+                    class="flex-1 px-4 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl transition-colors">
+                    Cancelar
+                </button>
+                <button type="submit" id="btnDeleteConfirm" disabled
+                    class="flex-1 px-4 py-3 bg-red-600 hover:bg-red-700 disabled:bg-red-300 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-all shadow-lg shadow-red-500/20 flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-sm">delete</span>
+                    Eliminar
+                </button>
+            </div>
+        </form>
+    </div>
+</dialog>
+
+<script>
+    function openDeleteModal() {
+        document.getElementById('editProfileModal').close();
+        document.getElementById('deleteAccountModal').showModal();
+    }
+
+    function validateDeleteForm() {
+        const isChecked = document.getElementById('confirmDeleteCheck').checked;
+        const word = document.getElementById('confirmDeleteWord').value;
+        const btn = document.getElementById('btnDeleteConfirm');
+
+        if (isChecked && word === 'BORRAR') {
+            btn.disabled = false;
+        } else {
+            btn.disabled = true;
+        }
+    }
+
+    function validateCvUpload(event) {
+        const fileInput = event.target.querySelector('input[type="file"]');
+        const fileName = fileInput.value;
+        const allowedExtensions = /(\.zip)$/i;
+        if (!allowedExtensions.exec(fileName)) {
+            alert('Solo se permiten archivos con extensión .zip');
+            event.preventDefault();
+            return false;
+        }
+        return true;
+    }
+</script>
+
+<div class="container mx-auto px-4 py-12">
+
+    {{#unless postulaciones}}
+    <div class="text-center py-16 bg-white rounded-3xl border border-dashed border-gray-300">
+        <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-400">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                </path>
+            </svg>
+        </div>
+        <h3 class="text-xl font-bold text-gray-900 mb-2">No tienes postulaciones activas</h3>
+        <p class="text-gray-500 mb-6">Explora nuestras ofertas laborales y únete al equipo.</p>
+        <a href="/vacantes"
+            class="inline-block px-8 py-4 bg-secondary text-white font-bold rounded-xl shadow-lg shadow-secondary/20 hover:bg-secondary/90 transition-all">
+            Ver Vacantes Disponibles
+        </a>
+    </div>
+    {{else}}
+
+    <div class="grid gap-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">Mis Postulaciones</h2>
+
+        {{#each postulaciones}}
+        <div
+            class="bg-white rounded-2xl border border-gray-100 p-6 flex flex-col md:flex-row justify-between items-start md:items-center shadow-sm hover:shadow-md transition-shadow gap-4">
+            <div class="flex-1 w-full">
+                <div class="flex items-center gap-3 mb-2">
+                    <span
+                        class="px-3 py-1 bg-blue-50 text-blue-700 text-xs font-bold rounded-lg uppercase tracking-wide">{{vacante.categoria.nombre}}</span>
+                    <span class="text-gray-400 text-sm flex items-center gap-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        Aplicado el {{#formatDate fechaPostulacion}}{{/formatDate}}
+                    </span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-1 group-hover:text-secondary transition-colors">
+                    {{vacante.titulo}}</h3>
+                <p class="text-gray-500 text-sm mb-4 line-clamp-2">{{vacante.resumen}}</p>
+
+                <!-- Status Badges -->
+                <div class="flex flex-wrap gap-2 mb-4">
+                    {{#if (eq estado 'registrado')}}
+                    <span
+                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-gray-100 text-gray-700 border border-gray-200">
+                        <span class="w-2 h-2 rounded-full bg-gray-500"></span>
+                        Registrado
+                    </span>
+                    {{/if}}
+                    {{#if (eq estado 'hoja_vida_enviada')}}
+                    <span
+                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-blue-50 text-blue-700 border border-blue-100">
+                        <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                        CV Enviado
+                    </span>
+                    {{/if}}
+                    {{#if (eq estado 'en_revision')}}
+                    <span
+                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-50 text-purple-700 border border-purple-100">
+                        <span class="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></span>
+                        En Revisión
+                    </span>
+                    {{/if}}
+                    {{#if (eq estado 'sera_contactado')}}
+                    <span
+                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-50 text-amber-700 border border-amber-100">
+                        <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                        Será Contactado
+                    </span>
+                    {{/if}}
+                    {{#if (eq estado 'seleccionado')}}
+                    <span
+                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-green-50 text-green-700 border border-green-100">
+                        <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                        Seleccionado
+                    </span>
+                    {{/if}}
+                    {{#if (eq estado 'rechazado')}}
+                    <span
+                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-red-50 text-red-700 border border-red-100">
+                        <span class="w-2 h-2 rounded-full bg-red-500"></span>
+                        No Continuar
+                    </span>
+                    {{#if motivoRechazo}}
+                    <span class="block w-full text-xs text-red-600 mt-1">
+                        <strong>Motivo:</strong> {{motivoRechazo}}
+                    </span>
+                    {{/if}}
+                    {{/if}}
+
+                    <!-- Fallback for Legacy States -->
+                    {{#if (eq estado 'pendiente')}} <span
+                        class="text-xs bg-gray-100 px-2 py-1 rounded">Registrado</span> {{/if}}
+                    {{#if (eq estado 'revision')}} <span class="text-xs bg-purple-100 px-2 py-1 rounded">En
+                        Revisión</span> {{/if}}
+                </div>
+
+                <!-- Progress Bar Mockup -->
+                <div class="w-full bg-gray-100 rounded-full h-2.5 mb-2 overflow-hidden">
+                    <div class="bg-secondary h-2.5 rounded-full transition-all duration-500"
+                        style="width: {{pasoPorcentaje}}%"></div>
+                </div>
+                <div class="flex w-full mb-6 gap-1">
+                    {{#each steps}}
+                    <div class="flex-1 min-w-0 text-center flex items-start justify-center">
+                        <span
+                            class="block text-[10px] sm:text-xs leading-tight break-words {{#if (eq @index ../currentStepIndex)}}text-secondary font-bold{{else}}text-gray-400 font-medium{{/if}}">
+                            {{this.titulo}}
+                        </span>
+                    </div>
+                    {{/each}}
+                </div>
+
+                <!-- CV Upload Section (Only if registered or CV sent) -->
+                {{#if (or (eq estado 'registrado') (eq estado 'pendiente'))}}
+                <div class="mt-4 p-4 bg-blue-50/50 border border-blue-100 rounded-xl">
+                    <h4 class="text-sm font-bold text-blue-900 mb-2">Siguiente Paso: Carga tu Hoja de Vida</h4>
+                    <p class="text-xs text-blue-700 mb-3">Sube tu HV en formato ZIP (Máx 10MB) para que el equipo de
+                        reclutamiento pueda revisarla.</p>
+
+                    <form action="/postulaciones/{{id}}/hoja-de-vida" method="POST" enctype="multipart/form-data"
+                        class="flex flex-col sm:flex-row gap-3 items-end" onsubmit="return validateCvUpload(event)">
+                        <div class="w-full">
+                            <input type="file" name="file" accept=".zip" required class="block w-full text-sm text-gray-500
+                                file:mr-4 file:py-2 file:px-4
+                                file:rounded-full file:border-0
+                                file:text-xs file:font-semibold
+                                file:bg-blue-100 file:text-blue-700
+                                hover:file:bg-blue-200 transition-colors
+                                cursor-pointer
+                            " />
+                            <p class="text-[10px] text-gray-400 mt-1">Formatos: .zip</p>
+                        </div>
+                        <button type="submit"
+                            class="whitespace-nowrap px-4 py-2 bg-blue-600 text-white text-sm font-bold rounded-lg hover:bg-blue-700 shadow-md transition-all flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">upload_file</span>
+                            Subir CV
+                        </button>
+                    </form>
+                </div>
+                {{/if}}
+
+                {{#if (eq estado 'hoja_vida_enviada')}}
+                <div class="mt-4 p-3 bg-green-50/50 border border-green-100 rounded-xl flex items-center gap-3">
+                    <span class="material-symbols-outlined text-green-600">check_circle</span>
+                    <div>
+                        <p class="text-sm font-bold text-green-900">Hoja de Vida Enviada</p>
+                        <p class="text-xs text-green-700">Tu archivo ha sido recibido exitosamente.</p>
+                    </div>
+                </div>
+                {{/if}}
+
+                <!-- Generic Current Step Detail Info (For Custom Steps or Fixed steps without special UI) -->
+                {{#unless (or (eq estado 'registrado') (eq estado 'pendiente') (eq estado 'hoja_vida_enviada') (eq
+                estado 'seleccionado')) }}
+                {{#if currentStepDetails}}
+                <div class="mt-4 p-4 bg-gray-50 border border-gray-200 rounded-xl flex items-start gap-3">
+                    <div class="p-2 bg-secondary/10 text-secondary rounded-lg shrink-0">
+                        <span class="material-symbols-outlined text-sm">info</span>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-gray-900 mb-1">Paso Actual: {{currentStepDetails.titulo}}</h4>
+                        <p class="text-xs text-gray-600 leading-relaxed">{{currentStepDetails.descripcion}}</p>
+                    </div>
+                </div>
+                {{/if}}
+                {{/unless}}
+
+                <!-- Selection Success Message -->
+                {{#if (eq estado 'seleccionado')}}
+                <div class="mt-4 p-4 bg-green-50 border border-green-200 rounded-xl text-center">
+                    <div class="inline-flex p-3 bg-green-100 text-green-600 rounded-full mb-2">
+                        <span class="material-symbols-outlined">celebration</span>
+                    </div>
+                    <h4 class="text-lg font-bold text-green-800">¡Felicidades! Has sido seleccionado</h4>
+                    <p class="text-sm text-green-700 mt-1">Bienvenido al equipo. Pronto nos pondremos en contacto
+                        contigo para los siguientes pasos de contratación.</p>
+                </div>
+                {{/if}}
+
+            </div>
+
+            <div class="flex flex-col items-end gap-3 w-full md:w-auto self-start">
+                <a href="/vacantes/{{vacante.slug}}"
+                    class="text-sm font-bold text-gray-600 hover:text-secondary hover:underline transition-colors whitespace-nowrap">
+                    Ver vacante &rarr;
+                </a>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+
+    {{/unless}}
+
+</div>
+
+{{/main}}

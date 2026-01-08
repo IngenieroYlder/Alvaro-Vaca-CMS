@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 
+  The Theme is injected dynamically by ThemeManager.
+  Default fallback variables can be placed here if needed used before load.
+*/
+:root {
+  --primary: #8338ec;
+  --secondary: #ffbe0b;
+  --base: #4d4d66;
+}
+
+body {
+  background-color: var(--base-ultra-light, #f3f4f6);
+  color: var(--base);
+  font-family: var(--font-body, system-ui, sans-serif);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading, system-ui, sans-serif);
+}

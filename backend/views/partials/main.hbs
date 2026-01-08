@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{title}}</title>
+    {{#if meta.description}}
+    <meta name="description" content="{{meta.description}}" />
+    {{/if}}
+    {{#if meta.image}}
+    <meta property="og:image" content="{{meta.image}}" />
+    {{/if}}
+
+    {{!-- Style Theme Variables --}}
+    <style>
+        :root {
+            --primary: {
+                    {
+                    theme.primaryColor
+                }
+            }
+
+            ;
+
+            --secondary: {
+                    {
+                    theme.secondaryColor
+                }
+            }
+
+            ;
+
+            --tertiary: {
+                    {
+                    theme.tertiaryColor
+                }
+            }
+
+            ;
+            --font-heading: '{{theme.headingFont}}';
+            --font-body: '{{theme.bodyFont}}';
+        }
+    </style>
+
+    {{> head}}
+    {{> styles}}
+</head>
+
+<body
+    class="bg-gray-50 text-gray-900 font-sans antialiased selection:bg-primary/20 selection:text-primary min-h-screen flex flex-col">
+    {{> header}}
+
+    <main class="flex-grow">
+        {{> @partial-block }}
+    </main>
+
+    {{> footer}}
+
+    {{> join_modal}}
+
+    <script src="/js/main.js"></script>
+    <script>
+        // Fallback/Inline definitions for critical modal functions
+        function openJoinModal() {
+            const modal = document.getElementById('joinModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            } else {
+                console.error('Modal not found!');
+            }
+        }
+
+        function closeJoinModal() {
+            const modal = document.getElementById('joinModal');
+            if (modal) {
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Mobile Menu Toggle logic if needed, usually handled in header component or inline script
+        document.addEventListener('DOMContentLoaded', () => {
+            // Any global init
+        });
+    </script>
+</body>
+
+</html>

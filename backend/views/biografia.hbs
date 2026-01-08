@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    {{> head}}
+    <title>{{#if meta.browserTitle}}{{meta.browserTitle}}{{else}}Biografía - Alvaro Vaca Senado 2025{{/if}}</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;600&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#006838",
+                        secondary: "#0D9A49",
+                        sunflower: "#D7DF23",
+                        accent: "#F89621",
+                        "background-light": "#F9FAFB",
+                    },
+                    fontFamily: {
+                        display: ["Montserrat", "sans-serif"],
+                        body: ["Open Sans", "sans-serif"],
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="bg-background-light text-gray-800 font-body antialiased">
+
+    <!-- Header -->
+    {{> header}}
+
+    <!-- Header Section -->
+    <header class="bg-primary pt-32 pb-16 text-white relative overflow-hidden">
+        <!-- <div class="absolute inset-0 bg-[url('/assets/pattern.png')] opacity-10"></div> -->
+        <div
+            class="absolute top-0 right-0 w-96 h-96 bg-sunflower rounded-full blur-3xl opacity-20 translate-x-1/2 -translate-y-1/2">
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <h1 class="font-display font-black text-4xl md:text-6xl mb-4">¿Quién es Alvaro Vaca?</h1>
+            <p class="text-xl text-green-100 max-w-2xl mx-auto">De Paratebueno para Colombia. Una historia de
+                superación, servicio y emprendimiento.</p>
+        </div>
+    </header>
+
+    <!-- Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">
+
+        <!-- Orígenes y Servicio -->
+        <section class="grid md:grid-cols-2 gap-12 items-start relative">
+            <div class="space-y-6">
+                <div
+                    class="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-primary font-bold text-sm">
+                    <span class="material-icons-round text-sm mr-2">history</span> Orígenes y Servicio
+                </div>
+                <h2 class="font-display font-bold text-3xl text-gray-900">Del Servicio Público al Emprendimiento</h2>
+
+                <!-- Mobile Image -->
+                <div class="md:hidden relative my-6">
+                    <div class="absolute inset-0 bg-sunflower rounded-2xl rotate-3 opacity-20"></div>
+                    <img src="/assets/alvaro.png" alt="Alvaro Vaca"
+                        class="relative rounded-2xl shadow-xl bg-white object-cover h-64 w-full object-top">
+                </div>
+
+                <p class="text-gray-600 leading-relaxed">
+                    Álvaro Vaca forjó su carácter sirviendo al país desde las filas de la Policía Nacional, donde
+                    aprendió el valor de la disciplina, la honestidad y el compromiso con la comunidad. Ese espíritu de
+                    servicio hoy se refleja en su faceta como empresario.
+                </p>
+                <p class="text-gray-600 leading-relaxed">
+                    Tras años de trabajo en el sector público, decidió llevar su experiencia al mundo empresarial,
+                    fundando una compañía de telecomunicaciones que ha conectado a muchas familias en el piedemonte
+                    llanero. Su paso del uniforme a la empresa no fue un cambio de rumbo, sino una evolución natural:
+                    seguir sirviendo, ahora desde la innovación, la generación de empleo y el acceso a la conectividad.
+                </p>
+                <p class="text-gray-600 leading-relaxed">
+                    Para Álvaro, emprender es una extensión del servicio público: una forma de construir país desde las
+                    oportunidades y de demostrar que con esfuerzo, visión y compromiso se pueden transformar realidades.
+                </p>
+            </div>
+            <div class="hidden md:block relative sticky top-32 max-w-md mx-auto w-full">
+                <div class="absolute inset-0 bg-sunflower rounded-2xl rotate-3 opacity-20"></div>
+                <img src="/assets/alvaro.png" alt="Alvaro Vaca"
+                    class="relative rounded-2xl shadow-xl bg-white object-cover h-96 w-full object-top">
+            </div>
+        </section>
+
+        <!-- Emprendimiento -->
+        <section class="grid md:grid-cols-2 gap-12 items-start relative">
+            <!-- Desktop Info Card (Sticky - Left) -->
+            <div class="hidden md:block relative sticky top-32 max-w-md mx-auto w-full">
+                <div class="absolute inset-0 bg-primary rounded-2xl -rotate-3 opacity-10"></div>
+                <div class="relative bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
+                    <div class="flex items-center space-x-4 mb-6">
+                        <span class="material-icons-round text-4xl text-accent">router</span>
+                        <div>
+                            <h3 class="font-bold text-lg">Conectando Regiones</h3>
+                            <p class="text-sm text-gray-500">Más de 600km de fibra óptica</p>
+                        </div>
+                    </div>
+                    <ul class="grid grid-cols-1 sm:grid-cols-2 gap-y-2 gap-x-4 text-gray-600 text-sm">
+                        <li class="flex items-center"><span
+                                class="material-icons-round text-secondary mr-2 text-sm">check_circle</span>
+                            Villavicencio</li>
+                        <li class="flex items-center"><span
+                                class="material-icons-round text-secondary mr-2 text-sm">check_circle</span> Acacías
+                        </li>
+                        <li class="flex items-center"><span
+                                class="material-icons-round text-secondary mr-2 text-sm">check_circle</span> Guamal</li>
+                        <li class="flex items-center"><span
+                                class="material-icons-round text-secondary mr-2 text-sm">check_circle</span> Castilla La
+                            Nueva</li>
+                        <li class="flex items-center"><span
+                                class="material-icons-round text-secondary mr-2 text-sm">check_circle</span> Cubarral
+                        </li>
+                        <li class="flex items-center"><span
+                                class="material-icons-round text-secondary mr-2 text-sm">check_circle</span> El Dorado
+                        </li>
+                        <li class="flex items-center"><span
+                                class="material-icons-round text-secondary mr-2 text-sm">check_circle</span> El Castillo
+                        </li>
+                        <li class="flex items-center"><span
+                                class="material-icons-round text-secondary mr-2 text-sm">check_circle</span> San Martín
+                        </li>
+                        <li class="flex items-center"><span
+                                class="material-icons-round text-secondary mr-2 text-sm">check_circle</span> Granada
+                        </li>
+                        <li class="flex items-center"><span
+                                class="material-icons-round text-secondary mr-2 text-sm">check_circle</span> Puerto
+                            Lleras</li>
+                        <li class="flex items-center"><span
+                                class="material-icons-round text-secondary mr-2 text-sm">check_circle</span> Fuente de
+                            Oro</li>
+                        <li class="flex items-center"><span
+                                class="material-icons-round text-secondary mr-2 text-sm">check_circle</span> Vista
+                            Hermosa</li>
+                        <li class="flex items-center"><span
+                                class="material-icons-round text-secondary mr-2 text-sm">check_circle</span> Lejanías
+                        </li>
+                        <li class="flex items-center"><span
+                                class="material-icons-round text-secondary mr-2 text-sm">check_circle</span> Mesetas
+                        </li>
+                        <li class="flex items-center"><span
+                                class="material-icons-round text-secondary mr-2 text-sm">check_circle</span> La Uribe
+                        </li>
+                        <li class="flex items-center"><span
+                                class="material-icons-round text-secondary mr-2 text-sm">check_circle</span> Restrepo
+                        </li>
+                        <li class="flex items-center"><span
+                                class="material-icons-round text-secondary mr-2 text-sm">check_circle</span> Cumaral
+                        </li>
+                        <li class="flex items-center"><span
+                                class="material-icons-round text-secondary mr-2 text-sm">check_circle</span> Paratebueno
+                        </li>
+                        <li class="flex items-center"><span
+                                class="material-icons-round text-secondary mr-2 text-sm">check_circle</span> Cabuyaro
+                        </li>
+                        <li class="flex items-center"><span
+                                class="material-icons-round text-secondary mr-2 text-sm">check_circle</span> Puerto
+                            López</li>
+                        <li class="flex items-center"><span
+                                class="material-icons-round text-secondary mr-2 text-sm">check_circle</span> Puerto
+                            Gaitán</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div
+                    class="inline-flex items-center px-3 py-1 rounded-full bg-orange-100 text-accent font-bold text-sm">
+                    <span class="material-icons-round text-sm mr-2">business_center</span> Visión Empresarial
+                </div>
+                <h2 class="font-display font-bold text-3xl text-gray-900">Grupo Hola: Construyendo Futuro</h2>
+
+                <p class="text-gray-600 leading-relaxed">
+                    Mi experiencia como fundador de un proveedor de internet en el piedemonte llanero me enseñó que la
+                    verdadera transformación regional se logra trabajando en equipo. Con esa convicción, lideré la
+                    creación del Grupo Hola, una alianza de empresas de telecomunicaciones que decidimos unirnos para
+                    llevar conectividad de calidad a más municipios del país.
+                </p>
+                <p class="text-gray-600 leading-relaxed">
+                    Hoy, el Grupo Hola está integrado por varios proveedores de internet del Meta, Guaviare y
+                    Cundinamarca, con los que compartimos infraestructura, conocimiento y buenas prácticas, consolidando
+                    más de 600 km de fibra óptica en la región. Desde este liderazgo, mi propósito es que esta red
+                    empresarial no solo mejore la calidad del servicio, sino que genere empleo, fortalezca a los
+                    emprendedores locales y demuestre que la unión entre pequeños y medianos empresarios puede competir
+                    de tú a tú con las grandes compañías.
+                </p>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    {{> footer}}
+
+    <!-- Join Modal -->
+    {{> join_modal}}
+
+    <script>
+        function openJoinModal() {
+            const modal = document.getElementById('joinModal');
+            if (modal) modal.classList.remove('hidden');
+        }
+        function closeJoinModal() {
+            const modal = document.getElementById('joinModal');
+            if (modal) modal.classList.add('hidden');
+        }
+        // Expose to window for global access
+        window.openJoinModal = openJoinModal;
+        window.closeJoinModal = closeJoinModal;
+    </script>
+</body>
+
+</html>

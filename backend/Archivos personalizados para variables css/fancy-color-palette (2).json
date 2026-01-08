@@ -1,0 +1,617 @@
+{
+  "id": "nnkbge",
+  "name": "Fancy",
+  "colors": [
+    {
+      "raw": "var(--primary)",
+      "id": "khrmif",
+      "name": "Primary"
+    },
+    {
+      "raw": "var(--primary-trans-10)",
+      "id": "dglzdz",
+      "name": "Primary Trans 10"
+    },
+    {
+      "raw": "var(--primary-trans-20)",
+      "id": "jcpiak",
+      "name": "Primary Trans 20"
+    },
+    {
+      "raw": "var(--primary-trans-30)",
+      "id": "ynltev",
+      "name": "Primary Trans 30"
+    },
+    {
+      "raw": "var(--primary-trans-40)",
+      "id": "dgxlxl",
+      "name": "Primary Trans 40"
+    },
+    {
+      "raw": "var(--primary-trans-50)",
+      "id": "eftfbh",
+      "name": "Primary Trans 50"
+    },
+    {
+      "raw": "var(--primary-trans-60)",
+      "id": "ovsfjt",
+      "name": "Primary Trans 60"
+    },
+    {
+      "raw": "var(--primary-trans-70)",
+      "id": "pwapud",
+      "name": "Primary Trans 70"
+    },
+    {
+      "raw": "var(--primary-trans-80)",
+      "id": "cgthno",
+      "name": "Primary Trans 80"
+    },
+    {
+      "raw": "var(--primary-trans-90)",
+      "id": "kegolo",
+      "name": "Primary Trans 90"
+    },
+    {
+      "raw": "var(--primary-dark)",
+      "id": "fyddnb",
+      "name": "Primary Dark"
+    },
+    {
+      "raw": "var(--primary-ultra-dark)",
+      "id": "chgmij",
+      "name": "Primary Ultra Dark"
+    },
+    {
+      "raw": "var(--primary-semi-dark)",
+      "id": "vrkzqa",
+      "name": "Primary Semi Dark"
+    },
+    {
+      "raw": "var(--primary-medium)",
+      "id": "aclwca",
+      "name": "Primary Medium"
+    },
+    {
+      "raw": "var(--primary-semi-light)",
+      "id": "gbjpqh",
+      "name": "Primary Semi Light"
+    },
+    {
+      "raw": "var(--primary-light)",
+      "id": "tqjvtv",
+      "name": "Primary Light"
+    },
+    {
+      "raw": "var(--primary-ultra-light)",
+      "id": "srwzym",
+      "name": "Primary Ultra Light"
+    },
+    {
+      "raw": "var(--secondary)",
+      "id": "caebqs",
+      "name": "Secondary"
+    },
+    {
+      "raw": "var(--secondary-trans-10)",
+      "id": "iznqud",
+      "name": "Secondary Trans 10"
+    },
+    {
+      "raw": "var(--secondary-trans-20)",
+      "id": "qhqsgs",
+      "name": "Secondary Trans 20"
+    },
+    {
+      "raw": "var(--secondary-trans-30)",
+      "id": "wzmirh",
+      "name": "Secondary Trans 30"
+    },
+    {
+      "raw": "var(--secondary-trans-40)",
+      "id": "srcoqq",
+      "name": "Secondary Trans 40"
+    },
+    {
+      "raw": "var(--secondary-trans-50)",
+      "id": "nnpcnf",
+      "name": "Secondary Trans 50"
+    },
+    {
+      "raw": "var(--secondary-trans-60)",
+      "id": "mebdkb",
+      "name": "Secondary Trans 60"
+    },
+    {
+      "raw": "var(--secondary-trans-70)",
+      "id": "tymmja",
+      "name": "Secondary Trans 70"
+    },
+    {
+      "raw": "var(--secondary-trans-80)",
+      "id": "wyvifk",
+      "name": "Secondary Trans 80"
+    },
+    {
+      "raw": "var(--secondary-trans-90)",
+      "id": "dophup",
+      "name": "Secondary Trans 90"
+    },
+    {
+      "raw": "var(--secondary-ultra-dark)",
+      "id": "kicxsz",
+      "name": "Secondary Ultra Dark"
+    },
+    {
+      "raw": "var(--secondary-dark)",
+      "id": "idrtcb",
+      "name": "Secondary Dark"
+    },
+    {
+      "raw": "var(--secondary-semi-dark)",
+      "id": "ccawqw",
+      "name": "Secondary Semi Dark"
+    },
+    {
+      "raw": "var(--secondary-medium)",
+      "id": "ofbfmv",
+      "name": "Secondary Medium"
+    },
+    {
+      "raw": "var(--secondary-semi-light)",
+      "id": "certat",
+      "name": "Secondary Semi Light"
+    },
+    {
+      "raw": "var(--secondary-light)",
+      "id": "kuhpot",
+      "name": "Secondary Light"
+    },
+    {
+      "raw": "var(--secondary-ultra-light)",
+      "id": "dukwah",
+      "name": "Secondary Ultra Light"
+    },
+    {
+      "raw": "var(--tertiary)",
+      "id": "igumgt",
+      "name": "Tertiary"
+    },
+    {
+      "raw": "var(--tertiary-trans-10)",
+      "id": "brsmmp",
+      "name": "Tertiary Trans 10"
+    },
+    {
+      "raw": "var(--tertiary-trans-20)",
+      "id": "zwwvwi",
+      "name": "Tertiary Trans 20"
+    },
+    {
+      "raw": "var(--tertiary-trans-30)",
+      "id": "cvkrmv",
+      "name": "Tertiary Trans 30"
+    },
+    {
+      "raw": "var(--tertiary-trans-40)",
+      "id": "simpsb",
+      "name": "Tertiary Trans 40"
+    },
+    {
+      "raw": "var(--tertiary-trans-50)",
+      "id": "hoghrc",
+      "name": "Tertiary Trans 50"
+    },
+    {
+      "raw": "var(--tertiary-trans-60)",
+      "id": "iyalln",
+      "name": "Tertiary Trans 60"
+    },
+    {
+      "raw": "var(--tertiary-trans-70)",
+      "id": "wvugmi",
+      "name": "Tertiary Trans 70"
+    },
+    {
+      "raw": "var(--tertiary-trans-80)",
+      "id": "boclru",
+      "name": "Tertiary Trans 80"
+    },
+    {
+      "raw": "var(--tertiary-trans-90)",
+      "id": "bkntml",
+      "name": "Tertiary Trans 90"
+    },
+    {
+      "raw": "var(--tertiary-ultra-dark)",
+      "id": "zejazz",
+      "name": "Tertiary Ultra Dark"
+    },
+    {
+      "raw": "var(--tertiary-dark)",
+      "id": "cgclkp",
+      "name": "Tertiary Dark"
+    },
+    {
+      "raw": "var(--tertiary-semi-dark)",
+      "id": "oysfri",
+      "name": "Tertiary Semi Dark"
+    },
+    {
+      "raw": "var(--tertiary-medium)",
+      "id": "jsybsa",
+      "name": "Tertiary Medium"
+    },
+    {
+      "raw": "var(--tertiary-semi-light)",
+      "id": "lxovhu",
+      "name": "Tertiary Semi Light"
+    },
+    {
+      "raw": "var(--tertiary-light)",
+      "id": "mgnche",
+      "name": "Tertiary Light"
+    },
+    {
+      "raw": "var(--tertiary-ultra-light)",
+      "id": "xzqbde",
+      "name": "Tertiary Ultra Light"
+    },
+    {
+      "raw": "var(--accent)",
+      "id": "spomlj",
+      "name": "Accent"
+    },
+    {
+      "raw": "var(--accent-trans-10)",
+      "id": "bfxhku",
+      "name": "Accent Trans 10"
+    },
+    {
+      "raw": "var(--accent-trans-20)",
+      "id": "ctehkq",
+      "name": "Accent Trans 20"
+    },
+    {
+      "raw": "var(--accent-trans-30)",
+      "id": "kyunbm",
+      "name": "Accent Trans 30"
+    },
+    {
+      "raw": "var(--accent-trans-40)",
+      "id": "erucie",
+      "name": "Accent Trans 40"
+    },
+    {
+      "raw": "var(--accent-trans-50)",
+      "id": "trsrhe",
+      "name": "Accent Trans 50"
+    },
+    {
+      "raw": "var(--accent-trans-60)",
+      "id": "znrugz",
+      "name": "Accent Trans 60"
+    },
+    {
+      "raw": "var(--accent-trans-70)",
+      "id": "zokqkh",
+      "name": "Accent Trans 70"
+    },
+    {
+      "raw": "var(--accent-trans-80)",
+      "id": "hftafp",
+      "name": "Accent Trans 80"
+    },
+    {
+      "raw": "var(--accent-trans-90)",
+      "id": "xnxusx",
+      "name": "Accent Trans 90"
+    },
+    {
+      "raw": "var(--accent-ultra-dark)",
+      "id": "xqvzdv",
+      "name": "Accent Ultra Dark"
+    },
+    {
+      "raw": "var(--accent-dark)",
+      "id": "ilsmrv",
+      "name": "Accent Dark"
+    },
+    {
+      "raw": "var(--accent-semi-dark)",
+      "id": "ktbsjt",
+      "name": "Accent Semi Dark"
+    },
+    {
+      "raw": "var(--accent-medium)",
+      "id": "jfczau",
+      "name": "Accent Medium"
+    },
+    {
+      "raw": "var(--accent-semi-light)",
+      "id": "hxoiws",
+      "name": "Accent Semi Light"
+    },
+    {
+      "raw": "var(--accent-light)",
+      "id": "khnqhw",
+      "name": "Accent Light"
+    },
+    {
+      "raw": "var(--accent-ultra-light)",
+      "id": "mxxuxc",
+      "name": "Accent Ultra Light"
+    },
+    {
+      "raw": "var(--base)",
+      "id": "njmzgd",
+      "name": "Base"
+    },
+    {
+      "raw": "var(--base-ultra-dark)",
+      "id": "zlvusv",
+      "name": "Base Ultra Dark"
+    },
+    {
+      "raw": "var(--base-ultra-dark-trans-10)",
+      "id": "zlesyq",
+      "name": "Base Ultra Dark Trans 10"
+    },
+    {
+      "raw": "var(--base-ultra-dark-trans-20)",
+      "id": "wezppz",
+      "name": "Base Ultra Dark Trans 20"
+    },
+    {
+      "raw": "var(--base-ultra-dark-trans-30)",
+      "id": "cvvlrz",
+      "name": "Base Ultra Dark Trans 30"
+    },
+    {
+      "raw": "var(--base-ultra-dark-trans-40)",
+      "id": "trhias",
+      "name": "Base Ultra Dark Trans 40"
+    },
+    {
+      "raw": "var(--base-ultra-dark-trans-50)",
+      "id": "trzria",
+      "name": "Base Ultra Dark Trans 50"
+    },
+    {
+      "raw": "var(--base-ultra-dark-trans-60)",
+      "id": "vbfwxu",
+      "name": "Base Ultra Dark Trans 60"
+    },
+    {
+      "raw": "var(--base-ultra-dark-trans-70)",
+      "id": "mwmzby",
+      "name": "Base Ultra Dark Trans 70"
+    },
+    {
+      "raw": "var(--base-ultra-dark-trans-80)",
+      "id": "yinlwb",
+      "name": "Base Ultra Dark Trans 80"
+    },
+    {
+      "raw": "var(--base-ultra-dark-trans-90)",
+      "id": "sjlhyh",
+      "name": "Base Ultra Dark Trans 90"
+    },
+    {
+      "raw": "var(--base-dark)",
+      "id": "lhxrna",
+      "name": "Base Dark"
+    },
+    {
+      "raw": "var(--base-semi-dark)",
+      "id": "qvvkoy",
+      "name": "Base Semi Dark"
+    },
+    {
+      "raw": "var(--base-medium)",
+      "id": "wqinhq",
+      "name": "Base Medium"
+    },
+    {
+      "raw": "var(--base-semi-light)",
+      "id": "dtaycw",
+      "name": "Base Semi Light"
+    },
+    {
+      "raw": "var(--base-light)",
+      "id": "puyued",
+      "name": "Base Light"
+    },
+    {
+      "raw": "var(--base-ultra-light)",
+      "id": "rrxgfe",
+      "name": "Base Ultra Light"
+    },
+    {
+      "raw": "var(--neutral)",
+      "id": "xqytzx",
+      "name": "Neutral"
+    },
+    {
+      "raw": "var(--neutral-trans-10)",
+      "id": "iggsza",
+      "name": "Neutral Trans 10"
+    },
+    {
+      "raw": "var(--neutral-trans-20)",
+      "id": "tkfyvt",
+      "name": "Neutral Trans 20"
+    },
+    {
+      "raw": "var(--neutral-trans-30)",
+      "id": "afuzgi",
+      "name": "Neutral Trans 30"
+    },
+    {
+      "raw": "var(--neutral-trans-40)",
+      "id": "fsdadf",
+      "name": "Neutral Trans 40"
+    },
+    {
+      "raw": "var(--neutral-trans-50)",
+      "id": "koqjbi",
+      "name": "Neutral Trans 50"
+    },
+    {
+      "raw": "var(--neutral-trans-60)",
+      "id": "brlrff",
+      "name": "Neutral Trans 60"
+    },
+    {
+      "raw": "var(--neutral-trans-70)",
+      "id": "muzfax",
+      "name": "Neutral Trans 70"
+    },
+    {
+      "raw": "var(--neutral-trans-80)",
+      "id": "dnsdwi",
+      "name": "Neutral Trans 80"
+    },
+    {
+      "raw": "var(--neutral-trans-90)",
+      "id": "idbibt",
+      "name": "Neutral Trans 90"
+    },
+    {
+      "raw": "var(--neutral-ultra-dark)",
+      "id": "pngejx",
+      "name": "Neutral Ultra Dark"
+    },
+    {
+      "raw": "var(--neutral-dark)",
+      "id": "senzyu",
+      "name": "Neutral Dark"
+    },
+    {
+      "raw": "var(--neutral-semi-dark)",
+      "id": "wqrpdm",
+      "name": "Neutral Semi Dark"
+    },
+    {
+      "raw": "var(--neutral-medium)",
+      "id": "yspawp",
+      "name": "Neutral Medium"
+    },
+    {
+      "raw": "var(--neutral-semi-light)",
+      "id": "mjmtwm",
+      "name": "Neutral Semi Light"
+    },
+    {
+      "raw": "var(--neutral-light)",
+      "id": "zppzqn",
+      "name": "Neutral Light"
+    },
+    {
+      "raw": "var(--neutral-ultra-light)",
+      "id": "jcsacs",
+      "name": "Neutral Ultra Light"
+    },
+    {
+      "raw": "var(--white)",
+      "id": "mehyhe",
+      "name": "White"
+    },
+    {
+      "raw": "var(--white-trans-10)",
+      "id": "wsfqbk",
+      "name": "White Trans 10"
+    },
+    {
+      "raw": "var(--white-trans-20)",
+      "id": "zamdfj",
+      "name": "White Trans 20"
+    },
+    {
+      "raw": "var(--white-trans-30)",
+      "id": "hrwnqs",
+      "name": "White Trans 30"
+    },
+    {
+      "raw": "var(--white-trans-40)",
+      "id": "rshgei",
+      "name": "White Trans 40"
+    },
+    {
+      "raw": "var(--white-trans-50)",
+      "id": "dsfqqw",
+      "name": "White Trans 50"
+    },
+    {
+      "raw": "var(--white-trans-60)",
+      "id": "fgrgzr",
+      "name": "White Trans 60"
+    },
+    {
+      "raw": "var(--white-trans-70)",
+      "id": "ktsacj",
+      "name": "White Trans 70"
+    },
+    {
+      "raw": "var(--white-trans-80)",
+      "id": "hipdkz",
+      "name": "White Trans 80"
+    },
+    {
+      "raw": "var(--white-trans-90)",
+      "id": "qbuach",
+      "name": "White Trans 90"
+    },
+    {
+      "raw": "var(--black)",
+      "id": "lmhrnl",
+      "name": "Black"
+    },
+    {
+      "raw": "var(--black-trans-10)",
+      "id": "tbpkdz",
+      "name": "Black Trans 10"
+    },
+    {
+      "raw": "var(--black-trans-20)",
+      "id": "ybkcfr",
+      "name": "Black Trans 20"
+    },
+    {
+      "raw": "var(--black-trans-30)",
+      "id": "uyqkau",
+      "name": "Black Trans 30"
+    },
+    {
+      "raw": "var(--black-trans-40)",
+      "id": "gqndlw",
+      "name": "Black Trans 40"
+    },
+    {
+      "raw": "var(--black-trans-50)",
+      "id": "zpvqyd",
+      "name": "Black Trans 50"
+    },
+    {
+      "raw": "var(--black-trans-60)",
+      "id": "owcohr",
+      "name": "Black Trans 60"
+    },
+    {
+      "raw": "var(--black-trans-70)",
+      "id": "imadpo",
+      "name": "Black Trans 70"
+    },
+    {
+      "raw": "var(--black-trans-80)",
+      "id": "joenvc",
+      "name": "Black Trans 80"
+    },
+    {
+      "raw": "var(--black-trans-90)",
+      "id": "wqfebm",
+      "name": "Black Trans 90"
+    }
+  ],
+  "default": true
+}

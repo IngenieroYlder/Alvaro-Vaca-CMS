@@ -1,0 +1,213 @@
+<footer class="w-full bg-primary text-white border-t border-white/10 relative overflow-hidden">
+    <!-- Decorative background element -->
+    <div class="absolute top-0 right-0 w-1/3 h-full bg-white/5 skew-x-12 pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+            <!-- Brand Column -->
+            <div class="flex flex-col gap-6">
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-3">
+                        <img src="/assets/1_LOGO.png" class="h-[70px] object-contain brightness-0 invert"
+                            alt="Logo Alvaro Vaca">
+                        <img src="/assets/4_LOGO.png" class="h-[50px] object-contain" alt="Partido Alianza Verde #75">
+                    </div>
+                </div>
+                <p class="text-white text-sm leading-relaxed">
+                    {{#if empresaSlogan}}{{empresaSlogan}}{{else}}Soluciones integrales de movilidad y
+                    transporte.{{/if}}
+                </p>
+                <div class="flex gap-4">
+                    {{#if social.facebook}}
+                    <a href="{{social.facebook}}" target="_blank"
+                        class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#1877F2] hover:text-white transition-all">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                            <path
+                                d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                        </svg>
+                    </a>
+                    {{/if}}
+                    {{#if social.instagram}}
+                    <a href="{{social.instagram}}" target="_blank"
+                        class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-gradient-to-tr hover:from-[#f9ce34] hover:via-[#ee2a7b] hover:to-[#6228d7] hover:text-white transition-all">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                            <path
+                                d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.058-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.209-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                        </svg>
+                    </a>
+                    {{/if}}
+                    {{#if social.linkedin}}
+                    <a href="{{social.linkedin}}" target="_blank"
+                        class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#0A66C2] hover:text-white transition-all">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                            <path
+                                d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                        </svg>
+                    </a>
+                    {{/if}}
+                </div>
+            </div>
+
+            <!-- Links Column -->
+            <div>
+                <h3 class="font-bold text-lg mb-6 text-white border-b border-white/10 pb-2 inline-block">Navegación</h3>
+                <ul class="space-y-3">
+                    <li><a href="/"
+                            class="text-white hover:text-secondary transition-colors text-sm flex items-center gap-2"><span
+                                class="material-symbols-outlined text-xs">chevron_right</span>Inicio</a></li>
+                    <li><a href="/nosotros"
+                            class="text-white hover:text-secondary transition-colors text-sm flex items-center gap-2"><span
+                                class="material-symbols-outlined text-xs">chevron_right</span>Nosotros</a></li>
+                    <li><a href="/servicios"
+                            class="text-white hover:text-secondary transition-colors text-sm flex items-center gap-2"><span
+                                class="material-symbols-outlined text-xs">chevron_right</span>Servicios</a></li>
+                    <li><a href="/contacto"
+                            class="text-white hover:text-secondary transition-colors text-sm flex items-center gap-2"><span
+                                class="material-symbols-outlined text-xs">chevron_right</span>Contacto</a></li>
+                </ul>
+            </div>
+
+            <!-- Legal Column -->
+            <div>
+                <h3 class="font-bold text-lg mb-6 text-white border-b border-white/10 pb-2 inline-block">Legal</h3>
+                <ul class="space-y-3">
+                    <li><a href="/terminos-y-condiciones"
+                            class="text-white hover:text-secondary transition-colors text-sm flex items-center gap-2"><span
+                                class="material-symbols-outlined text-xs">gavel</span>Términos y Condiciones</a></li>
+                    <li><a href="/politica-de-privacidad"
+                            class="text-white hover:text-secondary transition-colors text-sm flex items-center gap-2"><span
+                                class="material-symbols-outlined text-xs">shield</span>Política de Privacidad</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Column -->
+            <div>
+                <h3 class="font-bold text-lg mb-6 text-white border-b border-white/10 pb-2 inline-block">Contáctanos
+                </h3>
+                <ul class="space-y-4">
+                    {{#if direccion}}
+                    <li class="flex items-start gap-3 text-white text-sm">
+                        <span class="material-symbols-outlined text-secondary mt-0.5">location_on</span>
+                        <span>{{direccion}}</span>
+                    </li>
+                    {{/if}}
+                    {{#if telefono}}
+                    <li class="flex items-center gap-3 text-white text-sm">
+                        <span class="material-symbols-outlined text-secondary">call</span>
+                        <a href="tel:{{telefono}}" class="hover:text-green-300 transition-colors">{{telefono}}</a>
+                    </li>
+                    {{/if}}
+                    {{#if email}}
+                    <li class="flex items-center gap-3 text-white text-sm">
+                        <span class="material-symbols-outlined text-secondary">mail</span>
+                        <a href="mailto:{{email}}" class="hover:text-green-300 transition-colors">{{email}}</a>
+                    </li>
+                    {{/if}}
+                    {{#if horarioAtencion}}
+                    <li class="flex items-start gap-3 text-white text-sm border-t border-white/10 pt-4 mt-2">
+                        <span class="material-symbols-outlined text-secondary mt-0.5">schedule</span>
+                        <span class="whitespace-pre-line">{{horarioAtencion}}</span>
+                    </li>
+                    {{/if}}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="border-t border-white/10 bg-black/20">
+        <div
+            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
+            <p class="text-gray-300 text-xs text-center md:text-left">
+                © {{anio}} <span class="text-white font-medium">{{empresaNombre}}</span>. Todos los derechos reservados.
+            </p>
+            <div class="flex items-center gap-2 text-[10px] text-gray-500 uppercase tracking-widest font-bold">
+                <span>DESARROLLADO POR</span>
+                <a href="https://wa.me/573223171673?text=hola%20visite%20la%20pagina%20de%20alvaro%20vaca%20y%20estoy%20interesado%20en%20uno%20de%20tus%20servicios"
+                    target="_blank" class="text-white hover:text-green-400 transition-colors">INGENIERO YLDER GONZALEZ /
+                    COLOMBIA PICTURE</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- WhatsApp Button (Fixed) -->
+    <a href="https://wa.me/{{telefono}}" target="_blank"
+        class="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white w-14 h-14 rounded-full shadow-xl flex items-center justify-center hover:scale-110 transition-transform duration-300 group">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp"
+            class="w-8 h-8 brightness-0 invert">
+        <span
+            class="absolute right-full mr-4 bg-white text-gray-800 px-3 py-1.5 rounded-lg text-xs font-bold shadow-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+            ¡Chatea con nosotros!
+        </span>
+    </a>
+
+    <!-- Back to Top Button (Fixed Left) -->
+    <button id="backToTop"
+        class="fixed bottom-6 left-6 z-50 bg-primary text-white px-5 py-3 rounded-full shadow-xl flex items-center gap-2 -translate-x-32 opacity-0 transition-all duration-500 hover:scale-105 hover:bg-primary/90 group">
+        <span class="material-symbols-outlined transition-transform group-hover:-translate-y-1">arrow_upward</span>
+        <span class="text-xs font-bold uppercase tracking-wider">Ir arriba</span>
+    </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const backToTop = document.getElementById('backToTop');
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 400) {
+                    backToTop.classList.remove('-translate-x-32', 'opacity-0');
+                    backToTop.classList.add('translate-x-0', 'opacity-100');
+                } else {
+                    backToTop.classList.add('-translate-x-32', 'opacity-0');
+                    backToTop.classList.remove('translate-x-0', 'opacity-100');
+                }
+            });
+
+            backToTop.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+    <!-- Tariffs Modal -->
+    {{#if tarifasImage}}
+    <dialog id="modalTarifas"
+        class="backdrop:bg-black/90 bg-transparent p-0 w-full max-w-4xl h-fit rounded-none overflow-hidden outline-none">
+        <div class="relative bg-white rounded-2xl shadow-2xl overflow-hidden m-4 max-h-[90vh] flex flex-col">
+            <div class="flex items-center justify-between p-4 border-b border-gray-100 bg-gray-50">
+                <h3 class="font-bold text-primary text-xl flex items-center gap-2">
+                    <span class="material-symbols-outlined text-secondary">payments</span>
+                    Tarifas Oficiales 2025
+                </h3>
+                <form method="dialog">
+                    <button
+                        class="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center transition-colors">
+                        <span class="material-symbols-outlined text-gray-600 text-lg">close</span>
+                    </button>
+                </form>
+            </div>
+            <div class="p-4 overflow-auto">
+                <img src="{{tarifasImage}}" alt="Tarifas 2025" class="w-full h-auto rounded-lg shadow-inner">
+            </div>
+            <div class="p-4 bg-gray-50 border-t border-gray-100 text-center">
+                <p class="text-xs text-gray-500">{{numeroContrato}}</p>
+            </div>
+        </div>
+    </dialog>
+    <script>
+        // Close modal when clicking outside
+        const modalTarifas = document.getElementById('modalTarifas');
+        if (modalTarifas) {
+            modalTarifas.addEventListener('click', (e) => {
+                const rect = modalTarifas.getBoundingClientRect();
+                const isInDialog = (rect.top <= e.clientY && e.clientY <= rect.top + rect.height &&
+                    rect.left <= e.clientX && e.clientX <= rect.left + rect.width);
+                if (!isInDialog) {
+                    modalTarifas.close();
+                }
+            });
+        }
+    </script>
+    {{/if}}
+</footer>

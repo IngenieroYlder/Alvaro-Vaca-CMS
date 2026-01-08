@@ -1,0 +1,3 @@
+views/**/*.hbs
+dist/views/**/*.hbs
+public/**/*

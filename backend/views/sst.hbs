@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    {{> head}}
+    <title>{{meta.title}} | {{empresaNombre}}</title>
+    {{> styles}}
+</head>
+
+<body class="bg-gray-50 font-sans text-gray-900 overflow-x-hidden">
+
+    {{> header}}
+
+    <!-- Hero Section -->
+    {{> hero
+    label="Compromiso HSEQ"
+    title=(lookup meta 'title')
+    subtitle=(lookup meta 'subtitle')
+    image=(lookup meta 'heroImage')
+    isSst=true
+    }}
+
+    <!-- Content Section -->
+    <section class="py-32 px-6 relative bg-white">
+        <div class="max-w-5xl mx-auto">
+            <div class="prose prose-xl prose-primary max-w-none text-gray-600 leading-relaxed">
+                {{#if meta.content}}
+                {{{meta.content}}}
+                {{else}}
+                <div class="space-y-20">
+                    <!-- Main Card -->
+                    <div
+                        class="glass-panel p-12 md:p-20 rounded-[50px] shadow-2xl shadow-gray-200/50 relative overflow-hidden group">
+                        <div
+                            class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-bl-full group-hover:scale-110 transition-transform duration-1000">
+                        </div>
+                        <div class="relative z-10 space-y-10">
+                            <div
+                                class="w-20 h-20 bg-primary/5 rounded-3xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-500">
+                                <span class="material-symbols-outlined text-5xl">verified_user</span>
+                            </div>
+                            <h2 class="text-4xl md:text-5xl font-black text-primary tracking-tighter leading-tight">
+                                Gestión de
+                                Seguridad y Salud en el Trabajo</h2>
+                            <p class="text-2xl text-gray-500 leading-relaxed font-light">
+                                Cumplimos con los estándares de divulgación a partes interesadas. Nuestra gestión se
+                                basa en la prevención de riesgos y la mejora continua de los procesos de seguridad.
+                            </p>
+                            <div class="flex flex-wrap gap-4">
+                                <span
+                                    class="px-6 py-3 bg-gray-50 rounded-full text-xs font-black text-gray-400 uppercase tracking-widest border border-gray-100 group-hover:border-secondary/30 transition-colors">Prevención
+                                    Vial</span>
+                                <span
+                                    class="px-6 py-3 bg-gray-50 rounded-full text-xs font-black text-gray-400 uppercase tracking-widest border border-gray-100 group-hover:border-primary/30 transition-colors">Cero
+                                    Alcohol & Drogas</span>
+                                <span
+                                    class="px-6 py-3 bg-gray-50 rounded-full text-xs font-black text-gray-400 uppercase tracking-widest border border-gray-100 group-hover:border-secondary/30 transition-colors">HSEQ
+                                    Standards</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Documents Grid -->
+                    <div class="space-y-10">
+                        <div class="flex items-center justify-between border-b border-gray-100 pb-8">
+                            <h3 class="text-2xl md:text-3xl font-black text-primary tracking-tighter uppercase">
+                                Políticas &
+                                Declaraciones</h3>
+                            <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">{{#if
+                                meta.polices}}{{meta.polices.length}}{{else}}0{{/if}} Documentos</span>
+                        </div>
+
+                        {{#if meta.polices.length}}
+                        <div class="grid md:grid-cols-2 gap-8">
+                            {{#each meta.polices}}
+                            <a href="{{url}}" target="_blank"
+                                class="flex items-center gap-8 p-10 bg-white rounded-[40px] border border-gray-100 shadow-xl shadow-gray-200/20 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group">
+                                <div
+                                    class="w-16 h-16 bg-secondary/10 rounded-2xl flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-white transition-all duration-500">
+                                    <span class="material-symbols-outlined text-3xl">picture_as_pdf</span>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="font-black text-primary text-xl tracking-tight mb-2">{{title}}</h4>
+                                    <p class="text-sm text-gray-400 font-medium">{{#if
+                                        description}}{{description}}{{else}}Consultar documento oficial{{/if}}</p>
+                                </div>
+                                <span
+                                    class="material-symbols-outlined text-gray-200 group-hover:text-secondary group-hover:translate-x-2 transition-all">chevron_right</span>
+                            </a>
+                            {{/each}}
+                        </div>
+                        {{else}}
+                        <div class="p-16 text-center bg-gray-50 rounded-[40px] border-2 border-dashed border-gray-200">
+                            <span class="material-symbols-outlined text-6xl text-gray-300 mb-4">folder_off</span>
+                            <p class="text-gray-400 font-bold uppercase tracking-widest text-sm">No hay documentos
+                                disponibles en este momento</p>
+                        </div>
+                        {{/if}}
+                    </div>
+                </div>
+                {{/if}}
+            </div>
+        </div>
+    </section>
+
+    {{> footer}}
+
+</body>
+
+</html>

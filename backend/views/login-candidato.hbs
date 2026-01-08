@@ -1,0 +1,61 @@
+{{#> main}}
+
+<div class="bg-gray-50 border-b border-gray-200 pt-32 pb-8">
+    <div class="container mx-auto px-4 text-center">
+        <h1 class="text-3xl md:text-5xl font-black text-gray-900 mb-2">Bienvenido Candidato</h1>
+        <p class="text-gray-500 text-lg">Ingresa para gestionar tus postulaciones.</p>
+    </div>
+</div>
+
+<div class="container mx-auto px-4 py-12">
+    <div class="max-w-md mx-auto bg-white rounded-3xl shadow-xl p-8 border border-gray-100">
+
+        {{#if vacanteId}}
+        <div class="bg-blue-50 text-blue-700 p-4 rounded-xl text-sm mb-6">
+            Para aplicar a esta vacante, primero inicia sesión.
+        </div>
+        {{/if}}
+
+        {{#if error}}
+        <div class="bg-red-50 text-red-700 p-4 rounded-xl text-sm mb-6 border border-red-100">
+            Credenciales incorrectas. Intenta nuevamente.
+        </div>
+        {{/if}}
+
+        {{#if registrado}}
+        <div class="bg-green-50 text-green-700 p-4 rounded-xl text-sm mb-6 border border-green-100">
+            ¡Registro exitoso! Inicia sesión para continuar.
+        </div>
+        {{/if}}
+
+        <form action="/candidato/login" method="POST" class="space-y-6">
+            {{#if vacanteId}}
+            <input type="hidden" name="vacanteId" value="{{vacanteId}}">
+            {{/if}}
+
+            <div class="space-y-2">
+                <label class="font-bold text-gray-700">Correo Electrónico</label>
+                <input type="email" name="email" required
+                    class="w-full p-3 rounded-xl border border-gray-200 focus:border-secondary focus:ring-4 focus:ring-secondary/10 outline-none transition-all">
+            </div>
+
+            <div class="space-y-2">
+                <label class="font-bold text-gray-700">Contraseña</label>
+                <input type="password" name="contrasena" required
+                    class="w-full p-3 rounded-xl border border-gray-200 focus:border-secondary focus:ring-4 focus:ring-secondary/10 outline-none transition-all">
+            </div>
+
+            <button type="submit"
+                class="w-full py-4 bg-secondary text-white font-bold rounded-xl hover:bg-secondary/90 shadow-lg shadow-secondary/30 transition-all hover:-translate-y-1">
+                Iniciar Sesión
+            </button>
+
+            <p class="text-center text-gray-500 text-sm mt-6">
+                ¿No tienes cuenta? <a href="/candidato/registro{{#if vacanteId}}?vacante={{vacanteId}}{{/if}}"
+                    class="text-secondary font-bold hover:underline">Regístrate aquí</a>
+            </p>
+        </form>
+    </div>
+</div>
+
+{{/main}}

@@ -1,0 +1,1226 @@
+{
+  "variables": [
+    {
+      "name": "space-xs",
+      "value": "clamp(0.90rem, calc(0.90rem + 0.0022 * (100vw - 380px)), 1.10rem)",
+      "id": "cjwoqb",
+      "category": "bvswxd"
+    },
+    {
+      "name": "space-s",
+      "value": "clamp(1.30rem, calc(1.30rem + 0.0033 * (100vw - 380px)), 1.60rem)",
+      "id": "ksohkk",
+      "category": "bvswxd"
+    },
+    {
+      "name": "space-m",
+      "value": "clamp(2.00rem, calc(2.00rem + 0.0044 * (100vw - 380px)), 2.40rem)",
+      "id": "hkzzjv",
+      "category": "bvswxd"
+    },
+    {
+      "name": "space-l",
+      "value": "clamp(3.00rem, calc(3.00rem + 0.0067 * (100vw - 380px)), 3.60rem)",
+      "id": "ipwgwa",
+      "category": "bvswxd"
+    },
+    {
+      "name": "space-xl",
+      "value": "clamp(4.50rem, calc(4.50rem + 0.0100 * (100vw - 380px)), 5.40rem)",
+      "id": "fwcoee",
+      "category": "bvswxd"
+    },
+    {
+      "name": "space-xxl",
+      "value": "clamp(6.80rem, calc(6.80rem + 0.0144 * (100vw - 380px)), 8.10rem)",
+      "id": "bwsvfd",
+      "category": "bvswxd"
+    },
+    {
+      "name": "space-section",
+      "value": "clamp(10.00rem, calc(10.00rem + 0.0222 * (100vw - 380px)), 12.00rem)",
+      "id": "slshvs",
+      "category": "bvswxd"
+    },
+    {
+      "name": "logo-width",
+      "value": "clamp(12.00rem, calc(12.00rem + 0.0889 * (100vw - 380px)), 20.00rem)",
+      "id": "noppse",
+      "category": "bvswxd"
+    },
+    {
+      "name": "h1",
+      "value": "clamp(4.40rem, calc(4.40rem + 0.0122 * (100vw - 380px)), 5.50rem)",
+      "id": "jjvvua",
+      "category": "igkzwc"
+    },
+    {
+      "name": "h2",
+      "value": "clamp(3.50rem, calc(3.50rem + 0.0100 * (100vw - 380px)), 4.40rem)",
+      "id": "cjasgf",
+      "category": "igkzwc"
+    },
+    {
+      "name": "h3",
+      "value": "clamp(2.80rem, calc(2.80rem + 0.0078 * (100vw - 380px)), 3.50rem)",
+      "id": "twwtee",
+      "category": "igkzwc"
+    },
+    {
+      "name": "h4",
+      "value": "clamp(2.20rem, calc(2.20rem + 0.0067 * (100vw - 380px)), 2.80rem)",
+      "id": "pvnusx",
+      "category": "igkzwc"
+    },
+    {
+      "name": "h5",
+      "value": "clamp(1.80rem, calc(1.80rem + 0.0044 * (100vw - 380px)), 2.20rem)",
+      "id": "oymhcl",
+      "category": "igkzwc"
+    },
+    {
+      "name": "h6",
+      "value": "clamp(1.40rem, calc(1.40rem + 0.0044 * (100vw - 380px)), 1.80rem)",
+      "id": "inmccu",
+      "category": "igkzwc"
+    },
+    {
+      "name": "text-xs",
+      "value": "clamp(1.00rem, calc(1.00rem + 0.0022 * (100vw - 380px)), 1.20rem)",
+      "id": "mzisxc",
+      "category": "igkzwc"
+    },
+    {
+      "name": "text-s",
+      "value": "clamp(1.30rem, calc(1.30rem + 0.0011 * (100vw - 380px)), 1.40rem)",
+      "id": "svmltc",
+      "category": "igkzwc"
+    },
+    {
+      "name": "text-m",
+      "value": "clamp(1.60rem, calc(1.60rem + 0.0022 * (100vw - 380px)), 1.80rem)",
+      "id": "dqctpn",
+      "category": "igkzwc"
+    },
+    {
+      "name": "text-mm",
+      "value": "clamp(1.80rem, calc(1.80rem + 0.0022 * (100vw - 380px)), 2.00rem)",
+      "id": "qcevcx",
+      "category": "igkzwc"
+    },
+    {
+      "name": "text-l",
+      "value": "clamp(2.00rem, calc(2.00rem + 0.0033 * (100vw - 380px)), 2.30rem)",
+      "id": "pvedix",
+      "category": "igkzwc"
+    },
+    {
+      "name": "text-xl",
+      "value": "clamp(2.50rem, calc(2.50rem + 0.0033 * (100vw - 380px)), 2.80rem)",
+      "id": "qifakc",
+      "category": "igkzwc"
+    },
+    {
+      "name": "text-xxl",
+      "value": "clamp(3.10rem, calc(3.10rem + 0.0044 * (100vw - 380px)), 3.50rem)",
+      "id": "rkjiat",
+      "category": "igkzwc"
+    },
+    {
+      "name": "grid-gap",
+      "value": "var(--space-xl) var(--space-l)",
+      "id": "jcaxkn",
+      "category": "blspsq"
+    },
+    {
+      "name": "grid-gap-s",
+      "value": "var(--space-l) var(--space-m)",
+      "id": "pzibvq",
+      "category": "blspsq"
+    },
+    {
+      "name": "card-gap",
+      "value": "var(--space-m)",
+      "id": "knszoc",
+      "category": "blspsq"
+    },
+    {
+      "name": "content-gap",
+      "value": "calc(var(--space-m) * 1.5)",
+      "id": "ujobay",
+      "category": "blspsq"
+    },
+    {
+      "name": "container-gap",
+      "value": "var(--space-xxl)",
+      "id": "ljqrtr",
+      "category": "blspsq"
+    },
+    {
+      "name": "padding-section",
+      "value": "var(--space-section) var(--space-m)",
+      "id": "mipeae",
+      "category": "blspsq"
+    },
+    {
+      "name": "offset",
+      "value": "80px",
+      "id": "lbmaxk",
+      "category": "blspsq"
+    },
+    {
+      "name": "text-line-height",
+      "value": "calc(10px + 2ex)",
+      "id": "wbwath",
+      "category": "fqsysj"
+    },
+    {
+      "name": "heading-line-height",
+      "value": "calc(7px + 2ex)",
+      "id": "skqhns",
+      "category": "fqsysj"
+    },
+    {
+      "name": "text-font-weight",
+      "value": "400",
+      "id": "mmtsxt",
+      "category": "fqsysj"
+    },
+    {
+      "name": "heading-font-weight",
+      "value": "600",
+      "id": "nijwny",
+      "category": "fqsysj"
+    },
+    {
+      "name": "text-color",
+      "value": "var(--base)",
+      "id": "jywxpp",
+      "category": "fqsysj"
+    },
+    {
+      "name": "heading-color",
+      "value": "var(--base-ultra-dark)",
+      "id": "ttgizg",
+      "category": "fqsysj"
+    },
+    {
+      "name": "radius",
+      "value": "20px",
+      "id": "bnbdgl",
+      "category": "bvklbf"
+    },
+    {
+      "name": "radius-inside",
+      "value": "calc(var(--radius) * 0.5)",
+      "id": "yhkdao",
+      "category": "bvklbf"
+    },
+    {
+      "name": "radius-outside",
+      "value": "calc(var(--radius) * 1.4)",
+      "id": "obhkjt",
+      "category": "bvklbf"
+    },
+    {
+      "name": "radius-btn",
+      "value": ".3em",
+      "id": "aoyohb",
+      "category": "bvklbf"
+    },
+    {
+      "name": "radius-pill",
+      "value": "9999px",
+      "id": "jcculs",
+      "category": "bvklbf"
+    },
+    {
+      "name": "radius-circle",
+      "value": "50%",
+      "id": "rmefii",
+      "category": "bvklbf"
+    },
+    {
+      "name": "radius-s",
+      "value": "14px",
+      "id": "uqhzdv",
+      "category": "bvklbf"
+    },
+    {
+      "name": "radius-m",
+      "value": "20px",
+      "id": "cmbbsj",
+      "category": "bvklbf"
+    },
+    {
+      "name": "radius-l",
+      "value": "30px",
+      "id": "tacgzl",
+      "category": "bvklbf"
+    },
+    {
+      "name": "radius-xl",
+      "value": "45px",
+      "id": "ywbuah",
+      "category": "bvklbf"
+    },
+    {
+      "name": "border-color",
+      "value": "var(--base-light)",
+      "id": "ozvlac",
+      "category": "bvklbf"
+    },
+    {
+      "name": "container-width",
+      "value": "1280px",
+      "id": "wedymk",
+      "category": "arcguz"
+    },
+    {
+      "name": "container-min-width",
+      "value": "380px",
+      "id": "mjgolp",
+      "category": "arcguz"
+    },
+    {
+      "name": "max-width",
+      "value": "980px",
+      "id": "tyyslz",
+      "category": "arcguz"
+    },
+    {
+      "name": "max-width-m",
+      "value": "840px",
+      "id": "fnnpbr",
+      "category": "arcguz"
+    },
+    {
+      "name": "max-width-s",
+      "value": "640px",
+      "id": "rmdlxr",
+      "category": "arcguz"
+    },
+    {
+      "name": "min-height",
+      "value": "340px",
+      "id": "fvzdlq",
+      "category": "arcguz"
+    },
+    {
+      "name": "min-height-section",
+      "value": "540px",
+      "id": "vxlxbc",
+      "category": "arcguz"
+    },
+    {
+      "name": "primary",
+      "value": "#8338ec",
+      "id": "otclda",
+      "category": "tkdiso"
+    },
+    {
+      "name": "primary-trans-10",
+      "value": "rgba(131, 56, 236, 0.1)",
+      "id": "llmsvn",
+      "category": "tkdiso"
+    },
+    {
+      "name": "primary-trans-20",
+      "value": "rgba(131, 56, 236, 0.2)",
+      "id": "tjslzk",
+      "category": "tkdiso"
+    },
+    {
+      "name": "primary-trans-30",
+      "value": "rgba(131, 56, 236, 0.3)",
+      "id": "azuoed",
+      "category": "tkdiso"
+    },
+    {
+      "name": "primary-trans-40",
+      "value": "rgba(131, 56, 236, 0.4)",
+      "id": "tuqlpq",
+      "category": "tkdiso"
+    },
+    {
+      "name": "primary-trans-50",
+      "value": "rgba(131, 56, 236, 0.5)",
+      "id": "spzjzj",
+      "category": "tkdiso"
+    },
+    {
+      "name": "primary-trans-60",
+      "value": "rgba(131, 56, 236, 0.6)",
+      "id": "gqhyoy",
+      "category": "tkdiso"
+    },
+    {
+      "name": "primary-trans-70",
+      "value": "rgba(131, 56, 236, 0.7)",
+      "id": "jflxra",
+      "category": "tkdiso"
+    },
+    {
+      "name": "primary-trans-80",
+      "value": "rgba(131, 56, 236, 0.8)",
+      "id": "cwttif",
+      "category": "tkdiso"
+    },
+    {
+      "name": "primary-trans-90",
+      "value": "rgba(131, 56, 236, 0.9)",
+      "id": "iwosrz",
+      "category": "tkdiso"
+    },
+    {
+      "name": "primary-dark",
+      "value": "#692dbd",
+      "id": "pepion",
+      "category": "tkdiso"
+    },
+    {
+      "name": "primary-ultra-dark",
+      "value": "#4f228e",
+      "id": "acdgsw",
+      "category": "tkdiso"
+    },
+    {
+      "name": "primary-semi-dark",
+      "value": "#7632d4",
+      "id": "efrpzm",
+      "category": "tkdiso"
+    },
+    {
+      "name": "primary-medium",
+      "value": "#a26af1",
+      "id": "fewphc",
+      "category": "tkdiso"
+    },
+    {
+      "name": "primary-semi-light",
+      "value": "#bb92f5",
+      "id": "jakfis",
+      "category": "tkdiso"
+    },
+    {
+      "name": "primary-light",
+      "value": "#ece1fc",
+      "id": "hkurzw",
+      "category": "tkdiso"
+    },
+    {
+      "name": "primary-ultra-light",
+      "value": "#f9f5fe",
+      "id": "rbcrjs",
+      "category": "tkdiso"
+    },
+    {
+      "name": "secondary",
+      "value": "#ffbe0b",
+      "id": "lcrpqf",
+      "category": "tkdiso"
+    },
+    {
+      "name": "secondary-trans-10",
+      "value": "rgba(255, 190, 11, 0.1)",
+      "id": "fjnxqw",
+      "category": "tkdiso"
+    },
+    {
+      "name": "secondary-trans-20",
+      "value": "rgba(255, 190, 11, 0.2)",
+      "id": "apbeyj",
+      "category": "tkdiso"
+    },
+    {
+      "name": "secondary-trans-30",
+      "value": "rgba(255, 190, 11, 0.3)",
+      "id": "raalaf",
+      "category": "tkdiso"
+    },
+    {
+      "name": "secondary-trans-40",
+      "value": "rgba(255, 190, 11, 0.4)",
+      "id": "vyvxgy",
+      "category": "tkdiso"
+    },
+    {
+      "name": "secondary-trans-50",
+      "value": "rgba(255, 190, 11, 0.5)",
+      "id": "dagljo",
+      "category": "tkdiso"
+    },
+    {
+      "name": "secondary-trans-60",
+      "value": "rgba(255, 190, 11, 0.6)",
+      "id": "klrlon",
+      "category": "tkdiso"
+    },
+    {
+      "name": "secondary-trans-70",
+      "value": "rgba(255, 190, 11, 0.7)",
+      "id": "znekri",
+      "category": "tkdiso"
+    },
+    {
+      "name": "secondary-trans-80",
+      "value": "rgba(255, 190, 11, 0.8)",
+      "id": "wgydxk",
+      "category": "tkdiso"
+    },
+    {
+      "name": "secondary-trans-90",
+      "value": "rgba(255, 190, 11, 0.9)",
+      "id": "jqhhbw",
+      "category": "tkdiso"
+    },
+    {
+      "name": "secondary-ultra-dark",
+      "value": "#997207",
+      "id": "ivuuhj",
+      "category": "tkdiso"
+    },
+    {
+      "name": "secondary-dark",
+      "value": "#cc9809",
+      "id": "xphhjm",
+      "category": "tkdiso"
+    },
+    {
+      "name": "secondary-semi-dark",
+      "value": "#e6ab0a",
+      "id": "xejowb",
+      "category": "tkdiso"
+    },
+    {
+      "name": "secondary-medium",
+      "value": "#ffce48",
+      "id": "uyramk",
+      "category": "tkdiso"
+    },
+    {
+      "name": "secondary-semi-light",
+      "value": "#ffdb79",
+      "id": "dryotc",
+      "category": "tkdiso"
+    },
+    {
+      "name": "secondary-light",
+      "value": "#fff5da",
+      "id": "twjbbc",
+      "category": "tkdiso"
+    },
+    {
+      "name": "secondary-ultra-light",
+      "value": "#fffcf3",
+      "id": "lijefv",
+      "category": "tkdiso"
+    },
+    {
+      "name": "tertiary",
+      "value": "#2e62ff",
+      "id": "patljm",
+      "category": "tkdiso"
+    },
+    {
+      "name": "tertiary-trans-10",
+      "value": "rgba(46, 98, 255, 0.1)",
+      "id": "lfoidk",
+      "category": "tkdiso"
+    },
+    {
+      "name": "tertiary-trans-20",
+      "value": "rgba(46, 98, 255, 0.2)",
+      "id": "wotedu",
+      "category": "tkdiso"
+    },
+    {
+      "name": "tertiary-trans-30",
+      "value": "rgba(46, 98, 255, 0.3)",
+      "id": "dzgxui",
+      "category": "tkdiso"
+    },
+    {
+      "name": "tertiary-trans-40",
+      "value": "rgba(46, 98, 255, 0.4)",
+      "id": "fiuudb",
+      "category": "tkdiso"
+    },
+    {
+      "name": "tertiary-trans-50",
+      "value": "rgba(46, 98, 255, 0.5)",
+      "id": "nmwfiw",
+      "category": "tkdiso"
+    },
+    {
+      "name": "tertiary-trans-60",
+      "value": "rgba(46, 98, 255, 0.6)",
+      "id": "wjakfy",
+      "category": "tkdiso"
+    },
+    {
+      "name": "tertiary-trans-70",
+      "value": "rgba(46, 98, 255, 0.7)",
+      "id": "uyrlbi",
+      "category": "tkdiso"
+    },
+    {
+      "name": "tertiary-trans-80",
+      "value": "rgba(46, 98, 255, 0.8)",
+      "id": "srhdpg",
+      "category": "tkdiso"
+    },
+    {
+      "name": "tertiary-trans-90",
+      "value": "rgba(46, 98, 255, 0.9)",
+      "id": "mjchir",
+      "category": "tkdiso"
+    },
+    {
+      "name": "tertiary-ultra-dark",
+      "value": "#1c3b99",
+      "id": "ibehkd",
+      "category": "tkdiso"
+    },
+    {
+      "name": "tertiary-dark",
+      "value": "#254ecc",
+      "id": "mcdmzg",
+      "category": "tkdiso"
+    },
+    {
+      "name": "tertiary-semi-dark",
+      "value": "#2958e6",
+      "id": "eroyvr",
+      "category": "tkdiso"
+    },
+    {
+      "name": "tertiary-medium",
+      "value": "#6289ff",
+      "id": "iyrlgp",
+      "category": "tkdiso"
+    },
+    {
+      "name": "tertiary-semi-light",
+      "value": "#8ca9ff",
+      "id": "qxpuiu",
+      "category": "tkdiso"
+    },
+    {
+      "name": "tertiary-light",
+      "value": "#e0e7ff",
+      "id": "mnfomb",
+      "category": "tkdiso"
+    },
+    {
+      "name": "tertiary-ultra-light",
+      "value": "#f5f7ff",
+      "id": "sdxxkq",
+      "category": "tkdiso"
+    },
+    {
+      "name": "accent",
+      "value": "#5ed270",
+      "id": "qiaxkv",
+      "category": "tkdiso"
+    },
+    {
+      "name": "accent-trans-10",
+      "value": "rgba(94, 210, 112, 0.1)",
+      "id": "fuetmf",
+      "category": "tkdiso"
+    },
+    {
+      "name": "accent-trans-20",
+      "value": "rgba(94, 210, 112, 0.2)",
+      "id": "ulnpfc",
+      "category": "tkdiso"
+    },
+    {
+      "name": "accent-trans-30",
+      "value": "rgba(94, 210, 112, 0.3)",
+      "id": "ldhvdm",
+      "category": "tkdiso"
+    },
+    {
+      "name": "accent-trans-40",
+      "value": "rgba(94, 210, 112, 0.4)",
+      "id": "bnoqsp",
+      "category": "tkdiso"
+    },
+    {
+      "name": "accent-trans-50",
+      "value": "rgba(94, 210, 112, 0.5)",
+      "id": "tulwgc",
+      "category": "tkdiso"
+    },
+    {
+      "name": "accent-trans-60",
+      "value": "rgba(94, 210, 112, 0.6)",
+      "id": "zocmjt",
+      "category": "tkdiso"
+    },
+    {
+      "name": "accent-trans-70",
+      "value": "rgba(94, 210, 112, 0.7)",
+      "id": "qtrqst",
+      "category": "tkdiso"
+    },
+    {
+      "name": "accent-trans-80",
+      "value": "rgba(94, 210, 112, 0.8)",
+      "id": "yoqwnf",
+      "category": "tkdiso"
+    },
+    {
+      "name": "accent-trans-90",
+      "value": "rgba(94, 210, 112, 0.9)",
+      "id": "sllkzu",
+      "category": "tkdiso"
+    },
+    {
+      "name": "accent-ultra-dark",
+      "value": "#387e43",
+      "id": "mqhfsy",
+      "category": "tkdiso"
+    },
+    {
+      "name": "accent-dark",
+      "value": "#4ba85a",
+      "id": "ipmwoc",
+      "category": "tkdiso"
+    },
+    {
+      "name": "accent-semi-dark",
+      "value": "#55bd65",
+      "id": "zrapjz",
+      "category": "tkdiso"
+    },
+    {
+      "name": "accent-medium",
+      "value": "#86dd94",
+      "id": "uyydby",
+      "category": "tkdiso"
+    },
+    {
+      "name": "accent-semi-light",
+      "value": "#a6e6b0",
+      "id": "emdavs",
+      "category": "tkdiso"
+    },
+    {
+      "name": "accent-light",
+      "value": "#e7f8ea",
+      "id": "stvovm",
+      "category": "tkdiso"
+    },
+    {
+      "name": "accent-ultra-light",
+      "value": "#f7fdf8",
+      "id": "rdvpdw",
+      "category": "tkdiso"
+    },
+    {
+      "name": "base",
+      "value": "#4d4d66",
+      "id": "padtrb",
+      "category": "tkdiso"
+    },
+    {
+      "name": "base-ultra-dark",
+      "value": "#2e2e3d",
+      "id": "dfdyva",
+      "category": "tkdiso"
+    },
+    {
+      "name": "base-ultra-dark-trans-10",
+      "value": "rgba(46, 46, 61, 0.1)",
+      "id": "guyoey",
+      "category": "tkdiso"
+    },
+    {
+      "name": "base-ultra-dark-trans-20",
+      "value": "rgba(46, 46, 61, 0.2)",
+      "id": "fcvypt",
+      "category": "tkdiso"
+    },
+    {
+      "name": "base-ultra-dark-trans-30",
+      "value": "rgba(46, 46, 61, 0.3)",
+      "id": "nkhdds",
+      "category": "tkdiso"
+    },
+    {
+      "name": "base-ultra-dark-trans-40",
+      "value": "rgba(46, 46, 61, 0.4)",
+      "id": "ofuknd",
+      "category": "tkdiso"
+    },
+    {
+      "name": "base-ultra-dark-trans-50",
+      "value": "rgba(46, 46, 61, 0.5)",
+      "id": "rjvrxb",
+      "category": "tkdiso"
+    },
+    {
+      "name": "base-ultra-dark-trans-60",
+      "value": "rgba(46, 46, 61, 0.6)",
+      "id": "amlgvp",
+      "category": "tkdiso"
+    },
+    {
+      "name": "base-ultra-dark-trans-70",
+      "value": "rgba(46, 46, 61, 0.7)",
+      "id": "usgjbc",
+      "category": "tkdiso"
+    },
+    {
+      "name": "base-ultra-dark-trans-80",
+      "value": "rgba(46, 46, 61, 0.8)",
+      "id": "uxbdrm",
+      "category": "tkdiso"
+    },
+    {
+      "name": "base-ultra-dark-trans-90",
+      "value": "rgba(46, 46, 61, 0.9)",
+      "id": "zgxfvx",
+      "category": "tkdiso"
+    },
+    {
+      "name": "base-dark",
+      "value": "#3e3e52",
+      "id": "gmzrpi",
+      "category": "tkdiso"
+    },
+    {
+      "name": "base-semi-dark",
+      "value": "#45455c",
+      "id": "zrchwl",
+      "category": "tkdiso"
+    },
+    {
+      "name": "base-medium",
+      "value": "#7a7a8c",
+      "id": "hseihi",
+      "category": "tkdiso"
+    },
+    {
+      "name": "base-semi-light",
+      "value": "#9d9dab",
+      "id": "arhohe",
+      "category": "tkdiso"
+    },
+    {
+      "name": "base-light",
+      "value": "#e4e4e8",
+      "id": "jxmowo",
+      "category": "tkdiso"
+    },
+    {
+      "name": "base-ultra-light",
+      "value": "#f6f6f7",
+      "id": "efmpch",
+      "category": "tkdiso"
+    },
+    {
+      "name": "neutral",
+      "value": "#000000",
+      "id": "apchzx",
+      "category": "tkdiso"
+    },
+    {
+      "name": "neutral-trans-10",
+      "value": "rgba(0, 0, 0, 0.1)",
+      "id": "niatcc",
+      "category": "tkdiso"
+    },
+    {
+      "name": "neutral-trans-20",
+      "value": "rgba(0, 0, 0, 0.2)",
+      "id": "fuznnt",
+      "category": "tkdiso"
+    },
+    {
+      "name": "neutral-trans-30",
+      "value": "rgba(0, 0, 0, 0.3)",
+      "id": "qgwyiy",
+      "category": "tkdiso"
+    },
+    {
+      "name": "neutral-trans-40",
+      "value": "rgba(0, 0, 0, 0.4)",
+      "id": "elyxcp",
+      "category": "tkdiso"
+    },
+    {
+      "name": "neutral-trans-50",
+      "value": "rgba(0, 0, 0, 0.5)",
+      "id": "epqetk",
+      "category": "tkdiso"
+    },
+    {
+      "name": "neutral-trans-60",
+      "value": "rgba(0, 0, 0, 0.6)",
+      "id": "xbmisj",
+      "category": "tkdiso"
+    },
+    {
+      "name": "neutral-trans-70",
+      "value": "rgba(0, 0, 0, 0.7)",
+      "id": "iyqckx",
+      "category": "tkdiso"
+    },
+    {
+      "name": "neutral-trans-80",
+      "value": "rgba(0, 0, 0, 0.8)",
+      "id": "xhaxkk",
+      "category": "tkdiso"
+    },
+    {
+      "name": "neutral-trans-90",
+      "value": "rgba(0, 0, 0, 0.9)",
+      "id": "rrbxmp",
+      "category": "tkdiso"
+    },
+    {
+      "name": "neutral-ultra-dark",
+      "value": "#1a1a1a",
+      "id": "ckkdoe",
+      "category": "tkdiso"
+    },
+    {
+      "name": "neutral-dark",
+      "value": "#404040",
+      "id": "lhpjgv",
+      "category": "tkdiso"
+    },
+    {
+      "name": "neutral-semi-dark",
+      "value": "#595959",
+      "id": "vwwnaa",
+      "category": "tkdiso"
+    },
+    {
+      "name": "neutral-medium",
+      "value": "#808080",
+      "id": "wzcwjd",
+      "category": "tkdiso"
+    },
+    {
+      "name": "neutral-semi-light",
+      "value": "#a6a6a6",
+      "id": "glaaca",
+      "category": "tkdiso"
+    },
+    {
+      "name": "neutral-light",
+      "value": "#d9d9d9",
+      "id": "jgetng",
+      "category": "tkdiso"
+    },
+    {
+      "name": "neutral-ultra-light",
+      "value": "#f2f2f2",
+      "id": "taqate",
+      "category": "tkdiso"
+    },
+    {
+      "name": "white",
+      "value": "#ffffff",
+      "id": "wacdvj",
+      "category": "tkdiso"
+    },
+    {
+      "name": "white-trans-10",
+      "value": "rgba(255, 255, 255, 0.1)",
+      "id": "wjxnoa",
+      "category": "tkdiso"
+    },
+    {
+      "name": "white-trans-20",
+      "value": "rgba(255, 255, 255, 0.2)",
+      "id": "nnszwa",
+      "category": "tkdiso"
+    },
+    {
+      "name": "white-trans-30",
+      "value": "rgba(255, 255, 255, 0.3)",
+      "id": "ucerrm",
+      "category": "tkdiso"
+    },
+    {
+      "name": "white-trans-40",
+      "value": "rgba(255, 255, 255, 0.4)",
+      "id": "bnxvxb",
+      "category": "tkdiso"
+    },
+    {
+      "name": "white-trans-50",
+      "value": "rgba(255, 255, 255, 0.5)",
+      "id": "naxcic",
+      "category": "tkdiso"
+    },
+    {
+      "name": "white-trans-60",
+      "value": "rgba(255, 255, 255, 0.6)",
+      "id": "noqwkk",
+      "category": "tkdiso"
+    },
+    {
+      "name": "white-trans-70",
+      "value": "rgba(255, 255, 255, 0.7)",
+      "id": "nbgzov",
+      "category": "tkdiso"
+    },
+    {
+      "name": "white-trans-80",
+      "value": "rgba(255, 255, 255, 0.8)",
+      "id": "qmdknx",
+      "category": "tkdiso"
+    },
+    {
+      "name": "white-trans-90",
+      "value": "rgba(255, 255, 255, 0.9)",
+      "id": "scffsn",
+      "category": "tkdiso"
+    },
+    {
+      "name": "black",
+      "value": "#000000",
+      "id": "rpopac",
+      "category": "tkdiso"
+    },
+    {
+      "name": "black-trans-10",
+      "value": "rgba(0, 0, 0, 0.1)",
+      "id": "hobqmz",
+      "category": "tkdiso"
+    },
+    {
+      "name": "black-trans-20",
+      "value": "rgba(0, 0, 0, 0.2)",
+      "id": "nzwfre",
+      "category": "tkdiso"
+    },
+    {
+      "name": "black-trans-30",
+      "value": "rgba(0, 0, 0, 0.3)",
+      "id": "avvquh",
+      "category": "tkdiso"
+    },
+    {
+      "name": "black-trans-40",
+      "value": "rgba(0, 0, 0, 0.4)",
+      "id": "xluizy",
+      "category": "tkdiso"
+    },
+    {
+      "name": "black-trans-50",
+      "value": "rgba(0, 0, 0, 0.5)",
+      "id": "lkeoxw",
+      "category": "tkdiso"
+    },
+    {
+      "name": "black-trans-60",
+      "value": "rgba(0, 0, 0, 0.6)",
+      "id": "mutsri",
+      "category": "tkdiso"
+    },
+    {
+      "name": "black-trans-70",
+      "value": "rgba(0, 0, 0, 0.7)",
+      "id": "oslbxa",
+      "category": "tkdiso"
+    },
+    {
+      "name": "black-trans-80",
+      "value": "rgba(0, 0, 0, 0.8)",
+      "id": "hurkbi",
+      "category": "tkdiso"
+    },
+    {
+      "name": "black-trans-90",
+      "value": "rgba(0, 0, 0, 0.9)",
+      "id": "movmor",
+      "category": "tkdiso"
+    },
+    {
+      "name": "grid-1",
+      "value": "repeat(1, minmax(0, 1fr))",
+      "id": "jbosxo",
+      "category": "criuxj"
+    },
+    {
+      "name": "grid-2",
+      "value": "repeat(2, minmax(0, 1fr))",
+      "id": "vfjwyo",
+      "category": "criuxj"
+    },
+    {
+      "name": "grid-3",
+      "value": "repeat(3, minmax(0, 1fr))",
+      "id": "vmphtp",
+      "category": "criuxj"
+    },
+    {
+      "name": "grid-4",
+      "value": "repeat(4, minmax(0, 1fr))",
+      "id": "voqhzo",
+      "category": "criuxj"
+    },
+    {
+      "name": "grid-5",
+      "value": "repeat(5, minmax(0, 1fr))",
+      "id": "ghwotv",
+      "category": "criuxj"
+    },
+    {
+      "name": "grid-6",
+      "value": "repeat(6, minmax(0, 1fr))",
+      "id": "qxofkx",
+      "category": "criuxj"
+    },
+    {
+      "name": "grid-7",
+      "value": "repeat(7, minmax(0, 1fr))",
+      "id": "bskqmb",
+      "category": "criuxj"
+    },
+    {
+      "name": "grid-8",
+      "value": "repeat(8, minmax(0, 1fr))",
+      "id": "phnhhs",
+      "category": "criuxj"
+    },
+    {
+      "name": "grid-9",
+      "value": "repeat(9, minmax(0, 1fr))",
+      "id": "rrgnxv",
+      "category": "criuxj"
+    },
+    {
+      "name": "grid-10",
+      "value": "repeat(10, minmax(0, 1fr))",
+      "id": "immmnh",
+      "category": "criuxj"
+    },
+    {
+      "name": "grid-11",
+      "value": "repeat(11, minmax(0, 1fr))",
+      "id": "uktvse",
+      "category": "criuxj"
+    },
+    {
+      "name": "grid-12",
+      "value": "repeat(12, minmax(0, 1fr))",
+      "id": "gsinjk",
+      "category": "criuxj"
+    },
+    {
+      "name": "grid-1-2",
+      "value": "minmax(0, 1fr) minmax(0, 2fr)",
+      "id": "kzblwk",
+      "category": "criuxj"
+    },
+    {
+      "name": "grid-1-3",
+      "value": "minmax(0, 1fr) minmax(0, 3fr)",
+      "id": "wrlejs",
+      "category": "criuxj"
+    },
+    {
+      "name": "grid-1-4",
+      "value": "minmax(0, 1fr) minmax(0, 4fr)",
+      "id": "crzsze",
+      "category": "criuxj"
+    },
+    {
+      "name": "grid-2-1",
+      "value": "minmax(0, 2fr) minmax(0, 1fr)",
+      "id": "hylgnl",
+      "category": "criuxj"
+    },
+    {
+      "name": "grid-2-3",
+      "value": "minmax(0, 2fr) minmax(0, 3fr)",
+      "id": "fbddel",
+      "category": "criuxj"
+    },
+    {
+      "name": "grid-2-4",
+      "value": "minmax(0, 2fr) minmax(0, 4fr)",
+      "id": "dkcjiw",
+      "category": "criuxj"
+    },
+    {
+      "name": "grid-3-1",
+      "value": "minmax(0, 3fr) minmax(0, 1fr)",
+      "id": "inldhb",
+      "category": "criuxj"
+    },
+    {
+      "name": "grid-3-2",
+      "value": "minmax(0, 3fr) minmax(0, 2fr)",
+      "id": "motrmg",
+      "category": "criuxj"
+    },
+    {
+      "name": "grid-3-4",
+      "value": "minmax(0, 3fr) minmax(0, 4fr)",
+      "id": "cfuzdt",
+      "category": "criuxj"
+    },
+    {
+      "name": "grid-4-1",
+      "value": "minmax(0, 4fr) minmax(0, 1fr)",
+      "id": "kzarhl",
+      "category": "criuxj"
+    },
+    {
+      "name": "grid-4-2",
+      "value": "minmax(0, 4fr) minmax(0, 2fr)",
+      "id": "fmdlvs",
+      "category": "criuxj"
+    },
+    {
+      "name": "grid-4-3",
+      "value": "minmax(0, 4fr) minmax(0, 3fr)",
+      "id": "ukjyzs",
+      "category": "criuxj"
+    }
+  ],
+  "categories": [
+    {
+      "id": "bvswxd",
+      "name": "Spacing"
+    },
+    {
+      "id": "igkzwc",
+      "name": "Text"
+    },
+    {
+      "id": "blspsq",
+      "name": "Gaps/Padding"
+    },
+    {
+      "id": "fqsysj",
+      "name": "Styles"
+    },
+    {
+      "id": "bvklbf",
+      "name": "Radius"
+    },
+    {
+      "id": "arcguz",
+      "name": "Sizes"
+    },
+    {
+      "id": "tkdiso",
+      "name": "Colors"
+    },
+    {
+      "id": "criuxj",
+      "name": "Grid"
+    }
+  ]
+}

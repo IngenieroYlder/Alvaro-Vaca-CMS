@@ -1,0 +1,179 @@
+<link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    rel="stylesheet" />
+
+{{#if googleFontsUrl}}
+<link href="{{{googleFontsUrl}}}" rel="stylesheet" />
+{{/if}}
+
+<link rel="stylesheet" href="/theme/css" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    primary: 'var(--primary)',
+                    secondary: 'var(--secondary)',
+                    tertiary: 'var(--tertiary)',
+                    background: {
+                        light: '#ffffff' // Fixed: Was incorrectly mapped to var(--base) which is text color
+                    }
+                },
+                fontFamily: {
+                    sans: ['var(--font-body)', 'sans-serif'],
+                    display: ['var(--font-heading)', 'sans-serif'],
+                },
+                animation: {
+                    'spin-slow': 'spin 8s linear infinite',
+                    'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                }
+            }
+        }
+    }
+</script>
+<style>
+    /* GOLDEN RULE: Standard Buttons (Pill Shape) */
+    .btn-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        border-radius: 9999px;
+        /* rounded-full OBLIGATORIO */
+        font-weight: 700;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        overflow: hidden;
+        position: relative;
+        white-space: nowrap;
+    }
+
+    .btn-pill:hover {
+        transform: translateY(-2px);
+    }
+
+    .btn-pill:active {
+        transform: translateY(0);
+    }
+
+    /* Standard Shadows and Glows */
+    .btn-shadow {
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-shadow:hover {
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    /* Animations */
+    @keyframes bounce-slow {
+
+        0%,
+        100% {
+            transform: translateY(-8px);
+        }
+
+        50% {
+            transform: translateY(0);
+        }
+    }
+
+    .animate-bounce-slow {
+        animation: bounce-slow 4s infinite;
+    }
+
+    /* Sizes */
+    .btn-xl {
+        height: 3.5rem;
+        padding-left: 2.5rem;
+        padding-right: 2.5rem;
+        font-size: 1.125rem;
+    }
+
+    .btn-lg {
+        height: 3.25rem;
+        padding-left: 2rem;
+        padding-right: 2rem;
+        font-size: 1rem;
+    }
+
+    .btn-md {
+        height: 2.75rem;
+        padding-left: 1.75rem;
+        padding-right: 1.75rem;
+        font-size: 0.875rem;
+    }
+
+    .btn-sm {
+        height: 2.25rem;
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+        font-size: 0.75rem;
+    }
+
+    /* Glass Effect from Reference */
+    .glass-panel {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    /* Grid Pattern from Reference */
+    .bg-grid-pattern {
+        background-image: linear-gradient(to right, #e2e8f0 1px, transparent 1px),
+            linear-gradient(to bottom, #e2e8f0 1px, transparent 1px);
+        background-size: 4rem 4rem;
+        mask-image: radial-gradient(ellipse 60% 50% at 50% 50%, #000 70%, transparent 100%);
+        -webkit-mask-image: radial-gradient(ellipse 60% 50% at 50% 50%, #000 70%, transparent 100%);
+    }
+
+    /* Typography extension */
+    h1,
+    h2,
+    h3,
+    h4 {
+        font-family: var(--font-heading), sans-serif;
+    }
+
+    html body {
+        font-family: var(--font-body) !important;
+    }
+
+    /* Marquee Animation */
+    @keyframes marquee {
+        0% {
+            transform: translateX(0);
+        }
+
+        100% {
+            transform: translateX(-50%);
+        }
+    }
+
+    .animate-marquee {
+        display: inline-flex;
+        animation: marquee 30s linear infinite;
+        width: max-content;
+    }
+
+    /* Additional Utility for SST */
+    .animate-spin-slow {
+        animation: spin 8s linear infinite;
+    }
+
+    .animate-reverse-spin {
+        animation: reverse-spin 12s linear infinite;
+    }
+
+    @keyframes reverse-spin {
+        from {
+            transform: rotate(360deg);
+        }
+
+        to {
+            transform: rotate(0deg);
+        }
+    }
+</style>
