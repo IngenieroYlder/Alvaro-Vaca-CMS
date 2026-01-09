@@ -1,12 +1,12 @@
 <!-- Primary Meta Tags -->
 <title>{{#if meta.browserTitle}}{{meta.browserTitle}}{{else}}{{#if meta.title}}{{meta.title}}{{else}}{{#if
-    title}}{{title}}{{else}}Alvaro Vaca - Candidato al Senado 2026{{/if}}{{/if}}{{/if}}</title>
+    title}}{{title}}{{else}}Alvaro Vaca - Candidato al Senado 2026 - Alianza Verde #75{{/if}}{{/if}}{{/if}}</title>
 <meta name="title"
-    content="{{#if meta.browserTitle}}{{meta.browserTitle}}{{else}}{{#if meta.title}}{{meta.title}}{{else}}{{#if title}}{{title}}{{else}}Alvaro Vaca - Candidato al Senado 2026{{/if}}{{/if}}{{/if}}">
+    content="{{#if meta.browserTitle}}{{meta.browserTitle}}{{else}}{{#if meta.title}}{{meta.title}}{{else}}{{#if title}}{{title}}{{else}}Alvaro Vaca - Candidato al Senado 2026 - Alianza Verde #75{{/if}}{{/if}}{{/if}}">
 <meta name="description"
-    content="{{#if meta.browserDescription}}{{meta.browserDescription}}{{else}}{{#if meta.description}}{{meta.description}}{{else}}Sitio oficial de Alvaro Vaca, candidato al Senado 2026. Elecciones Congreso, Marzo 8.{{/if}}{{/if}}">
+    content="{{#if meta.browserDescription}}{{meta.browserDescription}}{{else}}{{#if meta.description}}{{meta.description}}{{else}}Sitio oficial de Alvaro Vaca, candidato al Senado de la República de Colombia 2026 por el Partido Alianza Verde #75. Conoce mis propuestas: Educación para emprender, Cero impunidad y Ley de Seguridad Digital.{{/if}}{{/if}}">
 <meta name="keywords"
-    content="Alvaro Vaca, Senado 2026, Congreso, Colombia, Elecciones, Candidato, Meta, Villavicencio">
+    content="Alvaro Vaca, Senado 2026, Congreso, Colombia, Elecciones, Candidato, Alianza Verde, Partido Verde, #75, Educación, Seguridad Digital, Villavicencio, Meta">
 <meta name="author" content="Alvaro Vaca">
 <meta name="robots" content="index, follow">
 
@@ -14,18 +14,42 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://alvarovaca.com.co{{#if currentPath}}{{currentPath}}{{/if}}">
 <meta property="og:title"
-    content="{{#if meta.ogTitle}}{{meta.ogTitle}}{{else}}{{#if meta.browserTitle}}{{meta.browserTitle}}{{else}}{{#if meta.title}}{{meta.title}}{{else}}{{#if title}}{{title}}{{else}}Alvaro Vaca - Candidato al Senado 2026{{/if}}{{/if}}{{/if}}{{/if}}">
+    content="{{#if meta.ogTitle}}{{meta.ogTitle}}{{else}}{{#if meta.browserTitle}}{{meta.browserTitle}}{{else}}{{#if meta.title}}{{meta.title}}{{else}}{{#if title}}{{title}}{{else}}Alvaro Vaca - Candidato al Senado 2026 - Alianza Verde #75{{/if}}{{/if}}{{/if}}{{/if}}">
 <meta property="og:description"
-    content="{{#if meta.ogDescription}}{{meta.ogDescription}}{{else}}{{#if meta.browserDescription}}{{meta.browserDescription}}{{else}}{{#if meta.description}}{{meta.description}}{{else}}Sitio oficial de Alvaro Vaca. Conoce mis propuestas y trayectoria.{{/if}}{{/if}}{{/if}}">
+    content="{{#if meta.ogDescription}}{{meta.ogDescription}}{{else}}{{#if meta.browserDescription}}{{meta.browserDescription}}{{else}}{{#if meta.description}}{{meta.description}}{{else}}Propuestas claras: Educación, Justicia y Tecnología. Vota Alianza Verde #75.{{/if}}{{/if}}{{/if}}">
+
+{{!-- Helper to ensure absolute URL for images --}}
 <meta property="og:image"
-    content="{{#if meta.ogImage}}{{meta.ogImage}}{{else}}{{#if meta.image}}{{meta.image}}{{else}}https://alvarovaca.com.co/assets/FOTO CAMPAÑA.png{{/if}}{{/if}}">
+    content="{{#if meta.ogImage}}https://alvarovaca.com.co{{meta.ogImage}}{{else}}{{#if meta.image}}https://alvarovaca.com.co{{meta.image}}{{else}}https://alvarovaca.com.co/assets/FOTO_CAMPANA_V2.png{{/if}}{{/if}}">
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:url" content="https://alvarovaca.com.co{{#if currentPath}}{{currentPath}}{{/if}}">
 <meta property="twitter:title"
-    content="{{#if meta.twitterTitle}}{{meta.twitterTitle}}{{else}}{{#if meta.browserTitle}}{{meta.browserTitle}}{{else}}{{#if meta.title}}{{meta.title}}{{else}}{{#if title}}{{title}}{{else}}Alvaro Vaca - Candidato al Senado 2026{{/if}}{{/if}}{{/if}}{{/if}}">
+    content="{{#if meta.twitterTitle}}{{meta.twitterTitle}}{{else}}{{#if meta.browserTitle}}{{meta.browserTitle}}{{else}}{{#if meta.title}}{{meta.title}}{{else}}{{#if title}}{{title}}{{else}}Alvaro Vaca - Candidato al Senado 2026 - Alianza Verde #75{{/if}}{{/if}}{{/if}}{{/if}}">
 <meta property="twitter:description"
-    content="{{#if meta.twitterDescription}}{{meta.twitterDescription}}{{else}}{{#if meta.browserDescription}}{{meta.browserDescription}}{{else}}{{#if meta.description}}{{meta.description}}{{else}}Sitio oficial de Alvaro Vaca. Conoce mis propuestas y trayectoria.{{/if}}{{/if}}{{/if}}">
+    content="{{#if meta.twitterDescription}}{{meta.twitterDescription}}{{else}}{{#if meta.browserDescription}}{{meta.browserDescription}}{{else}}{{#if meta.description}}{{meta.description}}{{else}}Propuestas claras: Educación, Justicia y Tecnología. Vota Alianza Verde #75.{{/if}}{{/if}}{{/if}}">
 <meta property="twitter:image"
-    content="{{#if meta.twitterImage}}{{meta.twitterImage}}{{else}}{{#if meta.image}}{{meta.image}}{{else}}https://alvarovaca.com.co/assets/FOTO CAMPAÑA.png{{/if}}{{/if}}">
+    content="{{#if meta.twitterImage}}https://alvarovaca.com.co{{meta.twitterImage}}{{else}}{{#if meta.image}}https://alvarovaca.com.co{{meta.image}}{{else}}https://alvarovaca.com.co/assets/FOTO_CAMPANA_V2.png{{/if}}{{/if}}">
+
+<!-- JSON-LD Structured Data for Political Candidate -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Alvaro Vaca",
+  "jobTitle": "Candidato al Senado de la República",
+  "affiliation": {
+    "@type": "Organization",
+    "name": "Partido Alianza Verde"
+  },
+  "url": "https://alvarovaca.com.co",
+  "image": "https://alvarovaca.com.co/assets/FOTO_CAMPANA_V2.png",
+  "sameAs": [
+    "https://www.facebook.com/AlvaroVaca",
+    "https://twitter.com/AlvaroVaca",
+    "https://www.instagram.com/AlvaroVaca"
+  ],
+  "description": "Alvaro Vaca es candidato al Senado de la República de Colombia para el periodo 2026-2030 por el Partido Alianza Verde, número 75 en el tarjetón."
+}
+</script>

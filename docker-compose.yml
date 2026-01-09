@@ -33,6 +33,8 @@ services:
       DB_DATABASE: ${DB_DATABASE:-colombiapicture_cms}
       PORT: 3000
       JWT_SECRET: ${JWT_SECRET:-clave_secreta_super_segura}
+    volumes:
+      - uploads_data:/usr/src/app/public/uploads
 
   frontend:
     build:
@@ -48,3 +50,4 @@ services:
 
 volumes:
   postgres_data:
+  uploads_data:
