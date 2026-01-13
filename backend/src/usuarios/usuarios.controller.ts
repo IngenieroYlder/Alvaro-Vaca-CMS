@@ -16,10 +16,14 @@ import { RolesGuard } from '../autenticacion/guards/roles.guard';
 import { UsuariosService } from './usuarios.service';
 import { CrearUsuarioDto } from './dto/crear-usuario.dto';
 import { ActualizarUsuarioDto } from './dto/actualizar-usuario.dto';
+import { RolesService } from '../roles/roles.service';
 
 @Controller('usuarios')
 export class UsuariosController {
-  constructor(private readonly usuariosService: UsuariosService) { }
+  constructor(
+    private readonly usuariosService: UsuariosService,
+    private readonly rolesService: RolesService
+  ) { }
 
   @Post()
   crear(@Body() crearUsuarioDto: CrearUsuarioDto) {
@@ -28,8 +32,31 @@ export class UsuariosController {
 
   // TODO: Proteger esta ruta con Guards más adelantes
   @Get(':id')
-  buscarUno(@Param('id') id: string) {
-    return this.usuariosService.buscarPorId(id);
+  async buscarUno(@Param('id') id: string) {
+    const usuario = await this.usuariosService.buscarPorId(id);
+    if (!usuario) return null;
+
+    // Calcular permisos dinámicamente
+    let permisos: string[] = [];
+    if (usuario.roles && usuario.roles.length > 0) {
+      const normalizedRoles = usuario.roles.map((r: string) => String(r).toLowerCase().trim());
+
+      const rolesEntities = await Promise.all(
+        normalizedRoles.map((roleName: string) => this.rolesService.findByName(roleName))
+      );
+
+      const allPermisos = rolesEntities
+        .filter(r => r)
+        .flatMap(r => r.permisos || [])
+        .concat(normalizedRoles.includes('god') ? ['god'] : []);
+
+      permisos = [...new Set(allPermisos)];
+    }
+
+    return {
+      ...usuario,
+      permisos
+    };
   }
 
   @Get()
