@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Users, ShoppingBag, Layers, Globe, Shield, Building, FileText, Menu as MenuIcon, Image as ImageIcon, MessageSquare, Newspaper, Briefcase } from 'lucide-react';
+import { LayoutDashboard, Users, ShoppingBag, Layers, Globe, Shield, Building, FileText, Menu as MenuIcon, Image as ImageIcon, MessageSquare, Newspaper, Briefcase, UserCheck } from 'lucide-react';
 import { useAuth } from '../../contexto/ContextoAutenticacion';
 import { resolveAssetUrl } from '../../lib/utils';
 import { MENU_ITEMS, tienePermiso } from '../../config/permisos';
@@ -10,7 +10,7 @@ interface Props {
 }
 
 // Mapa de Iconos
-const ICONS: any = { LayoutDashboard, Users, ShoppingBag, Layers, Globe, Shield, Building, FileText, Menu: MenuIcon, Image: ImageIcon, MessageSquare, Newspaper, Briefcase };
+const ICONS: any = { LayoutDashboard, Users, ShoppingBag, Layers, Globe, Shield, Building, FileText, Menu: MenuIcon, Image: ImageIcon, MessageSquare, Newspaper, Briefcase, UserCheck };
 
 export default function BarraLateral({ tema, colapsado }: Props) {
     const location = useLocation();
