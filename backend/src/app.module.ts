@@ -23,6 +23,7 @@ import { ComentariosModule } from './comentarios/comentarios.module';
 import { VacantesModule } from './vacantes/vacantes.module';
 import { PostulacionesModule } from './postulaciones/postulaciones.module';
 import { CandidatoModule } from './candidato/candidato.module';
+import { ReunionesModule } from './reuniones/reuniones.module';
 
 @Module({
   imports: [
@@ -65,6 +66,7 @@ import { CandidatoModule } from './candidato/candidato.module';
     VacantesModule,
     PostulacionesModule,
     CandidatoModule,
+    ReunionesModule,
   ],
   controllers: [],
   providers: [AppService],
