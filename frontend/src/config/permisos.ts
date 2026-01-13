@@ -107,8 +107,14 @@ export const MENU_ITEMS = [
 export const tienePermiso = (user: any, requiredPermission: string): boolean => {
     if (!user) return false;
 
+    // Debugging logs (remove in production)
+    // console.log('Checking permission:', requiredPermission, 'for user:', user);
+
+    // Normalizar roles a minúsculas para comparar
+    const userRoles = user.roles?.map((r: string) => r.toLowerCase()) || [];
+
     // SuperAdmin hardcodeado si es necesario, o basado en rol 'god'
-    if (user.roles?.includes('god') || user.roles?.includes('admin')) return true; // Mantener admin como superusuario por seguridad si se desea
+    if (userRoles.includes('god') || userRoles.includes('admin')) return true; // Mantener admin como superusuario por seguridad si se desea
 
     // Si no requiere permiso, pasa
     if (!requiredPermission) return true;
