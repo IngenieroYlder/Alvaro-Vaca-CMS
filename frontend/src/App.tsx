@@ -12,6 +12,8 @@ import RolesPermisos from './paginas/dashboard/RolesPermisos';
 import Contactos from './paginas/dashboard/Contactos';
 import Noticias from './paginas/dashboard/Noticias';
 import Vacantes from './paginas/dashboard/Vacantes';
+import Reuniones from './paginas/dashboard/Reuniones';
+import Asistentes from './paginas/dashboard/Asistentes';
 import PaginaPublica from './paginas/publica/PaginaPublica';
 import DisenoTablero from './layouts/DisenoTablero';
 import { tienePermiso, PERMISOS } from './config/permisos';
@@ -94,6 +96,12 @@ function App() {
 
               <Route element={<RutaAutorizada permiso={PERMISOS.NOTICIAS} />}>
                 <Route path="/noticias" element={<Noticias />} />
+              </Route>
+
+              {/* Reuniones y Asistentes */}
+              <Route element={<RutaAutorizada permiso={PERMISOS.REUNIONES} />}>
+                <Route path="/reuniones" element={<Reuniones />} />
+                <Route path="/asistentes" element={<Asistentes />} />
               </Route>
 
             </Route>
