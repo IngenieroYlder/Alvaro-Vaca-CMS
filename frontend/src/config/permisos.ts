@@ -41,7 +41,7 @@ export const MENU_ITEMS = [
         icon: 'MessageSquare',
         permiso: PERMISOS.CONTACTOS
     },
-NOT_APPLICABLE
+
     {
         label: 'Noticias',
         path: '/noticias',
