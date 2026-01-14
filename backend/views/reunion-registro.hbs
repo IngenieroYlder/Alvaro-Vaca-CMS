@@ -47,13 +47,24 @@
                 <!-- Hidden Meeting ID -->
                 <input type="hidden" name="reunionId" value="{{reunion.id}}">
 
-                <!-- Nombre -->
-                <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Nombre Completo</label>
-                    <div class="relative">
-                        <span class="material-icons-round absolute left-3 top-3 text-gray-400">person</span>
-                        <input type="text" name="nombre" placeholder="Nombre y Apellido" required
-                            class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-gray-50 focus:bg-white">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Nombres -->
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Nombres</label>
+                        <div class="relative">
+                            <span class="material-icons-round absolute left-3 top-3 text-gray-400">person</span>
+                            <input type="text" name="nombre" placeholder="Tus Nombres" required maxlength="50"
+                                class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-gray-50 focus:bg-white">
+                        </div>
+                    </div>
+                     <!-- Apellidos -->
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Apellidos</label>
+                        <div class="relative">
+                            <span class="material-icons-round absolute left-3 top-3 text-gray-400">person_outline</span>
+                            <input type="text" name="apellido" placeholder="Tus Apellidos" required maxlength="50"
+                                class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-gray-50 focus:bg-white">
+                        </div>
                     </div>
                 </div>
 
@@ -63,7 +74,7 @@
                         <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Documento de Identidad</label>
                         <div class="relative">
                             <span class="material-icons-round absolute left-3 top-3 text-gray-400">badge</span>
-                            <input type="text" name="documento" placeholder="Cédula" required
+                            <input type="text" name="documento" placeholder="Cédula" required maxlength="20"
                                 class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-gray-50 focus:bg-white">
                         </div>
                     </div>
@@ -73,18 +84,52 @@
                         <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Celular / WhatsApp</label>
                         <div class="relative">
                             <span class="material-icons-round absolute left-3 top-3 text-gray-400">smartphone</span>
-                            <input type="tel" name="telefono" placeholder="300 000 0000" required
+                            <input type="tel" name="telefono" placeholder="300 000 0000" required maxlength="10" pattern="[0-9]{10}" title="Debe ser un número válido de 10 dígitos"
                                 class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-gray-50 focus:bg-white">
                         </div>
                     </div>
                 </div>
 
+                <!-- Location Selectors -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Departamento</label>
+                        <div class="relative">
+                             <span class="material-icons-round absolute left-3 top-3 text-gray-400">map</span>
+                            <select id="departamentoSelect" name="departamento" class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-gray-50 focus:bg-white appearance-none">
+                                <option value="">Selecciona...</option>
+                                <!-- Populated by JS -->
+                            </select>
+                        </div>
+                    </div>
+                     <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Municipio</label>
+                        <div class="relative">
+                             <span class="material-icons-round absolute left-3 top-3 text-gray-400">location_city</span>
+                            <select id="municipioSelect" name="municipio" class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-gray-50 focus:bg-white appearance-none">
+                                <option value="">Selecciona...</option>
+                                <!-- Populated by JS -->
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                 <!-- Other Municipality Input -->
+                <div id="otroMunicipioContainer" class="hidden">
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Escribe tu Municipio</label>
+                     <div class="relative">
+                        <span class="material-icons-round absolute left-3 top-3 text-gray-400">edit_location</span>
+                        <input type="text" id="otroMunicipioInput" name="municipio_otro" placeholder="Nombre del Municipio" maxlength="50"
+                            class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-gray-50 focus:bg-white">
+                    </div>
+                </div>
+
                 <!-- Email -->
                 <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Correo Electrónico (Opcional)</label>
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Correo Electrónico</label>
                     <div class="relative">
                         <span class="material-icons-round absolute left-3 top-3 text-gray-400">email</span>
-                        <input type="email" name="email" placeholder="ejemplo@correo.com"
+                        <input type="email" name="email" placeholder="ejemplo@correo.com" maxlength="150"
                             class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-gray-50 focus:bg-white">
                     </div>
                 </div>
@@ -111,6 +156,7 @@
                 <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
                     <span class="material-icons-round text-4xl">check_circle</span>
                 </div>
+                <!-- ... success message ... -->
                 <h3 class="text-2xl font-bold text-gray-900 mb-2">¡Registro Exitoso!</h3>
                 <p class="text-gray-600 mb-6">Gracias por asistir a esta reunión.</p>
                 <button onclick="window.location.reload()" class="text-primary font-bold hover:underline">Registrar otro asistente</button>
@@ -118,7 +164,68 @@
         </div>
     </div>
 
+    <!-- Load Colombia Data -->
+    <script src="/js/colombia-data.js"></script>
     <script>
+        // Init Location Selectors
+        document.addEventListener('DOMContentLoaded', () => {
+            const deptoSelect = document.getElementById('departamentoSelect');
+            const muniSelect = document.getElementById('municipioSelect');
+            const otroContainer = document.getElementById('otroMunicipioContainer');
+            const otroInput = document.getElementById('otroMunicipioInput');
+
+            // Populate Depts
+            const deptos = Object.keys(window.DEPARTAMENTOS_MUNICIPIOS).sort();
+            deptos.forEach(d => {
+                const opt = document.createElement('option');
+                opt.value = d;
+                opt.textContent = d;
+                deptoSelect.appendChild(opt);
+            });
+            
+            // Set default if Meta exists (it does)
+            deptoSelect.value = "Meta";
+            loadMunis("Meta");
+
+            deptoSelect.addEventListener('change', (e) => {
+                loadMunis(e.target.value);
+            });
+
+            muniSelect.addEventListener('change', (e) => {
+                if(e.target.value === 'OTRO') {
+                    otroContainer.classList.remove('hidden');
+                    otroInput.required = true;
+                } else {
+                    otroContainer.classList.add('hidden');
+                    otroInput.required = false;
+                    otroInput.value = '';
+                }
+            });
+
+            function loadMunis(depto) {
+                muniSelect.innerHTML = '<option value="">Selecciona...</option>';
+                if (!depto || !window.DEPARTAMENTOS_MUNICIPIOS[depto]) return;
+                
+                window.DEPARTAMENTOS_MUNICIPIOS[depto].forEach(m => {
+                    const opt = document.createElement('option');
+                    opt.value = m;
+                    opt.textContent = m;
+                    muniSelect.appendChild(opt);
+                });
+                
+                // Add "Otro" option
+                const otherOpt = document.createElement('option');
+                otherOpt.value = 'OTRO';
+                otherOpt.textContent = 'OTRO (Escribir manualmente)';
+                muniSelect.appendChild(otherOpt);
+                
+                 // Set Villavicencio default if strictly Meta
+                if(depto === 'Meta') {
+                    muniSelect.value = 'Villavicencio';
+                }
+            }
+        });
+
         async function submitAttendance(e) {
             e.preventDefault();
             const btn = document.getElementById('btnSubmit');
@@ -132,6 +239,12 @@
             const formData = new FormData(form);
             const data = Object.fromEntries(formData.entries());
             data.habeasData = !!data.habeasData;
+            
+            // Handle "OTRO" municipality
+            if (data.municipio === 'OTRO' && data.municipio_otro) {
+                data.municipio = data.municipio_otro;
+            }
+            delete data.municipio_otro; // clean up
 
             try {
                 const response = await fetch('/reuniones/register', {
@@ -145,7 +258,9 @@
                     successMsg.classList.remove('hidden');
                 } else {
                     const errorData = await response.json();
-                    alert('Error: ' + (errorData.message || 'No se pudo registrar.'));
+                    let msg = errorData.message;
+                    if(Array.isArray(msg)) msg = msg.join(', '); // Validation array
+                    alert('Error: ' + (msg || 'No se pudo registrar.'));
                     btn.disabled = false;
                     btn.innerHTML = originalText;
                 }

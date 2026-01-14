@@ -6,16 +6,19 @@ export class Asistente {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ length: 50 })
   nombre: string;
 
-  @Column()
+  @Column({ length: 50 })
+  apellido: string;
+
+  @Column({ length: 20 })
   documento: string;
 
-  @Column()
+  @Column({ length: 15 })
   telefono: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, length: 150 })
   email: string;
 
   @Column({ type: 'text', nullable: true })

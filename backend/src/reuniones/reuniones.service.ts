@@ -65,6 +65,7 @@ export class ReunionesService {
     const asistente = this.asistenteRepository.create({
       ...registerDto,
       reunion,
+      // name split is handled by DTO having both fields now
     });
 
     return await this.asistenteRepository.save(asistente);

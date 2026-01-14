@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsEmail, IsOptional, IsBoolean } from 'class-validator';
+import { IsString, IsNotEmpty, IsEmail, IsOptional, IsBoolean, MaxLength } from 'class-validator';
 
 export class RegisterAttendeeDto {
   @IsString()
@@ -7,18 +7,27 @@ export class RegisterAttendeeDto {
 
   @IsString()
   @IsNotEmpty()
+  @MaxLength(50)
   nombre: string;
 
   @IsString()
   @IsNotEmpty()
+  @MaxLength(50)
+  apellido: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(20)
   documento: string;
 
   @IsString()
   @IsNotEmpty()
+  @MaxLength(10, { message: 'El teléfono no puede tener más de 10 dígitos' })
   telefono: string;
 
   @IsEmail()
   @IsOptional()
+  @MaxLength(150)
   email?: string;
 
   @IsString()
