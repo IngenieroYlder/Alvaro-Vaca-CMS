@@ -18,7 +18,7 @@ export class ReunionesService {
     private readonly asistenteRepository: Repository<Asistente>,
   ) {}
 
-  async create(createReunionDto: CreateReunionDto) {
+  async create(createReunionDto: CreateReunionDto, leaderInfo: { liderId: string, liderNombre: string, liderDocumento: string | null, liderTelefono: string }) {
     // Generate Unique Code
     let codigo = this.generateCode();
     let unique = false; 
@@ -32,6 +32,13 @@ export class ReunionesService {
     const reunion = this.reunionRepository.create({
       ...createReunionDto,
       codigo,
+      liderId: leaderInfo.liderId,
+      liderNombre: leaderInfo.liderNombre,
+      liderDocumento: leaderInfo.liderDocumento || '', // Fallback empty string if DB requires it, but we set nullable in entity?
+      // Wait, entity has liderDocumento as nullable now. But TS might complain if I pass null to a string field?
+      // Let's ensure entity definition matches.
+      liderTelefono: leaderInfo.liderTelefono,
+      lider: { id: leaderInfo.liderId } as any // Relationship
     });
 
     return await this.reunionRepository.save(reunion);
@@ -63,26 +70,13 @@ export class ReunionesService {
     return await this.asistenteRepository.save(asistente);
   }
 
-  async findAll(filters: { leader?: string; dateStart?: string; dateEnd?: string; location?: string }) {
-    const where: any = {};
-
-    if (filters.leader) {
-      where.liderNombre = Like(`%${filters.leader}%`);
-    }
-
-    if (filters.location) {
-        // Search in muni, comuna, or corregimiento
-        // TypeORM logic for OR is cleaner with query builder but for simplicity:
-        // We might need QueryBuilder here
-    }
-
-    if (filters.dateStart && filters.dateEnd) {
-      where.fecha = Between(new Date(filters.dateStart), new Date(filters.dateEnd));
-    }
-
-    // Using query builder for flexible location search
+  async findAll(filters: { leader?: string; dateStart?: string; dateEnd?: string; location?: string; leaderId?: string }) {
     const query = this.reunionRepository.createQueryBuilder('reunion')
         .leftJoinAndSelect('reunion.asistentes', 'asistente');
+
+    if (filters.leaderId) {
+        query.andWhere('reunion.liderId = :leaderId', { leaderId: filters.leaderId });
+    }
 
     if (filters.leader) {
         query.andWhere('reunion.liderNombre ILIKE :leader', { leader: `%${filters.leader}%` });

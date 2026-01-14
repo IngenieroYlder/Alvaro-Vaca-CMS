@@ -18,8 +18,40 @@ export class ReunionesController {
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('lider', 'admin', 'god')
-  create(@Body() createReunionDto: CreateReunionDto) {
-    return this.reunionesService.create(createReunionDto);
+  create(@Body() createReunionDto: CreateReunionDto, @Req() req: any) {
+    const user = req.user;
+    
+    // Auto-populate leader info
+    const liderId = user.id;
+    let liderNombre = user.nombre ? `${user.nombre} ${user.apellido || ''}`.trim() : 'Líder';
+    let liderDocumento = user.documento;
+    let liderTelefono = user.telefono || user.whatsapp || '';
+
+    // Logic: If user is Leader, MUST have documento.
+    // If Admin/God, can bypass (use placeholder or null if entity allows)
+    const isPrivileged = user.roles.includes('admin') || user.roles.includes('god');
+    
+    if (!liderDocumento && !isPrivileged) {
+        throw new ForbiddenException('Debes actualizar tu perfil con tu documento de identidad antes de crear reuniones.');
+    }
+
+    // Default for privileged users if missing
+    if (!liderDocumento && isPrivileged) {
+        liderDocumento = null; // Entity allows null
+    }
+
+    // Pass enriched DTO to service
+    // We need to cast or extend the DTO to include these fields if they aren't there, 
+    // or change service to accept them separately.
+    // Ideally, the service should handle the entity creation. 
+    // Let's pass the DTO and the user-derived values manually to the service.
+    
+    return this.reunionesService.create(createReunionDto, {
+        liderId,
+        liderNombre,
+        liderDocumento,
+        liderTelefono
+    });
   }
 
   @Post('register')
@@ -67,24 +99,29 @@ export class ReunionesController {
     @Query('location') location?: string,
   ) {
     const user = req.user;
-    const canViewAttendees = user.roles.includes('admin') || user.roles.includes('god') || user.roles.includes('permiso_ver_asistentes');
+    const canViewAll = user.roles.includes('admin') || user.roles.includes('god') || user.roles.includes('permiso_ver_asistentes');
     
-    // If not admin/god and NO specific permission, restrict what they see?
-    // But filters are optional. 
-    // If leader, maybe we only show *their* meetings?
-    // User said: "podra crear reuniones... no podra acceder a los datos registrados a menos que yo le de el permiso"
-    
-    // For now, let's allow listing meetings but strip attendees if no permission.
-    const reuniones = await this.reunionesService.findAll({ leader, dateStart, dateEnd, location });
-    
-    if (!canViewAttendees) {
-        // Strip attendees data
-        return reuniones.map(r => ({
-            ...r,
-            asistentes: [], // Hide attendees
-            asistentesCount: r.asistentes.length // Maybe show count?
-        }));
+    // Enforce leader filter if not privileged
+    let leaderIdFilter = undefined;
+    if (!canViewAll) {
+        leaderIdFilter = user.id;
     }
+
+    const reuniones = await this.reunionesService.findAll({ 
+        leader, 
+        dateStart, 
+        dateEnd, 
+        location,
+        leaderId: leaderIdFilter // Pass restricted leader ID
+    });
+    
+    // Even if they get the meetings, if they are restricted, they should only see their own.
+    // The service filter handles the "which meetings to return".
+    // But what about "attendees"? 
+    // If I am a leader viewing MY meeting, I should see attendees.
+    // If I am an admin viewing ANY meeting, I should see attendees.
+    // So if the meeting is returned by the service (which applied the filter), 
+    // the user HAS permission to see it (it's theirs or they are admin).
     
     return reuniones;
   }

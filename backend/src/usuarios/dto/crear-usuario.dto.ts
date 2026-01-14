@@ -14,6 +14,10 @@ export class CrearUsuarioDto {
 
   @IsString()
   @IsOptional()
+  documento?: string;
+
+  @IsString()
+  @IsOptional()
   apellido?: string;
 
   @IsString()

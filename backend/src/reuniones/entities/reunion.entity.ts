@@ -1,5 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany, ManyToOne } from 'typeorm';
 import { Asistente } from './asistente.entity';
+
+import { Usuario } from '../../usuarios/entities/usuario.entity';
 
 @Entity('reuniones')
 export class Reunion {
@@ -12,10 +14,16 @@ export class Reunion {
   @Column({ type: 'timestamp' })
   fecha: Date;
 
+  @ManyToOne(() => Usuario, { nullable: true })
+  lider: Usuario;
+
+  @Column({ nullable: true })
+  liderId: string;
+
   @Column()
   liderNombre: string;
 
-  @Column()
+  @Column({ nullable: true })
   liderDocumento: string;
 
   @Column()

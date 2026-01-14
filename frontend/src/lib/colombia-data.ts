@@ -1,0 +1,37 @@
+
+export const DEPARTAMENTOS_MUNICIPIOS: { [key: string]: string[] } = {
+  "Amazonas": ["Leticia", "Puerto Nariño"],
+  "Antioquia": ["Medellín", "Bello", "Itagüí", "Envigado", "Apartadó", "Rionegro", "Turbo", "Caucasia"],
+  "Arauca": ["Arauca", "Arauquita", "Saravena", "Tame"],
+  "Atlántico": ["Barranquilla", "Soledad", "Malambo", "Sabanalarga", "Baranoa"],
+  "Bolívar": ["Cartagena", "Magangué", "Turbaco", "Arjona", "El Carmen de Bolívar"],
+  "Boyacá": ["Tunja", "Duitama", "Sogamoso", "Chiquinquirá", "Paipa"],
+  "Caldas": ["Manizales", "La Dorada", "Chinchiná", "Villamaría", "Riosucio"],
+  "Caquetá": ["Florencia", "San Vicente del Caguán", "Cartagena del Chairá"],
+  "Casanare": ["Yopal", "Aguazul", "Villanueva", "Monterrey"],
+  "Cauca": ["Popayán", "Santander de Quilichao", "El Tambo", "Puerto Tejada"],
+  "Cesar": ["Valledupar", "Aguachica", "Codazzi", "Bosconia"],
+  "Chocó": ["Quibdó", "Istmina", "Tadó", "Condoto"],
+  "Córdoba": ["Montería", "Lorica", "Sahagún", "Cereté", "Montelíbano"],
+  "Cundinamarca": ["Bogotá D.C.", "Soacha", "Fusagasugá", "Facatativá", "Zipaquirá", "Chía", "Mosquera"],
+  "Guainía": ["Inírida"],
+  "Guaviare": ["San José del Guaviare"],
+  "Huila": ["Neiva", "Pitalito", "Garzón", "La Plata"],
+  "La Guajira": ["Riohacha", "Maicao", "Uribia", "Manaure"],
+  "Magdalena": ["Santa Marta", "Ciénaga", "Zona Bananera", "Plato"],
+  "Meta": ["Villavicencio", "Acacías", "Granada", "Puerto López", "San Martín"],
+  "Nariño": ["Pasto", "Tumaco", "Ipiales", "Samaniego"],
+  "Norte de Santander": ["Cúcuta", "Ocaña", "Villa del Rosario", "Los Patios", "Pamplona"],
+  "Putumayo": ["Mocoa", "Puerto Asís", "Orito", "Sibundoy"],
+  "Quindío": ["Armenia", "Calarcá", "La Tebaida", "Montenegro", "Circasia"],
+  "Risaralda": ["Pereira", "Dosquebradas", "Santa Rosa de Cabal"],
+  "San Andrés y Providencia": ["San Andrés", "Providencia"],
+  "Santander": ["Bucaramanga", "Floridablanca", "Barrancabermeja", "Girón", "Piedecuesta"],
+  "Sucre": ["Sincelejo", "Corozal", "San Onofre", "Sampués"],
+  "Tolima": ["Ibagué", "Espinal", "Melgar", "Chaparral", "Líbano"],
+  "Valle del Cauca": ["Cali", "Buenaventura", "Palmira", "Tuluá", "Buga", "Cartago", "Jamundí"],
+  "Vaupés": ["Mitú"],
+  "Vichada": ["Puerto Carreño"]
+};
+
+// Flatten values for simple lookup if needed, but struct is best for cascading dropdowns

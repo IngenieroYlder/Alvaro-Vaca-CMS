@@ -20,6 +20,9 @@ export class Usuario {
   contrasena: string;
 
   @Column({ nullable: true })
+  documento: string;
+
+  @Column({ nullable: true })
   nombre: string;
 
   @Column({ nullable: true })

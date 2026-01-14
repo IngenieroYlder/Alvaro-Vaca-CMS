@@ -10,16 +10,16 @@ export class CreateReunionDto {
   fecha: string;
 
   @IsString()
-  @IsNotEmpty()
-  liderNombre: string;
+  @IsOptional()
+  liderNombre?: string;
 
   @IsString()
-  @IsNotEmpty()
-  liderDocumento: string;
+  @IsOptional()
+  liderDocumento?: string;
 
   @IsString()
-  @IsNotEmpty()
-  liderTelefono: string;
+  @IsOptional()
+  liderTelefono?: string;
 
   @IsString()
   @IsOptional()
