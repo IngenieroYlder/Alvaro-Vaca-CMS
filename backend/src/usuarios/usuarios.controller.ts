@@ -46,8 +46,8 @@ export class UsuariosController {
       );
 
       const allPermisos = rolesEntities
-        .filter(r => r)
-        .flatMap(r => r.permisos || [])
+        .filter(r => !!r)
+        .flatMap(r => r!.permisos || [])
         .concat(normalizedRoles.includes('god') ? ['god'] : []);
 
       permisos = [...new Set(allPermisos)];
