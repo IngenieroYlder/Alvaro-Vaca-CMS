@@ -41,6 +41,13 @@ export const MENU_ITEMS = [
         icon: 'MessageSquare',
         permiso: PERMISOS.CONTACTOS
     },
+    {
+        label: 'Registro Asistencia',
+        path: '/reuniones/registro', 
+        icon: 'QrCode', 
+        permiso: PERMISOS.REUNIONES,
+        external: true
+    },
 
     {
         label: 'Noticias',
