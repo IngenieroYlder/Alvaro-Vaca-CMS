@@ -36,18 +36,12 @@ export const MENU_ITEMS = [
         permiso: PERMISOS.REUNIONES // Or specific permission if needed, currently sharing REUNIONES
     },
     {
-        label: 'Registro Asistencia',
-        path: '/reuniones/registro', 
-        icon: 'QrCode', 
-        permiso: PERMISOS.REUNIONES,
-        external: true
-    },
-    {
         label: 'Contactos',
         path: '/contactos',
         icon: 'MessageSquare',
         permiso: PERMISOS.CONTACTOS
     },
+NOT_APPLICABLE
     {
         label: 'Noticias',
         path: '/noticias',

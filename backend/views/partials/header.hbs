@@ -21,6 +21,8 @@
                     class="{{#if (eq activePage 'noticias')}}text-primary font-bold{{else}}text-gray-600 hover:text-primary font-semibold{{/if}} transition-colors">Noticias</a>
                 <a href="/contacto"
                     class="{{#if (eq activePage 'contacto')}}text-primary font-bold{{else}}text-gray-600 hover:text-primary font-semibold{{/if}} transition-colors">Contacto</a>
+                <a href="/reuniones/registro"
+                    class="{{#if (eq activePage 'registro')}}text-primary font-bold{{else}}text-gray-600 hover:text-primary font-semibold{{/if}} transition-colors">Asistencia</a>
                 <!-- Admin Link (Optional) -->
                 <!-- Admin Link Removed as per request -->
             </div>
@@ -64,6 +66,7 @@
                     class="{{#if (eq activePage 'propuestas')}}text-primary font-bold{{else}}text-gray-600 hover:text-primary{{/if}} py-2">Propuestas</a>
                 <a href="/noticias" class="text-gray-600 hover:text-primary py-2">Noticias</a>
                 <a href="/contacto" class="text-gray-600 hover:text-primary py-2">Contacto</a>
+                <a href="/reuniones/registro" class="text-gray-600 hover:text-primary py-2">Registro Asistencia</a>
                 <!-- <a href="/login-candidato" class="text-sm text-gray-400 py-2">Acceso Candidatos</a> -->
                 <button onclick="openJoinModal();" @click="mobileMenuOpen = false"
                     class="bg-primary text-white px-6 py-3 rounded-full font-bold shadow-lg mt-4">
