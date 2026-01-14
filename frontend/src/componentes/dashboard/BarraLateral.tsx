@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Users, ShoppingBag, Layers, Globe, Shield, Building, FileText, Menu as MenuIcon, Image as ImageIcon, MessageSquare, Newspaper, Briefcase, UserCheck } from 'lucide-react';
+import { LayoutDashboard, Users, ShoppingBag, Layers, Globe, Shield, Building, FileText, Menu as MenuIcon, Image as ImageIcon, MessageSquare, Newspaper, Briefcase, UserCheck, QrCode } from 'lucide-react';
 import { useAuth } from '../../contexto/ContextoAutenticacion';
 import { resolveAssetUrl } from '../../lib/utils';
 import { MENU_ITEMS, tienePermiso } from '../../config/permisos';
@@ -10,7 +10,7 @@ interface Props {
 }
 
 // Mapa de Iconos
-const ICONS: any = { LayoutDashboard, Users, ShoppingBag, Layers, Globe, Shield, Building, FileText, Menu: MenuIcon, Image: ImageIcon, MessageSquare, Newspaper, Briefcase, UserCheck };
+const ICONS: any = { LayoutDashboard, Users, ShoppingBag, Layers, Globe, Shield, Building, FileText, Menu: MenuIcon, Image: ImageIcon, MessageSquare, Newspaper, Briefcase, UserCheck, QrCode };
 
 export default function BarraLateral({ tema, colapsado }: Props) {
     const location = useLocation();
@@ -50,6 +50,22 @@ export default function BarraLateral({ tema, colapsado }: Props) {
                         : location.pathname.startsWith(menu.path);
 
                     const Icon = ICONS[menu.icon] || LayoutDashboard;
+
+                    if ((menu as any).external) {
+                        return (
+                            <a
+                                key={menu.path}
+                                href={menu.path}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors group text-gray-600 hover:bg-gray-50 hover:text-gray-900`}
+                                title={colapsado ? menu.label : ''}
+                            >
+                                <Icon className={`w-5 h-5 text-gray-400 group-hover:text-gray-600`} />
+                                {!colapsado && <span>{menu.label}</span>}
+                            </a>
+                        );
+                    }
 
                     return (
                         <Link

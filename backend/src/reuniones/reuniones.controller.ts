@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Res, BadRequestException, UseGuards, Req, ForbiddenException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Res, BadRequestException, UseGuards, Req, ForbiddenException, Render } from '@nestjs/common';
 import { ReunionesService } from './reuniones.service';
 import { CreateReunionDto } from './dto/create-reunion.dto';
 import { RegisterAttendeeDto } from './dto/register-attendee.dto';
@@ -24,10 +24,36 @@ export class ReunionesController {
 
   @Post('register')
   registerAttendee(@Body() registerDto: RegisterAttendeeDto) {
-    // Public endpoint for attendees? Or protected?
-    // User said: "el asistente pueda desde el formulario seleccionar dicha reunion ... y registrarse"
-    // Usually public with the code.
     return this.reunionesService.registerAttendee(registerDto);
+  }
+
+  // Vistas Públicas (HTML)
+  
+  @Get('registro')
+  @Render('reunion-buscar') // Requiere 'reunion-buscar.hbs'
+  renderBuscar() {
+    return {};
+  }
+
+  @Get('formulario/:code')
+  @Render('reunion-registro') // Requiere 'reunion-registro.hbs'
+  async renderFormulario(@Param('code') code: string) {
+    try {
+        const reunion = await this.reunionesService.findByCode(code);
+        if(!reunion) {
+            // Si no existe, podría renderizar error o redirigir
+            return { error: 'Reunión no encontrada' };
+        }
+        return {
+            reunion: {
+                ...reunion,
+                fechaFormatted: format(reunion.fecha, 'PPP p', { locale: es }),
+                lugar: `${reunion.barrio}, ${reunion.comuna || reunion.municipio}`
+            }
+        };
+    } catch (e) {
+        return { error: 'Reunión no válida' };
+    }
   }
 
   @Get()

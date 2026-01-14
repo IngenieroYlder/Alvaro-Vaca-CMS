@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar Reunión - Alvaro Vaca</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#006838",
+                        secondary: "#0D9A49",
+                        sunflower: "#D7DF23",
+                    },
+                    fontFamily: {
+                        display: ["Montserrat", "sans-serif"],
+                        body: ["Open Sans", "sans-serif"],
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-gray-50 font-body min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div class="max-w-md w-full bg-white rounded-3xl shadow-xl overflow-hidden">
+        <div class="bg-primary p-8 text-center relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl translate-x-10 -translate-y-10"></div>
+            <img src="/assets/1_LOGO.png" alt="Logo" class="h-16 mx-auto mb-4 relative z-10 brightness-0 invert">
+            <h1 class="text-2xl font-display font-bold text-white relative z-10">Registro de Asistencia</h1>
+            <p class="text-green-100 text-sm mt-2 relative z-10">Ingresa el código de la reunión para continuar</p>
+        </div>
+
+        <div class="p-8">
+            <form action="/reuniones/redirect" method="GET" class="space-y-6" onsubmit="handleSubmit(event)">
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Código de Reunión</label>
+                    <div class="relative">
+                        <span class="material-icons-round absolute left-3 top-3 text-gray-400">qr_code</span>
+                        <input type="text" id="code" name="code" placeholder="Ej: REU-1234" 
+                            class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-bold text-lg uppercase tracking-wider text-gray-800"
+                            required autocomplete="off">
+                    </div>
+                </div>
+
+                <button type="submit" 
+                    class="w-full py-4 bg-primary hover:bg-green-800 text-white font-bold rounded-xl shadow-lg shadow-primary/30 transform hover:-translate-y-0.5 transition-all flex justify-center items-center gap-2">
+                    Continuar <span class="material-icons-round">arrow_forward</span>
+                </button>
+            </form>
+            
+            <!-- Link to Home -->
+            <div class="mt-6 text-center">
+                <a href="/" class="text-sm text-gray-400 hover:text-primary transition-colors flex items-center justify-center gap-1">
+                    <span class="material-icons-round text-sm">home</span> Volver al inicio
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function handleSubmit(e) {
+            e.preventDefault();
+            const code = document.getElementById('code').value.trim();
+            if(code) {
+                window.location.href = `/reuniones/formulario/${code}`;
+            }
+        }
+    </script>
+</body>
+</html>
