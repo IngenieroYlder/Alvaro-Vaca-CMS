@@ -15,6 +15,7 @@ import Vacantes from './paginas/dashboard/Vacantes';
 import Reuniones from './paginas/dashboard/Reuniones';
 import Asistentes from './paginas/dashboard/Asistentes';
 import PaginaPublica from './paginas/publica/PaginaPublica';
+import Perfil from './paginas/dashboard/Perfil';
 import DisenoTablero from './layouts/DisenoTablero';
 import { tienePermiso, PERMISOS } from './config/permisos';
 
@@ -52,6 +53,8 @@ function App() {
               <Route element={<RutaAutorizada permiso={PERMISOS.DASHBOARD} />}>
                 <Route path="/" element={<div className="p-10">Bienvenido al Dashboard</div>} />
               </Route>
+
+              <Route path="/perfil" element={<Perfil />} />
 
               <Route element={<RutaAutorizada permiso={PERMISOS.CATALOGO} />}>
                 <Route path="/catalogo" element={<Catalogo />} />

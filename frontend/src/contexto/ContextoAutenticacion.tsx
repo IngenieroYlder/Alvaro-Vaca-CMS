@@ -11,6 +11,8 @@ interface Usuario {
     nombre: string;
     apellido: string;
     fotoPerfil?: string;
+    documento?: string;
+    telefono?: string;
 }
 
 interface AuthContextType {
@@ -20,6 +22,7 @@ interface AuthContextType {
     cerrarSesion: () => void;
     // Permitir recargar manualmente (ej: después de editar perfil)
     recargarUsuario: () => Promise<void>;
+    actualizarUsuario: (usuario: Usuario) => void;
     esAdmin: boolean;
 }
 
@@ -28,6 +31,10 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [usuario, setUsuario] = useState<Usuario | null>(null);
     const [cargando, setCargando] = useState(true);
+
+    const actualizarUsuario = (nuevoUsuario: Usuario) => {
+        setUsuario(prev => ({ ...prev, ...nuevoUsuario }));
+    };
 
     const recargarUsuario = async () => {
         const token = localStorage.getItem('token');
@@ -49,14 +56,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             };
 
             // 1. Configurar información básica del token inmediatamente para velocidad
-            const usuarioBasico = {
+            const usuarioBasico: Usuario = {
                 id: decoded.sub,
                 email: decoded.email,
                 roles: toArray(decoded.roles),
                 permisos: toArray(decoded.permisos), // Extraer permisos
                 nombre: decoded.nombre || 'Usuario',
                 apellido: decoded.apellido || '',
-                fotoPerfil: ''
+                fotoPerfil: '',
+                documento: '',
+                telefono: ''
             };
 
             // Verificar expiración
@@ -83,7 +92,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                     permisos: data.permisos ? toArray(data.permisos) : usuarioBasico.permisos,
                     nombre: data.nombre,
                     apellido: data.apellido,
-                    fotoPerfil: data.fotoPerfil
+                    fotoPerfil: data.fotoPerfil,
+                    documento: data.documento,
+                    telefono: data.telefono
                 });
             } catch (fetchError) {
                 // datos no obtenidos
@@ -126,7 +137,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const esAdmin = usuario?.roles?.includes('admin') || usuario?.roles?.includes('god') || false;
 
     return (
-        <AuthContext.Provider value={{ usuario, cargando, iniciarSesion, cerrarSesion, recargarUsuario, esAdmin }}>
+        <AuthContext.Provider value={{ usuario, cargando, iniciarSesion, cerrarSesion, recargarUsuario, actualizarUsuario, esAdmin }}>
             {children}
         </AuthContext.Provider>
     );

@@ -8,6 +8,7 @@ interface Usuario {
     id: string;
     nombre: string;
     apellido: string;
+    documento?: string;
     email: string;
     roles: string[];
     activo: boolean;
@@ -33,6 +34,7 @@ export default function Usuarios() {
     const [formData, setFormData] = useState({
         nombre: '',
         apellido: '',
+        documento: '',
         email: '',
         contrasena: '',
         roles: 'usuario', // Default
@@ -76,6 +78,7 @@ export default function Usuarios() {
             setFormData({
                 nombre: usuario.nombre || '',
                 apellido: usuario.apellido || '',
+                documento: usuario.documento || '',
                 email: usuario.email,
                 contrasena: '',
                 roles: initialRole,
@@ -86,6 +89,7 @@ export default function Usuarios() {
             setFormData({
                 nombre: '',
                 apellido: '',
+                documento: '',
                 email: '',
                 contrasena: '',
                 roles: 'usuario',
@@ -109,6 +113,7 @@ export default function Usuarios() {
             const payload: any = {
                 nombre: formData.nombre,
                 apellido: formData.apellido,
+                documento: formData.documento,
                 email: formData.email,
                 roles: rolesToSend,
                 activo: formData.activo
@@ -355,6 +360,17 @@ export default function Usuarios() {
                                         onChange={e => setFormData({ ...formData, apellido: e.target.value })}
                                     />
                                 </div>
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium text-gray-700">Documento de Identidad (Cédula)</label>
+                                <input
+                                    type="text"
+                                    placeholder="Requerido para Lideres"
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+                                    value={formData.documento}
+                                    onChange={e => setFormData({ ...formData, documento: e.target.value })}
+                                />
                             </div>
 
                             <div className="space-y-2">
