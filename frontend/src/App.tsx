@@ -14,6 +14,7 @@ import Noticias from './paginas/dashboard/Noticias';
 import Vacantes from './paginas/dashboard/Vacantes';
 import Reuniones from './paginas/dashboard/Reuniones';
 import Asistentes from './paginas/dashboard/Asistentes';
+import Proyeccion from './paginas/dashboard/Proyeccion';
 import PaginaPublica from './paginas/publica/PaginaPublica';
 import Perfil from './paginas/dashboard/Perfil';
 import DisenoTablero from './layouts/DisenoTablero';
@@ -105,6 +106,10 @@ function App() {
               <Route element={<RutaAutorizada permiso={PERMISOS.REUNIONES} />}>
                 <Route path="/reuniones" element={<Reuniones />} />
                 <Route path="/asistentes" element={<Asistentes />} />
+              </Route>
+
+              <Route element={<RutaAutorizada permiso={PERMISOS.PROYECCION} />}>
+                <Route path="/proyeccion" element={<Proyeccion />} />
               </Route>
 
             </Route>

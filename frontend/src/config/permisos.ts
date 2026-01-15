@@ -12,7 +12,8 @@ export const PERMISOS = {
     CONTACTOS: 'contactos',
     NOTICIAS: 'noticias',
     MENUS: 'menus',
-    REUNIONES: 'reuniones'
+    REUNIONES: 'reuniones',
+    PROYECCION: 'proyeccion'
 };
 
 export const MENU_ITEMS = [
@@ -34,6 +35,12 @@ export const MENU_ITEMS = [
         path: '/asistentes',
         icon: 'UserCheck', // Or 'ClipboardList'
         permiso: PERMISOS.REUNIONES // Or specific permission if needed, currently sharing REUNIONES
+    },
+    {
+        label: 'Mis Votantes',
+        path: '/proyeccion',
+        icon: 'UserPlus',
+        permiso: PERMISOS.PROYECCION
     },
     {
         label: 'Contactos',
