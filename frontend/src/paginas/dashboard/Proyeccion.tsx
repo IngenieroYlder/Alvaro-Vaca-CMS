@@ -82,7 +82,7 @@ export default function Proyeccion() {
             setModalAbierto(false);
             setVotanteEditar(null);
             setNuevoVotante({
-                nombre: '', apellido: '', documento: '', telefono: '', direccion: '',
+                nombre: '', apellido: '', documento: '', telefono: '', email: '', direccion: '',
                 departamento: 'Meta', municipio: 'Villavicencio', puestoVotacion: '', mesa: ''
             });
             cargarVotantes();
