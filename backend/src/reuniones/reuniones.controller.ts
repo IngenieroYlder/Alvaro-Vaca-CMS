@@ -97,6 +97,9 @@ export class ReunionesController {
     @Query('dateStart') dateStart?: string,
     @Query('dateEnd') dateEnd?: string,
     @Query('location') location?: string,
+    @Query('municipio') municipio?: string,
+    @Query('departamento') departamento?: string,
+    @Query('reunionId') reunionId?: string,
   ) {
     const user = req.user;
     const canViewAll = user.roles.includes('admin') || user.roles.includes('god') || user.roles.includes('permiso_ver_asistentes');
@@ -112,6 +115,9 @@ export class ReunionesController {
         dateStart, 
         dateEnd, 
         location,
+        municipio,
+        departamento,
+        reunionId,
         leaderId: leaderIdFilter // Pass restricted leader ID
     });
     
@@ -132,8 +138,11 @@ export class ReunionesController {
   findAllUnique(
       @Query('dateStart') dateStart?: string,
       @Query('dateEnd') dateEnd?: string,
+      @Query('municipio') municipio?: string,
+      @Query('departamento') departamento?: string,
+      @Query('reunionId') reunionId?: string,
   ) {
-      return this.reunionesService.findAllUnique({ dateStart, dateEnd });
+      return this.reunionesService.findAllUnique({ dateStart, dateEnd, municipio, departamento, reunionId });
   }
 
   @Get(':code')
@@ -151,6 +160,9 @@ export class ReunionesController {
     @Query('dateStart') dateStart?: string,
     @Query('dateEnd') dateEnd?: string,
     @Query('location') location?: string,
+    @Query('municipio') municipio?: string,
+    @Query('departamento') departamento?: string,
+    @Query('reunionId') reunionId?: string,
     @Query('unique') unique?: string, // 'true' or 'false'
   ) {
     const user = req.user;
@@ -184,14 +196,28 @@ export class ReunionesController {
       // But wait, the controller logic I am writing here needs to be sound.
       
       if (!canViewAll) {
-         // If service doesn't support filtering unique by leader, we shouldn't allow it or it leaks data.
-         // Let's assume for now Unique is Admin only, or I will update Service in next step.
-         // I'll restrict Unique to Admin/God for safety unless I update Service logic.
+          // Check for unique perms or similar logic as before
+          // If we want to allow leaders to see unique list of THEIR meetings:
+          // We must ensure the service filters by their meetings or leaderId.
+          // Since unique service now supports reunionId, it helps.
+          // But strict row-level security for unique across all their meetings might imply fetching all their meetings first.
+          // For now, retaining the restriction or assuming admin only for global unique.
+          // If they pass reunionId designated to them, it might be fine.
+          // Let's keep the block for now or relax it if needed. 
           throw new ForbiddenException('No tienes permisos para generar reporte de únicos global.');
       }
-        data = await this.reunionesService.findAllUnique({ dateStart, dateEnd });
+        data = await this.reunionesService.findAllUnique({ dateStart, dateEnd, municipio, departamento, reunionId });
     } else {
-        data = await this.reunionesService.findAll({ leader, dateStart, dateEnd, location, leaderId: leaderIdFilter });
+        data = await this.reunionesService.findAll({ 
+            leader, 
+            dateStart, 
+            dateEnd, 
+            location, 
+            municipio,
+            departamento,
+            reunionId,
+            leaderId: leaderIdFilter 
+        });
     }
 
     const workbook = new ExcelJS.Workbook();
@@ -275,6 +301,9 @@ export class ReunionesController {
     @Query('dateStart') dateStart?: string,
     @Query('dateEnd') dateEnd?: string,
     @Query('location') location?: string,
+    @Query('municipio') municipio?: string,
+    @Query('departamento') departamento?: string,
+    @Query('reunionId') reunionId?: string,
   ) {
     const user = req.user;
     
@@ -286,7 +315,16 @@ export class ReunionesController {
         leaderIdFilter = user.id;
     }
 
-    const reuniones = await this.reunionesService.findAll({ leader, dateStart, dateEnd, location, leaderId: leaderIdFilter });
+    const reuniones = await this.reunionesService.findAll({ 
+        leader, 
+        dateStart, 
+        dateEnd, 
+        location, 
+        municipio,
+        departamento,
+        reunionId,
+        leaderId: leaderIdFilter 
+    });
     
     // PDF Generation Logic (Simplified for now)
     const doc = new PDFDocument({ margin: 40, size: 'A4', bufferPages: true });

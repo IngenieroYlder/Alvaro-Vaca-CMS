@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Res,
+  Query,
 } from '@nestjs/common';
 import type { Response } from 'express';
 import { Roles } from '../autenticacion/decorators/roles.decorator';
@@ -60,8 +61,8 @@ export class UsuariosController {
   }
 
   @Get()
-  listarTodos() {
-    return this.usuariosService.listarTodos();
+  listarTodos(@Query('role') role?: string) {
+    return this.usuariosService.listarTodos(role);
   }
 
   @Patch(':id')

@@ -71,7 +71,7 @@ export class ReunionesService {
     return await this.asistenteRepository.save(asistente);
   }
 
-  async findAll(filters: { leader?: string; dateStart?: string; dateEnd?: string; location?: string; leaderId?: string }) {
+  async findAll(filters: { leader?: string; dateStart?: string; dateEnd?: string; location?: string; leaderId?: string; municipio?: string; departamento?: string; reunionId?: string }) {
     const query = this.reunionRepository.createQueryBuilder('reunion')
         .leftJoinAndSelect('reunion.asistentes', 'asistente');
 
@@ -96,22 +96,46 @@ export class ReunionesService {
             { loc: `%${filters.location}%` }
         );
     }
+
+    if (filters.municipio) {
+        query.andWhere('reunion.municipio = :municipio', { municipio: filters.municipio });
+    }
+
+    if (filters.departamento) {
+        query.andWhere('reunion.departamento = :departamento', { departamento: filters.departamento });
+    }
+
+    if (filters.reunionId) {
+        query.andWhere('reunion.id = :reunionId', { reunionId: filters.reunionId });
+    }
     
     query.orderBy('reunion.fecha', 'DESC');
 
     return await query.getMany();
   }
 
-    async findAllUnique(filters: { dateStart?: string; dateEnd?: string }) {
+    async findAllUnique(filters: { dateStart?: string; dateEnd?: string; municipio?: string; departamento?: string; reunionId?: string }) {
         const query = this.asistenteRepository.createQueryBuilder('asistente')
             .leftJoinAndSelect('asistente.reunion', 'reunion')
             .distinctOn(['asistente.documento']);
 
          if (filters.dateStart && filters.dateEnd) {
-            query.where('reunion.fecha BETWEEN :start AND :end', { 
+            query.andWhere('reunion.fecha BETWEEN :start AND :end', { 
                 start: filters.dateStart, 
                 end: filters.dateEnd 
             });
+        }
+
+        if (filters.municipio) {
+            query.andWhere('reunion.municipio = :municipioUnique', { municipioUnique: filters.municipio });
+        }
+
+        if (filters.departamento) {
+            query.andWhere('reunion.departamento = :departamentoUnique', { departamentoUnique: filters.departamento });
+        }
+
+        if (filters.reunionId) {
+            query.andWhere('reunion.id = :reunionIdUnique', { reunionIdUnique: filters.reunionId });
         }
         
         return await query.getMany();
