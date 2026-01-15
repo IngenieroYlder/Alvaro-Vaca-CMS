@@ -14,8 +14,13 @@ export class CreateVotanteDto {
   documento: string;
 
   @IsString()
+  @IsString()
   @IsOptional()
   telefono?: string;
+
+  @IsString()
+  @IsOptional()
+  email?: string;
 
   @IsString()
   @IsOptional()

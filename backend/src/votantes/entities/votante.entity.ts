@@ -18,6 +18,9 @@ export class Votante {
   @Column({ length: 20, nullable: true })
   telefono: string;
 
+  @Column({ length: 150, nullable: true })
+  email: string;
+
   @Column({ nullable: true })
   direccion: string;
 

@@ -11,7 +11,7 @@ export default function Proyeccion() {
     // Manual Create Modal
     const [modalAbierto, setModalAbierto] = useState(false);
     const [nuevoVotante, setNuevoVotante] = useState({
-        nombre: '', apellido: '', documento: '', telefono: '', direccion: '',
+        nombre: '', apellido: '', documento: '', telefono: '', email: '', direccion: '',
         departamento: 'Meta', municipio: 'Villavicencio', puestoVotacion: '', mesa: ''
     });
     const [municipiosOptions, setMunicipiosOptions] = useState<string[]>([]);
@@ -112,6 +112,7 @@ export default function Proyeccion() {
             apellido: votante.apellido,
             documento: votante.documento,
             telefono: votante.telefono || '',
+            email: votante.email || '',
             direccion: votante.direccion || '',
             departamento: votante.departamento,
             municipio: votante.municipio,
@@ -231,6 +232,7 @@ export default function Proyeccion() {
                                         <td className="px-6 py-4 text-gray-600 font-mono">{v.documento}</td>
                                         <td className="px-6 py-4 text-sm text-gray-600">
                                             {v.telefono && <div>{v.telefono}</div>}
+                                            {v.email && <div className="text-xs text-gray-500">{v.email}</div>}
                                             {v.direccion && <div className="text-xs text-gray-400">{v.direccion}</div>}
                                         </td>
                                         <td className="px-6 py-4 text-sm text-gray-600">
@@ -277,13 +279,17 @@ export default function Proyeccion() {
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-1">
-                                    <label className="text-sm font-medium text-gray-700">Teléfono</label>
+                                    <label className="text-sm font-medium text-gray-700">Celular</label>
                                     <input type="text" className="w-full px-3 py-2 border rounded-lg" value={nuevoVotante.telefono} onChange={e => setNuevoVotante({...nuevoVotante, telefono: e.target.value})} />
                                 </div>
                                 <div className="space-y-1">
-                                     <label className="text-sm font-medium text-gray-700">Dirección</label>
-                                    <input type="text" className="w-full px-3 py-2 border rounded-lg" value={nuevoVotante.direccion} onChange={e => setNuevoVotante({...nuevoVotante, direccion: e.target.value})} />
+                                     <label className="text-sm font-medium text-gray-700">Correo Electrónico</label>
+                                    <input type="email" className="w-full px-3 py-2 border rounded-lg" value={nuevoVotante.email} onChange={e => setNuevoVotante({...nuevoVotante, email: e.target.value})} />
                                 </div>
+                            </div>
+                            <div className="space-y-1">
+                                    <label className="text-sm font-medium text-gray-700">Dirección</label>
+                                <input type="text" className="w-full px-3 py-2 border rounded-lg" value={nuevoVotante.direccion} onChange={e => setNuevoVotante({...nuevoVotante, direccion: e.target.value})} />
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-1">
