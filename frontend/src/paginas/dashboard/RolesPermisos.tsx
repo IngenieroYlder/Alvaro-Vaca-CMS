@@ -23,7 +23,8 @@ const MODULES = [
     { id: 'paginas', label: 'Páginas' },
     { id: 'contactos', label: 'Contactos' },
     { id: 'menus', label: 'Menús' },
-    { id: 'reuniones', label: 'Reuniones y Asistentes' }
+    { id: 'reuniones', label: 'Reuniones y Asistentes' },
+    { id: 'proyeccion', label: 'Mis Votantes' }
 ];
 
 export default function RolesPermisos() {
