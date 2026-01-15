@@ -32,6 +32,11 @@ export class RegisterAttendeeDto {
 
   @IsString()
   @IsOptional()
+  @MaxLength(100)
+  direccion?: string;
+
+  @IsString()
+  @IsOptional()
   firma?: string;
 
   @IsBoolean()

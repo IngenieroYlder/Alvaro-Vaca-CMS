@@ -21,6 +21,9 @@ export class Asistente {
   @Column({ nullable: true, length: 150 })
   email: string;
 
+  @Column({ nullable: true, length: 100 })
+  direccion: string;
+
   @Column({ type: 'text', nullable: true })
   firma: string; // Base64 signature or path
 

@@ -143,22 +143,55 @@ export class ReunionesController {
 
   @Get('export/excel')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin', 'god', 'permiso_ver_asistentes') // Export is privileged
+  @Roles('admin', 'god', 'permiso_ver_asistentes', 'lider') // Added 'lider'
   async exportExcel(
     @Res() res: Response,
+    @Req() req: any, // Need request to check user
     @Query('leader') leader?: string,
     @Query('dateStart') dateStart?: string,
     @Query('dateEnd') dateEnd?: string,
     @Query('location') location?: string,
     @Query('unique') unique?: string, // 'true' or 'false'
   ) {
+    const user = req.user;
     const isUnique = unique === 'true';
     let data : any[];
     
+    // Authorization Check for Data Access
+    const canViewAll = user.roles.includes('admin') || user.roles.includes('god') || user.roles.includes('permiso_ver_asistentes');
+    let leaderIdFilter = undefined;
+
+    if (!canViewAll) {
+        leaderIdFilter = user.id;
+        // If they try to filter by another leader, ignore it or maybe throw error? 
+        // For simplicity/safety, we just OVERRIDE the filter with their own ID.
+        // Also, UNIQUE report might not be relevant for a single leader or maybe it is?
+        // Let's allow unique report but filtered by their meetings.
+    }
+
     if (isUnique) {
+      // NOTE: findAllUnique currently doesn't support leaderIdFilter in Service. 
+      // If we want leaders to draw unique reports, we need to update Service or block it.
+      // For now, let's block unique report for non-privileged if service isn't ready, 
+      // OR let's update service later. 
+      // User requirement was generic "export data". 
+      // Implementation Plan didn't specify updating findAllUnique service method.
+      // Let's assume Unique Report is Admin feature for now to be safe, OR check if we can easily add it.
+      // The Plan said "Enable Leaders to export their own data".
+      // Let's update Service findAllUnique to accept leaderID to be consistent. 
+      // For this step, I will pass the filter, but I need to update Service too if I do.
+      // Let's stick to standard export for Leaders for now, or just block Unique for them if not critical.
+      // But wait, the controller logic I am writing here needs to be sound.
+      
+      if (!canViewAll) {
+         // If service doesn't support filtering unique by leader, we shouldn't allow it or it leaks data.
+         // Let's assume for now Unique is Admin only, or I will update Service in next step.
+         // I'll restrict Unique to Admin/God for safety unless I update Service logic.
+          throw new ForbiddenException('No tienes permisos para generar reporte de únicos global.');
+      }
         data = await this.reunionesService.findAllUnique({ dateStart, dateEnd });
     } else {
-        data = await this.reunionesService.findAll({ leader, dateStart, dateEnd, location });
+        data = await this.reunionesService.findAll({ leader, dateStart, dateEnd, location, leaderId: leaderIdFilter });
     }
 
     const workbook = new ExcelJS.Workbook();
@@ -198,6 +231,7 @@ export class ReunionesController {
             { header: 'Documento', key: 'documento', width: 15 },
             { header: 'Teléfono', key: 'telefono', width: 15 },
             { header: 'Email', key: 'email', width: 25 },
+            { header: 'Dirección', key: 'direccion', width: 30 }, // Added
             { header: 'Habeas Data', key: 'habeas', width: 10 },
         ];
 
@@ -218,6 +252,7 @@ export class ReunionesController {
                     documento: asistente.documento,
                     telefono: asistente.telefono,
                     email: asistente.email,
+                    direccion: asistente.direccion || '', // Added
                     habeas: asistente.habeasData ? 'Sí' : 'No',
                 });
              });
@@ -232,15 +267,26 @@ export class ReunionesController {
 
   @Get('export/pdf')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin', 'god', 'permiso_ver_asistentes') // Export is privileged
+  @Roles('admin', 'god', 'permiso_ver_asistentes', 'lider') // Added 'lider'
   async exportPdf(
     @Res() res: Response,
+    @Req() req: any,
     @Query('leader') leader?: string,
     @Query('dateStart') dateStart?: string,
     @Query('dateEnd') dateEnd?: string,
     @Query('location') location?: string,
   ) {
-    const reuniones = await this.reunionesService.findAll({ leader, dateStart, dateEnd, location });
+    const user = req.user;
+    
+    // Authorization Check
+    const canViewAll = user.roles.includes('admin') || user.roles.includes('god') || user.roles.includes('permiso_ver_asistentes');
+    let leaderIdFilter = undefined;
+
+    if (!canViewAll) {
+        leaderIdFilter = user.id;
+    }
+
+    const reuniones = await this.reunionesService.findAll({ leader, dateStart, dateEnd, location, leaderId: leaderIdFilter });
     
     // PDF Generation Logic (Simplified for now)
     const doc = new PDFDocument({ margin: 40, size: 'A4', bufferPages: true });
@@ -262,7 +308,9 @@ export class ReunionesController {
         doc.fontSize(10).font('Helvetica-Bold').text('Asistentes:', { underline: true });
         
         reunion.asistentes.forEach((asistente: any, idx) => {
-            doc.font('Helvetica').text(`${idx + 1}. ${asistente.nombre} - CC: ${asistente.documento} - Tel: ${asistente.telefono}`);
+            let line = `${idx + 1}. ${asistente.nombre} - CC: ${asistente.documento} - Tel: ${asistente.telefono}`;
+            if (asistente.direccion) line += ` - Dir: ${asistente.direccion}`;
+            doc.font('Helvetica').text(line);
         });
         
         doc.moveDown(1.5);
