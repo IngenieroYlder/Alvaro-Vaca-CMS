@@ -45,7 +45,7 @@ export default function RolesPermisos() {
     const cargarRoles = async () => {
         setCargando(true);
         try {
-            const { data } = await clienteAxios.get('/api/roles');
+            const { data } = await clienteAxios.get('/roles');
 
             if (!Array.isArray(data)) {
                 console.error('[RolesPermisos ERROR] Data is not an array:', data);
@@ -64,7 +64,7 @@ export default function RolesPermisos() {
     const crearRol = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const { data } = await clienteAxios.post('/api/roles', {
+            const { data } = await clienteAxios.post('/roles', {
                 nombre: nuevoRolNombre.toLowerCase(),
                 permisos: ['dashboard'],
                 icono: nuevoRolIcono
@@ -82,7 +82,7 @@ export default function RolesPermisos() {
         e.preventDefault();
         if (!rolEditar) return;
         try {
-            await clienteAxios.patch(`/api/roles/${rolEditar.id}`, {
+            await clienteAxios.patch(`/roles/${rolEditar.id}`, {
                 nombre: rolEditar.nombre,
                 icono: rolEditar.icono
             });
@@ -112,7 +112,7 @@ export default function RolesPermisos() {
         if (!confirm('¿Estás seguro de que quieres eliminar este rol? Esta acción no se puede deshacer.')) return;
 
         try {
-            await clienteAxios.delete(`/api/roles/${id}`);
+            await clienteAxios.delete(`/roles/${id}`);
             setRoles(roles.filter(r => r.id !== id));
             setRolEditar(null);
             alert('Rol eliminado correctamente');
@@ -127,7 +127,7 @@ export default function RolesPermisos() {
         try {
             // Guardar permisos
             await Promise.all(roles.map(rol =>
-                clienteAxios.patch(`/api/roles/${rol.id}`, { permisos: rol.permisos })
+                clienteAxios.patch(`/roles/${rol.id}`, { permisos: rol.permisos })
             ));
             alert('Permisos actualizados correctamente. Los usuarios deberán recargar la página.');
         } catch (error) {
