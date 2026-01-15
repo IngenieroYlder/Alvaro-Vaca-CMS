@@ -45,7 +45,9 @@
         <div class="p-8 md:p-10">
             <form id="attendanceForm" onsubmit="submitAttendance(event)" class="space-y-6">
                 <!-- Hidden Meeting ID -->
-                <input type="hidden" name="reunionId" value="{{reunion.id}}">
+                <!-- Hidden Meeting Info -->
+                <input type="hidden" name="reunionId" value="{{reunion.id}}"> 
+                <input type="hidden" name="codigoReunion" value="{{reunion.codigo}}">
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Nombres -->
