@@ -134,15 +134,24 @@ export class ReunionesController {
   
   @Get('unique')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin', 'god', 'permiso_ver_asistentes') // Only privileged users can see unique attendee data
+  @Roles('admin', 'god', 'permiso_ver_asistentes', 'lider') // Added 'lider'
   findAllUnique(
+      @Req() req: any,
       @Query('dateStart') dateStart?: string,
       @Query('dateEnd') dateEnd?: string,
       @Query('municipio') municipio?: string,
       @Query('departamento') departamento?: string,
       @Query('reunionId') reunionId?: string,
   ) {
-      return this.reunionesService.findAllUnique({ dateStart, dateEnd, municipio, departamento, reunionId });
+      const user = req.user;
+      const canViewAll = user.roles.includes('admin') || user.roles.includes('god') || user.roles.includes('permiso_ver_asistentes');
+      
+      let leaderId = undefined;
+      if (!canViewAll) {
+          leaderId = user.id;
+      }
+
+      return this.reunionesService.findAllUnique({ dateStart, dateEnd, municipio, departamento, reunionId, leaderId });
   }
 
   @Get(':code')

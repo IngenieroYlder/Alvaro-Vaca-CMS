@@ -114,7 +114,7 @@ export class ReunionesService {
     return await query.getMany();
   }
 
-    async findAllUnique(filters: { dateStart?: string; dateEnd?: string; municipio?: string; departamento?: string; reunionId?: string }) {
+    async findAllUnique(filters: { dateStart?: string; dateEnd?: string; municipio?: string; departamento?: string; reunionId?: string; leaderId?: string }) {
         const query = this.asistenteRepository.createQueryBuilder('asistente')
             .leftJoinAndSelect('asistente.reunion', 'reunion')
             .distinctOn(['asistente.documento']);
@@ -124,6 +124,10 @@ export class ReunionesService {
                 start: filters.dateStart, 
                 end: filters.dateEnd 
             });
+        }
+
+        if (filters.leaderId) {
+            query.andWhere('reunion.liderId = :leaderIdUnique', { leaderIdUnique: filters.leaderId });
         }
 
         if (filters.municipio) {
