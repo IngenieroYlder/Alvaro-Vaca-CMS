@@ -10,7 +10,7 @@ import {
 import { RolesService } from './roles.service';
 import { CrearRolDto, ActualizarRolDto } from './dto/rol.dto';
 
-@Controller('api/roles')
+@Controller('roles')
 export class RolesController {
   constructor(private readonly rolesService: RolesService) { }
 
