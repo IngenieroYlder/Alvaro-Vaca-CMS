@@ -10,6 +10,8 @@ import { Usuario } from './entities/usuario.entity';
 import { CrearUsuarioDto } from './dto/crear-usuario.dto';
 import { ActualizarUsuarioDto } from './dto/actualizar-usuario.dto';
 import * as bcrypt from 'bcryptjs';
+import { Reunion } from '../reuniones/entities/reunion.entity';
+import { Postulacion } from '../postulaciones/entities/postulacion.entity';
 
 @Injectable()
 export class UsuariosService {
@@ -201,17 +203,30 @@ export class UsuariosService {
 
             console.log(`[CLEANUP] Moving data from ${user.email} -> ${mainUser.email}`);
 
-            // Update Reuniones (Use Manager to avoid circular dependencies and ensure FK integrity)
-            // We use raw query for safety on column names if Entity mapping varies, 
-            // but assuming "liderId" matches the column.
-            // Using QueryBuilder/Update via manager 
-            await this.usuariosRepository.manager.createQueryBuilder()
-                .update('reuniones')
-                .set({ liderId: mainUser.id })
-                .where("liderId = :oldId", { oldId: user.id })
-                .execute();
+            console.log(`[CLEANUP] Moving data from ${user.email} -> ${mainUser.email}`);
 
-            // Delete others
+            // 1. Reassign Reuniones (Load -> Update -> Save)
+            const reuniones = await this.usuariosRepository.manager.find(Reunion, {
+                where: { lider: { id: user.id } }
+            });
+            console.log(`[CLEANUP] Found ${reuniones.length} meetings to move.`);
+            for (const reunion of reuniones) {
+                reunion.lider = mainUser;
+                reunion.liderId = mainUser.id; // Sync explicit column
+                await this.usuariosRepository.manager.save(reunion);
+            }
+
+            // 2. Reassign Postulaciones (Load -> Update -> Save)
+            const postulaciones = await this.usuariosRepository.manager.find(Postulacion, {
+                where: { usuario: { id: user.id } }
+            });
+            console.log(`[CLEANUP] Found ${postulaciones.length} applications to move.`);
+            for (const postulacion of postulaciones) {
+                postulacion.usuario = mainUser;
+                await this.usuariosRepository.manager.save(postulacion);
+            }
+
+            // 3. Delete the duplicate user
             console.log(`[CLEANUP] Deleting duplicate user: ${user.email} (${user.id})`);
             await this.usuariosRepository.delete(user.id);
         }
