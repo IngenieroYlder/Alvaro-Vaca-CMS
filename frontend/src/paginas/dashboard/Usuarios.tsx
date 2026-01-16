@@ -86,13 +86,17 @@ export default function Usuarios() {
             });
         } else {
             setUsuarioEditar(null);
+            
+            // Default role logic
+            const isCoordinador = usuarioActual?.roles.includes('coordinador') && !esAdmin;
+            
             setFormData({
                 nombre: '',
                 apellido: '',
                 documento: '',
                 email: '',
                 contrasena: '',
-                roles: 'usuario',
+                roles: isCoordinador ? 'lider' : 'usuario',
                 activo: true
             });
         }
@@ -407,10 +411,18 @@ export default function Usuarios() {
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none bg-white"
                                         value={formData.roles}
                                         onChange={e => setFormData({ ...formData, roles: e.target.value })}
+                                        disabled={usuarioActual?.roles.includes('coordinador') && !esAdmin}
                                     >
                                         <option value="usuario">Seleccionar Rol...</option>
                                         {/* Roles dinámicos */}
-                                        {rolesDisponibles.map(rol => (
+                                        {rolesDisponibles
+                                            .filter(rol => {
+                                                if (usuarioActual?.roles.includes('coordinador') && !esAdmin) {
+                                                    return rol.nombre === 'lider';
+                                                }
+                                                return true;
+                                            })
+                                            .map(rol => (
                                             <option key={rol.id} value={rol.nombre}>{rol.nombre.charAt(0).toUpperCase() + rol.nombre.slice(1)}</option>
                                         ))}
 

@@ -72,6 +72,12 @@ export class RolesService implements OnModuleInit {
       if (!exists) {
         console.log(`Seeding role: ${r.nombre}`);
         await this.rolRepository.save(this.rolRepository.create(r));
+      } else {
+         // Force update permissions for these core roles to ensure consistency
+         console.log(`Updating system role permissions: ${r.nombre}`);
+         exists.permisos = r.permisos;
+         exists.icono = r.icono;
+         await this.rolRepository.save(exists);
       }
     }
   }

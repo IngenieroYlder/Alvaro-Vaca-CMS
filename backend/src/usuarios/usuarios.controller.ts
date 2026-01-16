@@ -9,6 +9,7 @@ import {
   UseGuards,
   Res,
   Query,
+  Request,
 } from '@nestjs/common';
 import type { Response } from 'express';
 import { Roles } from '../autenticacion/decorators/roles.decorator';
@@ -27,7 +28,17 @@ export class UsuariosController {
   ) { }
 
   @Post()
-  crear(@Body() crearUsuarioDto: CrearUsuarioDto) {
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin', 'god', 'coordinador')
+  crear(@Body() crearUsuarioDto: CrearUsuarioDto, @Request() req: any) {
+    const userRole = req.user?.roles || [];
+    const isCoordinador = userRole.includes('coordinador') && !userRole.includes('admin') && !userRole.includes('god');
+
+    if (isCoordinador) {
+        // Force role to 'lider' if created by a coordinator
+        crearUsuarioDto.roles = ['lider'];
+    }
+    
     return this.usuariosService.crear(crearUsuarioDto);
   }
 
@@ -61,6 +72,8 @@ export class UsuariosController {
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin', 'god', 'coordinador')
   listarTodos(@Query('role') role?: string) {
     return this.usuariosService.listarTodos(role);
   }
