@@ -19,7 +19,7 @@ export class Usuario {
   @Column({ select: false, nullable: true }) // Password can be null temporarily or generated
   contrasena: string;
 
-  @Column({ unique: true, nullable: false }) // Documento required for Login
+  @Column({ unique: true, nullable: true }) // Documento required for Login (but nullable for legacy data)
   documento: string;
 
   @Column({ nullable: true })
