@@ -185,18 +185,31 @@ export class UsuariosService {
     if (usersWithDoc.length > 1) {
         console.log(`[CLEANUP] Found ${usersWithDoc.length} users with document ${duplicateDoc}`);
         
-        for (const user of usersWithDoc) {
-            // Keep the main admin
-            if (user.email === adminEmail) {
-                console.log(`[CLEANUP] Keeping Admin: ${user.email} (${user.id})`);
-                continue;
-            }
+        // Identify the user to KEEP (Admin or God)
+        let mainUser = usersWithDoc.find(u => u.email === adminEmail);
+        if (!mainUser) mainUser = usersWithDoc.find(u => u.roles.includes('god'));
+        if (!mainUser) {
+             // If neither, keep the one created earliest? or just first
+             // Sort by createdAt usually better but let's just pick first safe one
+             mainUser = usersWithDoc[0];
+        }
 
-            // Keep God users if any
-            if (user.roles.includes('god')) {
-                 console.log(`[CLEANUP] Keeping God User: ${user.email} (${user.id})`);
-                 continue;
-            }
+        console.log(`[CLEANUP] Consolidating data to Main User: ${mainUser.email} (${mainUser.id})`);
+        
+        for (const user of usersWithDoc) {
+            if (user.id === mainUser.id) continue;
+
+            console.log(`[CLEANUP] Moving data from ${user.email} -> ${mainUser.email}`);
+
+            // Update Reuniones (Use Manager to avoid circular dependencies and ensure FK integrity)
+            // We use raw query for safety on column names if Entity mapping varies, 
+            // but assuming "liderId" matches the column.
+            // Using QueryBuilder/Update via manager 
+            await this.usuariosRepository.manager.createQueryBuilder()
+                .update('reuniones')
+                .set({ liderId: mainUser.id })
+                .where("liderId = :oldId", { oldId: user.id })
+                .execute();
 
             // Delete others
             console.log(`[CLEANUP] Deleting duplicate user: ${user.email} (${user.id})`);
