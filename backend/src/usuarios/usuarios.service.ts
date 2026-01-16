@@ -174,6 +174,36 @@ export class UsuariosService {
     } else {
       console.log('--- ADMIN EXISTS. SKIPPING UPDATE. ---');
     }
+
+    // --- CLEANUP DUPLICATES LOGIC (Temporary) ---
+    // Fix for issue where multiple users have document '123456789'
+    const duplicateDoc = '123456789';
+    const usersWithDoc = await this.usuariosRepository.find({
+        where: { documento: duplicateDoc }
+    });
+
+    if (usersWithDoc.length > 1) {
+        console.log(`[CLEANUP] Found ${usersWithDoc.length} users with document ${duplicateDoc}`);
+        
+        for (const user of usersWithDoc) {
+            // Keep the main admin
+            if (user.email === adminEmail) {
+                console.log(`[CLEANUP] Keeping Admin: ${user.email} (${user.id})`);
+                continue;
+            }
+
+            // Keep God users if any
+            if (user.roles.includes('god')) {
+                 console.log(`[CLEANUP] Keeping God User: ${user.email} (${user.id})`);
+                 continue;
+            }
+
+            // Delete others
+            console.log(`[CLEANUP] Deleting duplicate user: ${user.email} (${user.id})`);
+            await this.usuariosRepository.delete(user.id);
+        }
+    }
+    // --------------------------------------------
   }
 
   async exportarExcel(): Promise<Buffer> {

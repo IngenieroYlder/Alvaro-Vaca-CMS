@@ -74,7 +74,15 @@ export class UsuariosController {
   @Get()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin', 'god', 'coordinador')
-  listarTodos(@Query('role') role?: string) {
+  listarTodos(@Query('role') role: string, @Request() req: any) {
+    const userRole = req.user?.roles || [];
+    const isCoordinadorOnly = userRole.includes('coordinador') && !userRole.includes('admin') && !userRole.includes('god');
+
+    if (isCoordinadorOnly) {
+        // Coordinators can ONLY see 'lider' users
+        return this.usuariosService.listarTodos('lider');
+    }
+
     return this.usuariosService.listarTodos(role);
   }
 
