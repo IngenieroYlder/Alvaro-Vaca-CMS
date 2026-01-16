@@ -13,13 +13,13 @@ export class Usuario {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: true })
   email: string;
 
-  @Column({ select: false }) // No devolver contraseña por defecto
+  @Column({ select: false, nullable: true }) // Password can be null temporarily or generated
   contrasena: string;
 
-  @Column({ nullable: true })
+  @Column({ unique: true, nullable: false }) // Documento required for Login
   documento: string;
 
   @Column({ nullable: true })

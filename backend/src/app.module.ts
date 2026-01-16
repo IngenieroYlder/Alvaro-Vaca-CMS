@@ -25,6 +25,7 @@ import { PostulacionesModule } from './postulaciones/postulaciones.module';
 import { CandidatoModule } from './candidato/candidato.module';
 import { ReunionesModule } from './reuniones/reuniones.module';
 import { VotantesModule } from './votantes/votantes.module';
+import { PlanillasModule } from './planillas/planillas.module';
 
 @Module({
   imports: [
@@ -69,6 +70,7 @@ import { VotantesModule } from './votantes/votantes.module';
     CandidatoModule,
     ReunionesModule,
     VotantesModule,
+    PlanillasModule,
   ],
   controllers: [],
   providers: [AppService],

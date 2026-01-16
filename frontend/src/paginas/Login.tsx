@@ -93,7 +93,7 @@ export default function Login() {
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
-                        <label className="block text-sm text-gray-600 mb-1 font-medium">Nombre de usuario o correo electrónico</label>
+                        <label className="block text-sm text-gray-600 mb-1 font-medium">Correo electrónico o Cédula</label>
                         <div className="relative">
                             <input
                                 type="text"

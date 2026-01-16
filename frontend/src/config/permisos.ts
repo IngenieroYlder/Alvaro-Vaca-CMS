@@ -37,7 +37,7 @@ export const MENU_ITEMS = [
         permiso: PERMISOS.REUNIONES // Or specific permission if needed, currently sharing REUNIONES
     },
     {
-        label: 'Mis Votantes',
+        label: 'Afiliados',
         path: '/proyeccion',
         icon: 'UserPlus',
         permiso: PERMISOS.PROYECCION

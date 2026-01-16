@@ -366,7 +366,8 @@ export default function Usuarios() {
                                 <label className="text-sm font-medium text-gray-700">Documento de Identidad (Cédula)</label>
                                 <input
                                     type="text"
-                                    placeholder="Requerido para Lideres"
+                                    required
+                                    placeholder="Cédula (Obligatorio)"
                                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
                                     value={formData.documento}
                                     onChange={e => setFormData({ ...formData, documento: e.target.value })}
@@ -377,7 +378,7 @@ export default function Usuarios() {
                                 <label className="text-sm font-medium text-gray-700">Email</label>
                                 <input
                                     type="email"
-                                    required
+                                    // required // Email is optional now
                                     disabled={!!usuarioEditar}
                                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none disabled:bg-gray-100 disabled:text-gray-500"
                                     value={formData.email}
@@ -391,7 +392,7 @@ export default function Usuarios() {
                                 </label>
                                 <input
                                     type="password"
-                                    required={!usuarioEditar}
+                                    required={!usuarioEditar && !formData.documento} // Si hay documento, la pass es opcional (se auto-genera)
                                     minLength={6}
                                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
                                     value={formData.contrasena}

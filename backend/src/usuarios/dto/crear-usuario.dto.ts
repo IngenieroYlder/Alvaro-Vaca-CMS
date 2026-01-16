@@ -2,19 +2,21 @@ import { IsEmail, IsString, MinLength, IsOptional } from 'class-validator';
 
 export class CrearUsuarioDto {
   @IsEmail({}, { message: 'El correo debe ser válido' })
-  email: string;
+  @IsOptional()
+  email?: string;
 
   @IsString({ message: 'La contraseña debe ser texto' })
   @MinLength(6, { message: 'La contraseña debe tener al menos 6 caracteres' })
-  contrasena: string;
+  @IsOptional()
+  contrasena?: string;
 
   @IsString()
   @IsOptional()
   nombre?: string;
 
   @IsString()
-  @IsOptional()
-  documento?: string;
+  // @IsNotEmpty() // Should be required now? Plan said "documento obligatorio".
+  documento: string;
 
   @IsString()
   @IsOptional()

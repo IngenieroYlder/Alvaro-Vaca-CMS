@@ -6,8 +6,9 @@ import { Asistente } from './entities/asistente.entity';
 import { CreateReunionDto } from './dto/create-reunion.dto';
 import { RegisterAttendeeDto } from './dto/register-attendee.dto';
 import { Response } from 'express';
-// import * as PDFDocument from 'pdfkit'; // Will need to install types or handle import
-// import * as ExcelJS from 'exceljs'; // Will need to install
+import * as QRCode from 'qrcode';
+import PDFDocument from 'pdfkit';
+import { UsuariosService } from '../usuarios/usuarios.service';
 
 @Injectable()
 export class ReunionesService {
@@ -16,6 +17,7 @@ export class ReunionesService {
     private readonly reunionRepository: Repository<Reunion>,
     @InjectRepository(Asistente)
     private readonly asistenteRepository: Repository<Asistente>,
+    private readonly usuariosService: UsuariosService,
   ) {}
 
   async create(createReunionDto: CreateReunionDto, leaderInfo: { liderId: string, liderNombre: string, liderDocumento: string | null, liderTelefono: string }) {
@@ -29,15 +31,27 @@ export class ReunionesService {
       else codigo = this.generateCode();
     }
 
+    // Logic to enrich leader info if missing (assigned by Coordinator)
+    let finalLiderNombre = leaderInfo.liderNombre;
+    let finalLiderDocumento = leaderInfo.liderDocumento;
+    let finalLiderTelefono = leaderInfo.liderTelefono;
+
+    if (!finalLiderNombre || finalLiderNombre.trim() === '') {
+        const usuario = await this.usuariosService.buscarPorId(leaderInfo.liderId);
+        if (usuario) {
+            finalLiderNombre = `${usuario.nombre || ''} ${usuario.apellido || ''}`.trim();
+            finalLiderDocumento = usuario.documento || '';
+            finalLiderTelefono = usuario.telefono || usuario.whatsapp || '';
+        }
+    }
+
     const reunion = this.reunionRepository.create({
       ...createReunionDto,
       codigo,
       liderId: leaderInfo.liderId,
-      liderNombre: leaderInfo.liderNombre,
-      liderDocumento: leaderInfo.liderDocumento || '', // Fallback empty string if DB requires it, but we set nullable in entity?
-      // Wait, entity has liderDocumento as nullable now. But TS might complain if I pass null to a string field?
-      // Let's ensure entity definition matches.
-      liderTelefono: leaderInfo.liderTelefono,
+      liderNombre: finalLiderNombre || 'Sin Nombre',
+      liderDocumento: finalLiderDocumento || '', 
+      liderTelefono: finalLiderTelefono || '',
       lider: { id: leaderInfo.liderId } as any // Relationship
     });
 
@@ -161,5 +175,45 @@ export class ReunionesService {
 
   private generateCode(): string {
     return Math.floor(1000 + Math.random() * 9000).toString(); // 4 digit code
+  }
+
+  async generateQrFlyer(id: string): Promise<Buffer> {
+    const reunion = await this.reunionRepository.findOne({ where: { id } });
+    if (!reunion) throw new NotFoundException('Reunión no encontrada');
+
+    const baseUrl = process.env.FRONTEND_URL || 'https://patios.colombiapictures.co';
+    const codeUrl = `${baseUrl}/reuniones/formulario/${reunion.codigo}`;
+
+    const qrBuffer = await QRCode.toBuffer(codeUrl);
+    
+    return new Promise((resolve) => {
+        const doc = new PDFDocument({ size: 'A5', margin: 30 });
+        const buffers: any[] = [];
+        doc.on('data', buffers.push.bind(buffers));
+        doc.on('end', () => resolve(Buffer.concat(buffers)));
+
+        // Header Background
+        doc.rect(0, 0, doc.page.width, 80).fill('#5D40E8'); // Primary Color
+        
+        doc.fontSize(16).fill('white').text('REGISTRO DE ASISTENCIA', { align: 'center' });
+        doc.moveDown(4);
+        
+        // Info
+        doc.fill('black');
+        doc.fontSize(10).font('Helvetica-Bold').text('Líder:', { continued: true }).font('Helvetica').text(` ${reunion.liderNombre || 'N/A'}`);
+        doc.font('Helvetica-Bold').text('Fecha:', { continued: true }).font('Helvetica').text(` ${reunion.fecha ? new Date(reunion.fecha).toLocaleString() : ''}`);
+        doc.font('Helvetica-Bold').text('Lugar:', { continued: true }).font('Helvetica').text(` ${reunion.barrio || ''}, ${reunion.comuna || reunion.municipio || ''}`);
+        
+        doc.moveDown(2);
+        
+        // QR
+        doc.image(qrBuffer, { fit: [200, 200], align: 'center' });
+        doc.moveDown();
+        
+        doc.fontSize(24).font('Helvetica-Bold').text(`${reunion.codigo}`, { align: 'center' });
+        doc.fontSize(10).font('Helvetica').text('Escanea este código o ingresa el número para registrarte', { align: 'center' });
+        
+        doc.end();
+    });
   }
 }

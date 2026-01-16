@@ -1,14 +1,21 @@
 import { useState, useEffect } from 'react';
 import clienteAxios from '../../lib/cliente-axios';
-import { Plus, Trash2, Calendar, MapPin, Users, Copy, QrCode } from 'lucide-react';
+import { useAuth } from '../../contexto/ContextoAutenticacion';
+import { Plus, Trash2, Calendar, MapPin, Users, Copy, QrCode, Filter } from 'lucide-react'; // Added QrCode and Filter already in previous step? Filter added here
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { DEPARTAMENTOS_MUNICIPIOS } from '../../lib/colombia-data';
 
 export default function Reuniones() {
+    const { usuario } = useAuth();
     const [reuniones, setReuniones] = useState<any[]>([]);
     const [cargando, setCargando] = useState(false);
     const [modalAbierto, setModalAbierto] = useState(false);
+    
+    // Coordinator Logic
+    const isCoordinador = usuario?.roles?.includes('coordinador') || usuario?.roles?.includes('admin') || usuario?.roles?.includes('god');
+    const [lideres, setLideres] = useState<any[]>([]);
+    const [filtroLider, setFiltroLider] = useState(''); // For list filtering
     
     // Formulario crear
     const [nuevaReunion, setNuevaReunion] = useState({
@@ -20,14 +27,18 @@ export default function Reuniones() {
         comuna: '',
         barrio: '',
         direccion: '',
-        lugarReferencia: ''
+        lugarReferencia: '',
+        liderId: '' // For assignment
     });
 
     const [municipiosOptions, setMunicipiosOptions] = useState<string[]>([]);
 
     useEffect(() => {
         cargarReuniones();
-    }, []);
+        if (isCoordinador) {
+            cargarLideres();
+        }
+    }, [isCoordinador, filtroLider]); // Updates when filter changes
 
     useEffect(() => {
         if (nuevaReunion.departamento) {
@@ -43,12 +54,24 @@ export default function Reuniones() {
     const cargarReuniones = async () => {
         setCargando(true);
         try {
-            const { data } = await clienteAxios.get('/reuniones'); // Filtros pueden ir aquí
+            const params: any = {};
+            if (filtroLider) params.leaderId = filtroLider;
+            
+            const { data } = await clienteAxios.get('/reuniones', { params });
             setReuniones(data);
         } catch (error) {
             console.error('Error cargando reuniones:', error);
         } finally {
             setCargando(false);
+        }
+    };
+
+    const cargarLideres = async () => {
+        try {
+            const { data } = await clienteAxios.get('/usuarios?role=lider');
+            setLideres(data);
+        } catch (error) {
+            console.error('Error cargando lideres:', error);
         }
     };
 
@@ -63,10 +86,12 @@ export default function Reuniones() {
             });
             
             setModalAbierto(false);
+            setModalAbierto(false);
             setNuevaReunion({ 
                 nombre: '', fecha: '', hora: '', 
                 departamento: 'Meta', municipio: 'Villavicencio', 
-                comuna: '', barrio: '', direccion: '', lugarReferencia: '' 
+                comuna: '', barrio: '', direccion: '', lugarReferencia: '',
+                liderId: ''
             });
             cargarReuniones();
             alert('Reunión creada exitosamente');
@@ -99,6 +124,23 @@ export default function Reuniones() {
         alert('Enlace copiado al portapapeles: ' + url);
     };
 
+    const descargarQR = async (reunionId: string, codigo: string) => {
+        try {
+             // Request blob with auth headers (clienteAxios handles auth)
+             const response = await clienteAxios.get(`/reuniones/${reunionId}/qr-flyer`, { responseType: 'blob' });
+             const url = window.URL.createObjectURL(new Blob([response.data]));
+             const link = document.createElement('a');
+             link.href = url;
+             link.setAttribute('download', `Flyer_QR_${codigo}.pdf`);
+             document.body.appendChild(link);
+             link.click();
+             link.remove();
+        } catch (error) {
+            console.error(error);
+            alert('Error descargando el Flyer QR');
+        }
+    };
+
     return (
         <div>
             <div className="flex justify-between items-center mb-6">
@@ -106,12 +148,32 @@ export default function Reuniones() {
                     <h1 className="text-2xl font-bold text-gray-900">Mis Reuniones</h1>
                     <p className="text-gray-500">Gestiona tus eventos y asistencia</p>
                 </div>
-                <button 
-                    onClick={() => setModalAbierto(true)}
-                    className="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg flex items-center gap-2 font-medium"
-                >
-                    <Plus className="w-5 h-5" /> Nueva Reunión
-                </button>
+                <div className="flex gap-4 items-center">
+                    {isCoordinador && (
+                         <div className="relative">
+                            <select 
+                                className="appearance-none bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                value={filtroLider}
+                                onChange={(e) => setFiltroLider(e.target.value)}
+                            >
+                                <option value="">Todos los Líderes</option>
+                                <option value={usuario?.id}>Mis Reuniones</option>
+                                {lideres.filter(l => l.id !== usuario?.id).map((lid: any) => (
+                                    <option key={lid.id} value={lid.id}>{lid.nombre} {lid.apellido}</option>
+                                ))}
+                            </select>
+                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                <Filter className="w-4 h-4" />
+                            </div>
+                        </div>
+                    )}
+                    <button 
+                        onClick={() => setModalAbierto(true)}
+                        className="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg flex items-center gap-2 font-medium"
+                    >
+                        <Plus className="w-5 h-5" /> Nueva Reunión
+                    </button>
+                </div>
             </div>
 
             {cargando ? (
@@ -131,6 +193,9 @@ export default function Reuniones() {
                                 <div className="flex gap-1">
                                     <button onClick={() => copiarEnlace(reunion.codigo)} className="p-2 text-gray-400 hover:text-primary hover:bg-gray-50 rounded" title="Copiar Enlace Registro">
                                         <Copy className="w-4 h-4" />
+                                    </button>
+                                    <button onClick={() => descargarQR(reunion.id, reunion.codigo)} className="p-2 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded" title="Descargar Flyer QR">
+                                        <QrCode className="w-4 h-4" />
                                     </button>
                                     <button onClick={() => eliminarReunion(reunion.id)} className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded" title="Eliminar">
                                         <Trash2 className="w-4 h-4" />
@@ -185,6 +250,25 @@ export default function Reuniones() {
                                     value={nuevaReunion.nombre} onChange={e => setNuevaReunion({...nuevaReunion, nombre: e.target.value})} 
                                     placeholder="Ej: Reunión Barrio La Esperanza" />
                             </div>
+
+                            {isCoordinador && (
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">Asignar Líder (Opcional)</label>
+                                    <select 
+                                        className="w-full px-3 py-2 border rounded-lg bg-white"
+                                        value={nuevaReunion.liderId}
+                                        onChange={e => setNuevaReunion({...nuevaReunion, liderId: e.target.value})}
+                                    >
+                                        <option value="">-- Yo mismo ({usuario?.nombre}) --</option>
+                                        {lideres.map(lid => (
+                                            <option key={lid.id} value={lid.id}>
+                                                {lid.nombre} {lid.apellido} - {lid.documento}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <p className="text-xs text-gray-500 mt-1">Si seleccionas un líder, la reunión se creará a su nombre.</p>
+                                </div>
+                            )}
                             
                             <div className="grid grid-cols-2 gap-4">
                                 <div>

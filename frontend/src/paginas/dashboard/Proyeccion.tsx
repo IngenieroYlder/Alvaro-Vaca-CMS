@@ -1,12 +1,25 @@
 import { useState, useEffect } from 'react';
 import clienteAxios from '../../lib/cliente-axios';
-import { Plus, Trash2, Search, FileSpreadsheet, FileText, Download, CheckSquare, Square, X, UserPlus, Filter } from 'lucide-react';
+import { useAuth } from '../../contexto/ContextoAutenticacion';
+import { Plus, Trash2, Search, FileSpreadsheet, FileText, Download, CheckSquare, Square, X, UserPlus, Filter, Upload, FileImage, ExternalLink } from 'lucide-react';
 import { DEPARTAMENTOS_MUNICIPIOS } from '../../lib/colombia-data';
 
-export default function Proyeccion() {
+export default function Afiliados() {
+    const { usuario } = useAuth();
+    const isCoordinador = usuario?.roles?.includes('coordinador') || usuario?.roles?.includes('admin') || usuario?.roles?.includes('god');
+    
     const [votantes, setVotantes] = useState<any[]>([]);
     const [cargando, setCargando] = useState(false);
     const [busqueda, setBusqueda] = useState('');
+    
+    const [lideres, setLideres] = useState<any[]>([]);
+    const [filtroLider, setFiltroLider] = useState('');
+
+    // Planillas Modal
+    const [modalPlanillas, setModalPlanillas] = useState(false);
+    const [planillas, setPlanillas] = useState<any[]>([]);
+    const [nuevaPlanilla, setNuevaPlanilla] = useState({ liderId: '', descripcion: '', file: null as File | null });
+    const [uploading, setUploading] = useState(false);
     
     // Manual Create Modal
     const [modalAbierto, setModalAbierto] = useState(false);
@@ -25,8 +38,24 @@ export default function Proyeccion() {
     const [cargandoImportar, setCargandoImportar] = useState(false);
 
     useEffect(() => {
-        cargarVotantes();
-    }, []);
+        if (isCoordinador) {
+            cargarVotantes();
+            cargarLideres();
+        }
+    }, [isCoordinador]); // Load only if privileged
+
+    // Restriction Check
+    if (!isCoordinador) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-[60vh] text-center p-8">
+               <div className="bg-red-50 p-6 rounded-full mb-4">
+                 <Filter className="w-12 h-12 text-red-500" />
+               </div>
+               <h2 className="text-2xl font-bold text-gray-900 mb-2">Acceso Restringido</h2>
+               <p className="text-gray-500 max-w-md">Solo los coordinadores y administradores tienen acceso al módulo de gestión de afiliados y planillas.</p>
+            </div>
+        );
+    }
 
     useEffect(() => {
         if (nuevoVotante.departamento) {
@@ -132,13 +161,64 @@ export default function Proyeccion() {
         }
     };
     
+    const cargarLideres = async () => {
+        try {
+            const { data } = await clienteAxios.get('/usuarios?role=lider');
+            setLideres(data);
+        } catch (error) { console.error(error); }
+    };
+
+    const cargarPlanillas = async () => {
+        try {
+            const params: any = {};
+            if (filtroLider) params.leaderId = filtroLider; // Or pass specific leader from modal
+            const { data } = await clienteAxios.get('/planillas', { params });
+            setPlanillas(data);
+        } catch (error) { console.error(error); }
+    };
+
+    // Load planillas when modal opens
+    useEffect(() => {
+        if (modalPlanillas) cargarPlanillas();
+    }, [modalPlanillas, filtroLider]);
+
+    const handleUploadPlanilla = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!nuevaPlanilla.file || !nuevaPlanilla.liderId) {
+            alert('Debes seleccionar un líder y un archivo');
+            return;
+        }
+        
+        setUploading(true);
+        const formData = new FormData();
+        formData.append('file', nuevaPlanilla.file);
+        formData.append('liderId', nuevaPlanilla.liderId);
+        if (nuevaPlanilla.descripcion) formData.append('descripcion', nuevaPlanilla.descripcion);
+
+        try {
+            await clienteAxios.post('/planillas/upload', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
+            alert('Planilla subida exitosamente');
+            setNuevaPlanilla({ liderId: '', descripcion: '', file: null });
+            cargarPlanillas();
+        } catch (error: any) {
+             alert('Error subiendo planilla: ' + (error.response?.data?.message || error.message));
+        } finally {
+            setUploading(false);
+        }
+    };
+    
+    // Original Export Function
     const handleExport = async (type: 'excel' | 'pdf') => {
         try {
+             // Pass current filters if needed? Backend endpoint might not support it yet.
+             // Standard endpoint exports ALL my votantes.
              const response = await clienteAxios.get(`/votantes/export/${type}`, { responseType: 'blob' });
              const url = window.URL.createObjectURL(new Blob([response.data]));
              const link = document.createElement('a');
              link.href = url;
-             link.setAttribute('download', `mis_votantes.${type === 'excel' ? 'xlsx' : 'pdf'}`);
+             link.setAttribute('download', `mis_afiliados.${type === 'excel' ? 'xlsx' : 'pdf'}`);
              document.body.appendChild(link);
              link.click();
              link.remove();
@@ -160,20 +240,25 @@ export default function Proyeccion() {
         setSelectedIds(newSet);
     };
 
-    const filteredVotantes = votantes.filter(v => 
-        v.nombre.toLowerCase().includes(busqueda.toLowerCase()) || 
-        v.apellido.toLowerCase().includes(busqueda.toLowerCase()) ||
-        v.documento.includes(busqueda)
-    );
+    const filteredVotantes = votantes.filter(v => {
+        const matchSearch = v.nombre.toLowerCase().includes(busqueda.toLowerCase()) || 
+                            v.apellido.toLowerCase().includes(busqueda.toLowerCase()) ||
+                            v.documento.includes(busqueda);
+        const matchLeader = !filtroLider || (v.lider && v.lider.id === filtroLider);
+        return matchSearch && matchLeader;
+    });
 
     return (
         <div className="p-8 max-w-7xl mx-auto">
              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
                 <div>
-                    <h1 className="text-3xl font-bold text-gray-900">Mis Votantes</h1>
-                    <p className="text-gray-500 mt-1">Proyección electoral y listado fijo</p>
+                    <h1 className="text-3xl font-bold text-gray-900">Gestión de Afiliados</h1>
+                    <p className="text-gray-500 mt-1">Base de datos de votantes y planillas</p>
                 </div>
                 <div className="flex flex-wrap gap-2">
+                    <button onClick={() => setModalPlanillas(true)} className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2.5 rounded-xl font-medium shadow-lg shadow-indigo-600/20 active:scale-95 transition-all">
+                        <Upload className="w-5 h-5" /> Planillas
+                    </button>
                     <button onClick={() => handleExport('excel')} className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl font-medium shadow-lg shadow-emerald-600/20 active:scale-95 transition-all">
                         <FileSpreadsheet className="w-5 h-5" /> Excel
                     </button>
@@ -184,14 +269,14 @@ export default function Proyeccion() {
                         <Download className="w-5 h-5" /> Importar
                     </button>
                     <button onClick={() => { setVotanteEditar(null); setModalAbierto(true); }} className="flex items-center gap-2 bg-primary hover:bg-primary-dark text-white px-5 py-2.5 rounded-xl font-medium shadow-lg shadow-primary/20 active:scale-95 transition-all">
-                        <Plus className="w-5 h-5" /> Nuevo Votante
+                        <Plus className="w-5 h-5" /> Nuevo Afiliado
                     </button>
                 </div>
             </div>
 
-            {/* Search */}
-            <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-6 flex items-center gap-4">
-                 <div className="relative flex-1 max-w-md">
+            {/* Filters Bar */}
+            <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-6 flex flex-col md:flex-row items-center gap-4">
+                 <div className="relative flex-1 w-full">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
                     <input
                         type="text"
@@ -201,7 +286,24 @@ export default function Proyeccion() {
                         className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
                     />
                 </div>
-                <div className="text-sm text-gray-500">
+                
+                <div className="relative w-full md:w-64">
+                    <select 
+                        className="w-full appearance-none bg-white border border-gray-200 text-gray-700 py-2 pl-4 pr-10 rounded-lg leading-tight focus:outline-none focus:border-primary"
+                        value={filtroLider}
+                        onChange={(e) => setFiltroLider(e.target.value)}
+                    >
+                        <option value="">Todos los Líderes</option>
+                        {lideres.map(l => (
+                            <option key={l.id} value={l.id}>{l.nombre} {l.apellido}</option>
+                        ))}
+                    </select>
+                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+                        <Filter className="w-4 h-4" />
+                    </div>
+                </div>
+
+                <div className="text-sm text-gray-500 whitespace-nowrap min-w-fit">
                     Total: <span className="font-bold text-gray-900">{filteredVotantes.length}</span>
                 </div>
             </div>
@@ -224,7 +326,7 @@ export default function Proyeccion() {
                             {cargando ? (
                                 <tr><td colSpan={6} className="px-6 py-8 text-center text-gray-400">Cargando...</td></tr>
                             ) : filteredVotantes.length === 0 ? (
-                                <tr><td colSpan={6} className="px-6 py-8 text-center text-gray-400">No hay votantes registrados</td></tr>
+                                <tr><td colSpan={6} className="px-6 py-8 text-center text-gray-400">No hay afiliados registrados con estos criterios</td></tr>
                             ) : (
                                 filteredVotantes.map(v => (
                                     <tr key={v.id} className="hover:bg-gray-50/50 transition-colors">
@@ -259,7 +361,7 @@ export default function Proyeccion() {
                 <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
                      <div className="bg-white rounded-2xl w-full max-w-2xl overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200">
                         <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
-                            <h2 className="text-xl font-bold text-gray-900">{votanteEditar ? 'Editar Votante' : 'Nuevo Votante'}</h2>
+                            <h2 className="text-xl font-bold text-gray-900">{votanteEditar ? 'Editar Afiliado' : 'Nuevo Afiliado'}</h2>
                             <button onClick={() => setModalAbierto(false)}><X className="text-gray-400 hover:text-gray-600" /></button>
                         </div>
                         <form onSubmit={handleGuardarVotante} className="p-6 space-y-4">
@@ -402,6 +504,101 @@ export default function Proyeccion() {
                         </div>
                     </div>
                </div> 
+            )} 
+            {/* Planillas Modal */}
+            {modalPlanillas && (
+                 <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div className="bg-white rounded-2xl w-full max-w-4xl h-[85vh] flex flex-col shadow-2xl overflow-hidden">
+                        <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+                            <h2 className="text-xl font-bold text-gray-900">Gestión de Planillas</h2>
+                            <button onClick={() => setModalPlanillas(false)}><X className="text-gray-400 hover:text-gray-600" /></button>
+                        </div>
+                        
+                        <div className="flex-1 flex overflow-hidden">
+                            {/* Left: List */}
+                            <div className="w-1/2 border-r border-gray-100 p-4 overflow-y-auto bg-gray-50/30">
+                                <h3 className="font-bold text-gray-700 mb-3">Planillas Subidas</h3>
+                                {planillas.length === 0 ? (
+                                    <p className="text-sm text-gray-500 italic">No hay planillas para mostrar.</p>
+                                ) : (
+                                    <div className="space-y-3">
+                                        {planillas.map(p => (
+                                            <div key={p.id} className="bg-white p-3 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+                                                <div className="flex items-start gap-3">
+                                                    <div className="bg-blue-50 p-2 rounded text-blue-600">
+                                                        <FileImage className="w-5 h-5" />
+                                                    </div>
+                                                    <div className="flex-1 min-w-0">
+                                                        <p className="text-sm font-medium text-gray-900 truncate">{p.nombreOriginal}</p>
+                                                        <p className="text-xs text-gray-500">Líder: {p.lider?.nombre} {p.lider?.apellido}</p>
+                                                        <p className="text-xs text-gray-400">{new Date(p.fechaCarga).toLocaleDateString()}</p>
+                                                    </div>
+                                                    <a href={clienteAxios.defaults.baseURL?.replace('/api', '') + p.url} target="_blank" rel="noreferrer" className="text-gray-400 hover:text-primary">
+                                                        <ExternalLink className="w-4 h-4" />
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Right: Upload Form */}
+                            <div className="w-1/2 p-6 overflow-y-auto">
+                                <h3 className="font-bold text-gray-700 mb-4">Subir Nueva Planilla</h3>
+                                <form onSubmit={handleUploadPlanilla} className="space-y-4">
+                                     <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Seleccionar Líder</label>
+                                        <select 
+                                            className="w-full px-3 py-2 border rounded-lg bg-white"
+                                            required
+                                            value={nuevaPlanilla.liderId}
+                                            onChange={e => setNuevaPlanilla({...nuevaPlanilla, liderId: e.target.value})}
+                                        >
+                                            <option value="">-- Seleccionar --</option>
+                                            {lideres.map(l => (
+                                                <option key={l.id} value={l.id}>{l.nombre} {l.apellido}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Descripción (Opcional)</label>
+                                        <input 
+                                            type="text" 
+                                            className="w-full px-3 py-2 border rounded-lg"
+                                            value={nuevaPlanilla.descripcion}
+                                            onChange={e => setNuevaPlanilla({...nuevaPlanilla, descripcion: e.target.value})}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Archivo (Imagen/PDF)</label>
+                                        <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:bg-gray-50 transition-colors cursor-pointer relative">
+                                            <input 
+                                                type="file" 
+                                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                                accept="image/*,application/pdf"
+                                                onChange={e => setNuevaPlanilla({...nuevaPlanilla, file: e.target.files ? e.target.files[0] : null})} 
+                                            />
+                                            <div className="pointer-events-none">
+                                                <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+                                                <p className="text-sm text-gray-500">
+                                                    {nuevaPlanilla.file ? nuevaPlanilla.file.name : 'Click o arrastra archivo aquí'}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button 
+                                        type="submit" 
+                                        disabled={uploading}
+                                        className="w-full py-2 bg-primary text-white rounded-lg hover:bg-primary-dark font-medium disabled:opacity-50"
+                                    >
+                                        {uploading ? 'Subiendo...' : 'Subir Planilla'}
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
             )}
         </div>
     );

@@ -60,6 +60,11 @@ export class RolesService implements OnModuleInit {
         icono: 'Crown',
       },
       { nombre: 'usuario', permisos: ['dashboard', 'catalogo'], icono: 'User' },
+      {
+        nombre: 'coordinador',
+        permisos: ['dashboard', 'reuniones', 'usuarios', 'afiliados', 'permiso_ver_asistentes'], // afiliados new module
+        icono: 'Users'
+      },
     ];
 
     for (const r of roles) {

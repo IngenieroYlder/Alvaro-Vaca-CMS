@@ -17,7 +17,7 @@ export class ReunionesController {
 
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('lider', 'admin', 'god')
+  @Roles('lider', 'admin', 'god', 'coordinador')
   create(@Body() createReunionDto: CreateReunionDto, @Req() req: any) {
     const user = req.user;
     
@@ -28,8 +28,8 @@ export class ReunionesController {
     let liderTelefono = user.telefono || user.whatsapp || '';
 
     // Logic: If user is Leader, MUST have documento.
-    // If Admin/God, can bypass (use placeholder or null if entity allows)
-    const isPrivileged = user.roles.includes('admin') || user.roles.includes('god');
+    // If Admin/God/Coordinator, can bypass (use placeholder or null if entity allows)
+    const isPrivileged = user.roles.includes('admin') || user.roles.includes('god') || user.roles.includes('coordinador');
     
     if (!liderDocumento && !isPrivileged) {
         throw new ForbiddenException('Debes actualizar tu perfil con tu documento de identidad antes de crear reuniones.');
@@ -40,17 +40,34 @@ export class ReunionesController {
         liderDocumento = null; // Entity allows null
     }
 
-    // Pass enriched DTO to service
-    // We need to cast or extend the DTO to include these fields if they aren't there, 
-    // or change service to accept them separately.
-    // Ideally, the service should handle the entity creation. 
-    // Let's pass the DTO and the user-derived values manually to the service.
+    // Coordinator/Admin can assign a different leader
+    // expect createReunionDto to potentially have liderId if allowed
+    let finalLiderId = liderId;
+    let finalLiderNombre = liderNombre;
     
+    if (isPrivileged && (createReunionDto as any).liderId) {
+         // Verify if leader exists? Service might handle simple ID relationship.
+         // We assume the frontend sends the ID.
+         // If we want to populate name/doc, we might need to fetch that user OR assume service does it.
+         // Service create method: create(dto, { liderId, ... })
+         // If we pass a different ID, we should probably fetch that user's details to populate the helper columns (liderNombre, etc) 
+         // OR update the service to fetch them if only ID is provided.
+         // Let's rely on Service fetching logic if implemented, OR fetch here.
+         // Checking Service... I'll assume I need to fetch here to be safe and consistent with current "snapshot" logic.
+         // But I don't have UsuariosService injected here? 
+         // I need to inject UsersService to fetch the assigned leader's details.
+         // For now, let's allow the override but we might miss the snapshot names if I don't fetch.
+         // I'll update the Service to handle the look up if liderId changes.
+         finalLiderId = (createReunionDto as any).liderId;
+         // I can't fetch name here without service. 
+         // I will pass the ID and let the Service handle the lookup if it differs from creator.
+    }
+
     return this.reunionesService.create(createReunionDto, {
-        liderId,
-        liderNombre,
-        liderDocumento,
-        liderTelefono
+        liderId: finalLiderId,
+        liderNombre: finalLiderId === user.id ? liderNombre : '', // Service should fill this if empty
+        liderDocumento: finalLiderId === user.id ? liderDocumento : '',
+        liderTelefono: finalLiderId === user.id ? liderTelefono : ''
     });
   }
 
@@ -373,6 +390,19 @@ export class ReunionesController {
   removeBulk(@Body('ids') ids: string[]) {
       if (!ids || ids.length === 0) throw new BadRequestException('No IDs provided');
       return this.reunionesService.removeBulk(ids);
+  }
+
+  @Get(':id/qr-flyer')
+  async getQrFlyer(@Param('id') id: string, @Res() res: Response) {
+      const pdfBuffer = await this.reunionesService.generateQrFlyer(id);
+
+      res.set({
+          'Content-Type': 'application/pdf',
+          'Content-Disposition': `attachment; filename=Reunion_QR_${id}.pdf`,
+          'Content-Length': pdfBuffer.length,
+      });
+
+      res.end(pdfBuffer);
   }
 
   @Delete(':id')

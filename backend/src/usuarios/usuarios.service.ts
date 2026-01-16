@@ -19,7 +19,16 @@ export class UsuariosService {
   ) { }
 
   async crear(crearUsuarioDto: CrearUsuarioDto): Promise<Usuario> {
-    const { contrasena, ...datosUsuario } = crearUsuarioDto;
+    let { contrasena, ...datosUsuario } = crearUsuarioDto;
+
+    // Si no hay contraseña pero hay documento, usar documento como contraseña
+    if (!contrasena && datosUsuario.documento) {
+        contrasena = datosUsuario.documento;
+    }
+
+    if (!contrasena) {
+        throw new ConflictException('La contraseña es obligatoria si no se proporciona documento');
+    }
 
     // Hash de la contraseña
     const salt = await bcrypt.genSalt();
@@ -34,10 +43,16 @@ export class UsuariosService {
         roles: (datosUsuario as any).roles || ['usuario'],
       });
       return await this.usuariosRepository.save(nuevoUsuario);
-    } catch (error) {
+    } catch (error: any) { // Type 'any' to access 'code'
       if (error.code === '23505') {
-        // Código de error de Postgres para Unique Violation
-        throw new ConflictException('El correo electrónico ya está registrado');
+        const detail = error.detail || '';
+        if (detail.includes('email')) {
+             throw new ConflictException('El correo electrónico ya está registrado');
+        }
+        if (detail.includes('documento')) {
+             throw new ConflictException('El documento ya está registrado');
+        }
+        throw new ConflictException('El usuario ya existe (correo o documento duplicado)');
       }
       throw new InternalServerErrorException('Error al crear el usuario');
     }
@@ -60,9 +75,12 @@ export class UsuariosService {
   }
 
   // Método específico para Auth que necesita la contraseña
-  async buscarParaAuth(email: string): Promise<Usuario | null> {
+  async buscarParaAuth(identificador: string): Promise<Usuario | null> {
     return this.usuariosRepository.findOne({
-      where: { email },
+      where: [
+          { email: identificador },
+          { documento: identificador }
+      ],
       select: [
         'id',
         'email',
