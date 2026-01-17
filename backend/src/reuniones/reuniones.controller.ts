@@ -169,7 +169,7 @@ export class ReunionesController {
   
   @Get('unique')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin', 'god', 'permiso_ver_asistentes', 'lider') // Added 'lider'
+  @Roles('admin', 'god', 'permiso_ver_asistentes', 'lider', 'coordinador')
   async findAllUnique(
       @Req() req: any,
       @Query('dateStart') dateStart?: string,
@@ -205,7 +205,7 @@ export class ReunionesController {
 
   @Get('export/excel')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin', 'god', 'permiso_ver_asistentes', 'lider') // Added 'lider'
+  @Roles('admin', 'god', 'permiso_ver_asistentes', 'lider', 'coordinador')
   async exportExcel(
     @Res() res: Response,
     @Req() req: any, // Need request to check user
@@ -224,52 +224,43 @@ export class ReunionesController {
     
     // Authorization Check for Data Access
     const canViewAll = user.roles.includes('admin') || user.roles.includes('god') || user.roles.includes('permiso_ver_asistentes');
+    const isCoordinador = user.roles.includes('coordinador') && !canViewAll;
+    
     let leaderIdFilter = undefined;
+    let leaderIdsFilter: string[] | undefined = undefined;
 
     if (!canViewAll) {
-        leaderIdFilter = user.id;
-        // If they try to filter by another leader, ignore it or maybe throw error? 
-        // For simplicity/safety, we just OVERRIDE the filter with their own ID.
-        // Also, UNIQUE report might not be relevant for a single leader or maybe it is?
-        // Let's allow unique report but filtered by their meetings.
+        if (isCoordinador) {
+             const myLeaders = await this.usuariosService.listarTodos(undefined, user.id);
+             leaderIdsFilter = myLeaders.map(u => u.id);
+             leaderIdsFilter.push(user.id);
+        } else {
+            leaderIdFilter = user.id;
+        }
     }
 
     if (isUnique) {
-      // NOTE: findAllUnique currently doesn't support leaderIdFilter in Service. 
-      // If we want leaders to draw unique reports, we need to update Service or block it.
-      // For now, let's block unique report for non-privileged if service isn't ready, 
-      // OR let's update service later. 
-      // User requirement was generic "export data". 
-      // Implementation Plan didn't specify updating findAllUnique service method.
-      // Let's assume Unique Report is Admin feature for now to be safe, OR check if we can easily add it.
-      // The Plan said "Enable Leaders to export their own data".
-      // Let's update Service findAllUnique to accept leaderID to be consistent. 
-      // For this step, I will pass the filter, but I need to update Service too if I do.
-      // Let's stick to standard export for Leaders for now, or just block Unique for them if not critical.
-      // But wait, the controller logic I am writing here needs to be sound.
-      
-      if (!canViewAll) {
-          // Check for unique perms or similar logic as before
-          // If we want to allow leaders to see unique list of THEIR meetings:
-          // We must ensure the service filters by their meetings or leaderId.
-          // Since unique service now supports reunionId, it helps.
-          // But strict row-level security for unique across all their meetings might imply fetching all their meetings first.
-          // For now, retaining the restriction or assuming admin only for global unique.
-          // If they pass reunionId designated to them, it might be fine.
-          // Let's keep the block for now or relax it if needed. 
-          throw new ForbiddenException('No tienes permisos para generar reporte de únicos global.');
-      }
-        data = await this.reunionesService.findAllUnique({ dateStart, dateEnd, municipio, departamento, reunionId });
+        // Updated to use leaderIds
+        data = await this.reunionesService.findAllUnique({ 
+            dateStart, 
+            dateEnd, 
+            municipio, 
+            departamento, 
+            reunionId, 
+            leaderId: leaderIdFilter,
+            leaderIds: leaderIdsFilter
+        });
     } else {
         data = await this.reunionesService.findAll({ 
             leader, 
             dateStart, 
             dateEnd, 
             location, 
-            municipio,
-            departamento,
-            reunionId,
-            leaderId: leaderIdFilter 
+            municipio, 
+            departamento, 
+            reunionId, 
+            leaderId: leaderIdFilter,
+            leaderIds: leaderIdsFilter // Added logic
         });
     }
 
@@ -315,10 +306,6 @@ export class ReunionesController {
         ];
 
         // Ensure data structure matches expectation (Reuniones array)
-        // If data is Reuniones[], we flatten it.
-        // Wait, findAll returns Reuniones[] with Asistentes[]
-        // findAllUnique returns Asistentes[]
-        
         data.forEach((reunion) => {
              reunion.asistentes.forEach((asistente: any) => {
                 worksheet.addRow({
@@ -346,7 +333,7 @@ export class ReunionesController {
 
   @Get('export/pdf')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin', 'god', 'permiso_ver_asistentes', 'lider') // Added 'lider'
+  @Roles('admin', 'god', 'permiso_ver_asistentes', 'lider', 'coordinador')
   async exportPdf(
     @Res() res: Response,
     @Req() req: any,

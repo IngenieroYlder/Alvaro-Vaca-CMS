@@ -97,18 +97,43 @@ export default function Asistentes() {
     const { usuario } = useAuth();
     const canExport = usuario?.roles?.some((r: string) => ['admin', 'god', 'coordinador'].includes(r));
 
-    const exportarExcel = () => {
-        const params = new URLSearchParams();
-        params.append('unique', 'true');
-        if (fechaInicio) params.append('dateStart', fechaInicio);
-        if (fechaFin) params.append('dateEnd', fechaFin);
-        if (reunionId) params.append('reunionId', reunionId);
-        if (departamento) params.append('departamento', departamento);
-        if (municipio) params.append('municipio', municipio);
-        if (liderId) params.append('leader', liderId); 
-        
-        const url = `${clienteAxios.defaults.baseURL}/reuniones/export/excel?${params.toString()}`;
-        window.open(url, '_blank');
+    const exportarExcel = async () => {
+        try {
+            const params = new URLSearchParams();
+            params.append('unique', 'true');
+            if (fechaInicio) params.append('dateStart', fechaInicio);
+            if (fechaFin) params.append('dateEnd', fechaFin);
+            if (reunionId) params.append('reunionId', reunionId);
+            if (departamento) params.append('departamento', departamento);
+            if (municipio) params.append('municipio', municipio);
+            if (liderId) params.append('leader', liderId); 
+            
+            const response = await clienteAxios.get('/reuniones/export/excel', { 
+                params,
+                responseType: 'blob' 
+            });
+
+            // Extract filename or default
+            let filename = `Reporte_Asistencia_${format(new Date(), 'yyyy-MM-dd')}.xlsx`;
+            const contentDisposition = response.headers['content-disposition'];
+            if (contentDisposition) {
+                 const filenameMatch = contentDisposition.match(/filename=(.+)/);
+                 if (filenameMatch && filenameMatch.length > 1) {
+                     filename = filenameMatch[1].replace(/['"]/g, '');
+                 }
+            }
+
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', filename);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        } catch (error) {
+            console.error('Error exportando excel:', error);
+            alert('Error al exportar el archivo Excel. Verifica tus permisos o intenta nuevamente.');
+        }
     };
 
     const asistentesFiltrados = asistentes.filter(a => 
