@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import clienteAxios from '../../lib/cliente-axios';
 import { useAuth } from '../../contexto/ContextoAutenticacion';
-import { Plus, Trash2, Search, FileSpreadsheet, FileText, Download, CheckSquare, Square, X, UserPlus, Filter, Upload, FileImage, ExternalLink } from 'lucide-react';
+import { Plus, Trash2, Search, FileSpreadsheet, FileText, Download, CheckSquare, Square, X, UserPlus, Filter, Upload, FileImage, ExternalLink, MessageSquare, Clock, CheckCircle, AlertTriangle, ChevronDown, Save, Edit } from 'lucide-react';
 import { DEPARTAMENTOS_MUNICIPIOS } from '../../lib/colombia-data';
 
 export default function Afiliados() {
@@ -17,10 +17,30 @@ export default function Afiliados() {
 
     // Planillas Modal
     const [modalPlanillas, setModalPlanillas] = useState(false);
+    const [activeTab, setActiveTab] = useState<'upload' | 'manage'>('upload'); 
     const [planillas, setPlanillas] = useState<any[]>([]);
+    
+    // Upload State
     const [nuevaPlanilla, setNuevaPlanilla] = useState({ liderId: '', descripcion: '', fechaInicio: '', fechaFin: '', file: null as File | null });
     const [uploading, setUploading] = useState(false);
+    const [busquedaLiderUpload, setBusquedaLiderUpload] = useState(''); 
+
+    // Manage State
+    const [filtroPlanillaStatus, setFiltroPlanillaStatus] = useState('all');
+    const [filtroPlanillaDate, setFiltroPlanillaDate] = useState('all'); 
+    const [busquedaPlanilla, setBusquedaPlanilla] = useState(''); 
     
+    // Editing Planilla Status/Notes
+    const [editingPlanilla, setEditingPlanilla] = useState<string | null>(null); 
+    const [editData, setEditData] = useState({ estado: '', notas: '' });
+
+    // Constants
+    const ESTADOS_PLANILLA = [
+        { value: 'Pendiente para verificar', label: 'Pendiente', color: 'bg-yellow-100 text-yellow-800', icon: Clock },
+        { value: 'Planilla verificada', label: 'Verificada', color: 'bg-green-100 text-green-800', icon: CheckCircle },
+        { value: 'Planilla verificada pero algunos candidatos no saben por quien votar', label: 'Verificada con Novedad', color: 'bg-orange-100 text-orange-800', icon: AlertTriangle },
+    ];
+
     // Manual Create Modal
     const [modalAbierto, setModalAbierto] = useState(false);
     const [nuevoVotante, setNuevoVotante] = useState({
@@ -42,7 +62,7 @@ export default function Afiliados() {
             cargarVotantes();
             cargarLideres();
         }
-    }, [isCoordinador]); // Load only if privileged
+    }, [isCoordinador]); 
 
     // Restriction Check
     if (!isCoordinador) {
@@ -60,8 +80,7 @@ export default function Afiliados() {
     useEffect(() => {
         if (nuevoVotante.departamento) {
             setMunicipiosOptions(DEPARTAMENTOS_MUNICIPIOS[nuevoVotante.departamento] || []);
-            // Only reset if current selection is invalid AND we are active (not empty string which might happen on reset)
-            const currentMunis = DEPARTAMENTOS_MUNICIPIOS[nuevoVotante.departamento] || [];
+             const currentMunis = DEPARTAMENTOS_MUNICIPIOS[nuevoVotante.departamento] || [];
              if (nuevoVotante.municipio && !currentMunis.includes(nuevoVotante.municipio)) {
                 setNuevoVotante(prev => ({ ...prev, municipio: currentMunis[0] || '' }));
             }
@@ -83,14 +102,10 @@ export default function Afiliados() {
     const cargarAsistentesUnicos = async () => {
         setCargandoImportar(true);
         try {
-            // Fetch unique attendees from my meetings
-            // Assuming the endpoint '/reuniones/unique' gives me what I need (filtered by my meetings if I am leader)
+            // Fetch unique attendees
             const { data } = await clienteAxios.get('/reuniones/unique'); 
-            // Filter out those who are already in my 'votantes' list to avoid confusion?
-            // Or just let backend handle duplicates. Let's filter client side for better UX.
             const existingDocs = new Set(votantes.map(v => v.documento));
             const available = data.filter((a: any) => a.documento && !existingDocs.has(a.documento));
-            
             setAsistentesDisponibles(available);
         } catch (error) {
             console.error('Error cargando asistentes:', error);
@@ -172,10 +187,30 @@ export default function Afiliados() {
     const cargarPlanillas = async () => {
         try {
             const params: any = {};
-            if (filtroLider) params.leaderId = filtroLider; // Or pass specific leader from modal
+            if (filtroLider) params.leaderId = filtroLider; 
             const { data } = await clienteAxios.get('/planillas', { params });
             setPlanillas(data);
         } catch (error) { console.error(error); }
+    };
+    
+    const handleUpdatePlanilla = async (id: string) => {
+        try {
+            await clienteAxios.patch(`/planillas/${id}`, {
+                estado: editData.estado,
+                notas: editData.notas
+            });
+            alert('Planilla actualizada');
+            setEditingPlanilla(null);
+            cargarPlanillas(); // Refresh
+        } catch (error) {
+            alert('Error actualizando planilla');
+        }
+    };
+
+
+    const startEditPlanilla = (p: any) => {
+        setEditingPlanilla(p.id);
+        setEditData({ estado: p.estado || 'Pendiente para verificar', notas: p.notas || '' });
     };
 
     // Load planillas when modal opens
@@ -203,9 +238,8 @@ export default function Afiliados() {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
             alert('Planilla subida exitosamente');
-            alert('Planilla subida exitosamente');
             setNuevaPlanilla({ liderId: '', descripcion: '', fechaInicio: '', fechaFin: '', file: null });
-            cargarPlanillas();
+            setActiveTab('manage'); // Switch to manage tab
             cargarPlanillas();
         } catch (error: any) {
              alert('Error subiendo planilla: ' + (error.response?.data?.message || error.message));
@@ -517,143 +551,288 @@ export default function Afiliados() {
             {/* Planillas Modal */}
             {modalPlanillas && (
                  <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                    <div className="bg-white rounded-2xl w-full max-w-4xl h-[85vh] flex flex-col shadow-2xl overflow-hidden">
-                        <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
-                            <h2 className="text-xl font-bold text-gray-900">Gestión de Planillas</h2>
-                            <button onClick={() => setModalPlanillas(false)}><X className="text-gray-400 hover:text-gray-600" /></button>
+                    <div className="bg-white rounded-2xl w-full max-w-5xl h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
+                        {/* Header & Tabs */}
+                        <div className="bg-white border-b border-gray-100 flex-shrink-0">
+                            <div className="px-6 py-4 flex justify-between items-center">
+                                <h2 className="text-xl font-bold text-gray-900">Gestión de Planillas</h2>
+                                <button onClick={() => setModalPlanillas(false)}><X className="text-gray-400 hover:text-gray-600" /></button>
+                            </div>
+                            <div className="flex px-6 gap-6">
+                                <button 
+                                    onClick={() => setActiveTab('upload')} 
+                                    className={`pb-3 text-sm font-medium border-b-2 transition-colors ${activeTab === 'upload' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+                                >
+                                    Subir Nueva Planilla
+                                </button>
+                                <button 
+                                    onClick={() => setActiveTab('manage')} 
+                                    className={`pb-3 text-sm font-medium border-b-2 transition-colors ${activeTab === 'manage' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+                                >
+                                    Planillas Subidas
+                                </button>
+                            </div>
                         </div>
                         
-                        <div className="flex-1 flex overflow-hidden">
-                            {/* Left: List */}
-                            <div className="w-1/2 border-r border-gray-100 p-4 overflow-y-auto bg-gray-50/30">
-                                <h3 className="font-bold text-gray-700 mb-3">Planillas Subidas</h3>
-                                {planillas.length === 0 ? (
-                                    <p className="text-sm text-gray-500 italic">No hay planillas para mostrar.</p>
-                                ) : (
-                                    <div className="space-y-3">
-                                        {planillas.map(p => (
-                                            <div key={p.id} className="bg-white p-3 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-                                                <div className="flex items-start gap-3">
-                                                    <div className="bg-blue-50 p-2 rounded text-blue-600">
-                                                        <FileImage className="w-5 h-5" />
+                        <div className="flex-1 overflow-y-auto bg-gray-50/30 p-6">
+                            {activeTab === 'upload' ? (
+                                <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+                                    <h3 className="font-bold text-gray-800 text-lg mb-6 flex items-center gap-2">
+                                        <Upload className="w-5 h-5 text-primary" />
+                                        Subir Archivo
+                                    </h3>
+                                    <form onSubmit={handleUploadPlanilla} className="space-y-6">
+                                         <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">Líder Responsable</label>
+                                            <div className="relative">
+                                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4 pointer-events-none" />
+                                                <input 
+                                                    type="text"
+                                                    placeholder="Buscar líder..."
+                                                    className="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm mb-2 focus:ring-2 focus:ring-primary/20 outline-none"
+                                                    value={busquedaLiderUpload}
+                                                    onChange={e => setBusquedaLiderUpload(e.target.value)}
+                                                />
+                                            </div>
+                                            <select 
+                                                className="w-full px-3 py-2 border rounded-lg bg-white focus:ring-2 focus:ring-primary/20 outline-none"
+                                                required
+                                                value={nuevaPlanilla.liderId}
+                                                onChange={e => {
+                                                    setNuevaPlanilla({...nuevaPlanilla, liderId: e.target.value});
+                                                    // Optional: Auto-fill Search Input with selected name
+                                                    const selected = lideres.find(l => l.id === e.target.value);
+                                                    if(selected) setBusquedaLiderUpload(`${selected.nombre} ${selected.apellido}`);
+                                                }}
+                                                size={5} // Show multiple options like a list if searching? No, standard select is safer, but let's filter options.
+                                            >
+                                                <option value="" className="text-gray-500">-- Seleccionar Líder --</option>
+                                                {lideres
+                                                    .filter(l => !busquedaLiderUpload || l.nombre.toLowerCase().includes(busquedaLiderUpload.toLowerCase()) || l.apellido.toLowerCase().includes(busquedaLiderUpload.toLowerCase()) || l.documento.includes(busquedaLiderUpload))
+                                                    .map(l => (
+                                                    <option key={l.id} value={l.id}>{l.nombre} {l.apellido} ({l.documento})</option>
+                                                ))}
+                                            </select>
+                                        </div>
+
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">Fecha Inicio (Recolección)</label>
+                                                <input 
+                                                    type="date"
+                                                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary/20 outline-none"
+                                                    value={nuevaPlanilla.fechaInicio}
+                                                    onChange={e => setNuevaPlanilla({...nuevaPlanilla, fechaInicio: e.target.value})}
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">Fecha Fin</label>
+                                                <input 
+                                                    type="date"
+                                                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary/20 outline-none"
+                                                    value={nuevaPlanilla.fechaFin}
+                                                    onChange={e => setNuevaPlanilla({...nuevaPlanilla, fechaFin: e.target.value})}
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">Descripción / Observaciones</label>
+                                            <input 
+                                                type="text" 
+                                                className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary/20 outline-none"
+                                                value={nuevaPlanilla.descripcion}
+                                                onChange={e => setNuevaPlanilla({...nuevaPlanilla, descripcion: e.target.value})}
+                                                placeholder="Ej: Planilla barrio San Benito - Primera entrega"
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">Archivo (Foto o PDF)</label>
+                                            <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:bg-gray-50 transition-colors cursor-pointer relative group">
+                                                <input 
+                                                    type="file" 
+                                                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                                    accept="image/*,application/pdf"
+                                                    onChange={e => setNuevaPlanilla({...nuevaPlanilla, file: e.target.files ? e.target.files[0] : null})} 
+                                                />
+                                                <div className="pointer-events-none group-hover:scale-105 transition-transform duration-200">
+                                                    <div className="bg-blue-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 text-primary">
+                                                        <FileImage className="w-8 h-8" />
                                                     </div>
-                                                    <div className="flex-1 min-w-0">
-                                                        <p className="text-sm font-medium text-gray-900 truncate">{p.nombreOriginal}</p>
-                                                        <p className="text-xs text-gray-500">Líder: {p.lider?.nombre} {p.lider?.apellido}</p>
-                                                        <p className="text-xs text-gray-400">{new Date(p.fechaCarga).toLocaleDateString()}</p>
-                                                    </div>
-                                                    <a href={clienteAxios.defaults.baseURL?.replace('/api', '') + p.url} target="_blank" rel="noreferrer" className="text-gray-400 hover:text-primary">
-                                                        <ExternalLink className="w-4 h-4" />
-                                                    </a>
+                                                    <p className="font-medium text-gray-700">
+                                                        {nuevaPlanilla.file ? nuevaPlanilla.file.name : 'Haz clic o arrastra el archivo aquí'}
+                                                    </p>
+                                                    <p className="text-xs text-gray-400 mt-1">Soporta IMÁGENES y PDF</p>
                                                 </div>
                                             </div>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
+                                        </div>
 
-                            {/* Right: Upload Form */}
-                            <div className="w-1/2 p-6 overflow-y-auto">
-                                <h3 className="font-bold text-gray-700 mb-4">Subir Nueva Planilla</h3>
-                                <form onSubmit={handleUploadPlanilla} className="space-y-4">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">Seleccionar Líder</label>
-                                        {/* Simple Search Filter for Leader Select */}
-                                        <input 
-                                            type="text" 
-                                            placeholder="Buscar líder por nombre o cédula..." 
-                                            className="w-full px-3 py-2 border border-gray-200 rounded-lg mb-2 text-sm"
-                                            onChange={(e) => {
-                                                // Filter logic handled in render, but for simplicity let's stick to native select or filtered options
-                                                // Wait, I can't easily change the map below without state.
-                                                // I'll add a state for 'leaderSearch' in Planillas context
-                                            }}
-                                            // Actually, let's implement the state update
-                                            onInput={(e: any) => {
-                                                const val = e.target.value.toLowerCase();
-                                                const options = document.getElementById('leader-select-options') as HTMLSelectElement;
-                                                if(options) {
-                                                    Array.from(options.options).forEach(opt => {
-                                                        if(opt.value === "") return; // Skip placeholder
-                                                        const text = opt.text.toLowerCase();
-                                                        // We can't hide options in all browsers easily, but we can try
-                                                        if(text.includes(val)) {
-                                                            opt.style.display = 'block';
-                                                        } else {
-                                                            opt.style.display = 'none';
-                                                        }
-                                                    })
-                                                }
-                                            }}
-                                        />
-                                        <select 
-                                            id="leader-select-options"
-                                            className="w-full px-3 py-2 border rounded-lg bg-white"
-                                            required
-                                            value={nuevaPlanilla.liderId}
-                                            onChange={e => setNuevaPlanilla({...nuevaPlanilla, liderId: e.target.value})}
-                                        >
-                                            <option value="">-- Seleccionar --</option>
-                                            {lideres.map(l => (
-                                                <option key={l.id} value={l.id}>{l.nombre} {l.apellido} - CC: {l.documento}</option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Desde</label>
-                                            <input 
-                                                type="date"
-                                                className="w-full px-3 py-2 border rounded-lg"
-                                                value={nuevaPlanilla.fechaInicio}
-                                                onChange={e => setNuevaPlanilla({...nuevaPlanilla, fechaInicio: e.target.value})}
-                                            />
+                                        <div className="pt-2">
+                                            <button 
+                                                type="submit" 
+                                                disabled={uploading}
+                                                className="w-full py-3 bg-primary text-white rounded-xl hover:bg-primary-dark font-bold shadow-lg shadow-primary/20 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                            >
+                                                {uploading ? 'Subiendo Planilla...' : 'Guardar Planilla'}
+                                            </button>
                                         </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Hasta</label>
-                                            <input 
-                                                type="date"
-                                                className="w-full px-3 py-2 border rounded-lg"
-                                                value={nuevaPlanilla.fechaFin}
-                                                onChange={e => setNuevaPlanilla({...nuevaPlanilla, fechaFin: e.target.value})}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">Descripción (Opcional)</label>
-                                        <input 
-                                            type="text" 
-                                            className="w-full px-3 py-2 border rounded-lg"
-                                            value={nuevaPlanilla.descripcion}
-                                            onChange={e => setNuevaPlanilla({...nuevaPlanilla, descripcion: e.target.value})}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">Archivo (Imagen/PDF)</label>
-                                        <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:bg-gray-50 transition-colors cursor-pointer relative">
-                                            <input 
-                                                type="file" 
-                                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                                                accept="image/*,application/pdf"
-                                                onChange={e => setNuevaPlanilla({...nuevaPlanilla, file: e.target.files ? e.target.files[0] : null})} 
-                                            />
-                                            <div className="pointer-events-none">
-                                                <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                                                <p className="text-sm text-gray-500">
-                                                    {nuevaPlanilla.file ? nuevaPlanilla.file.name : 'Click o arrastra archivo aquí'}
-                                                </p>
+                                    </form>
+                                </div>
+                            ) : (
+                                <div className="space-y-6">
+                                    {/* Filters */}
+                                    <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200 flex flex-wrap gap-4 items-center justify-between">
+                                        <div className="flex items-center gap-4 flex-1 min-w-[300px]">
+                                             <div className="relative flex-1">
+                                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+                                                <input 
+                                                    type="text" 
+                                                    placeholder="Buscar por líder o nombre..." 
+                                                    className="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 outline-none"
+                                                    value={busquedaPlanilla}
+                                                    onChange={e => setBusquedaPlanilla(e.target.value)}
+                                                />
+                                            </div>
+                                            <div className="relative w-48">
+                                                <select 
+                                                    className="w-full pl-3 pr-8 py-2 border border-gray-200 rounded-lg text-sm bg-white appearance-none focus:ring-2 focus:ring-primary/20 outline-none"
+                                                    value={filtroPlanillaStatus}
+                                                    onChange={e => setFiltroPlanillaStatus(e.target.value)}
+                                                >
+                                                    <option value="all">Todos los Estados</option>
+                                                    {ESTADOS_PLANILLA.map(st => (
+                                                        <option key={st.value} value={st.value}>{st.label}</option>
+                                                    ))}
+                                                </select>
+                                                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4 pointer-events-none" />
                                             </div>
                                         </div>
+                                        <div className="flex gap-1 bg-gray-50 p-1 rounded-lg border border-gray-200">
+                                            <button onClick={() => setFiltroPlanillaDate('all')} className={`px-3 py-1 text-xs font-medium rounded-md transition-all ${filtroPlanillaDate === 'all' ? 'bg-white shadow text-primary' : 'text-gray-500'}`}>Todo</button>
+                                            <button onClick={() => setFiltroPlanillaDate('today')} className={`px-3 py-1 text-xs font-medium rounded-md transition-all ${filtroPlanillaDate === 'today' ? 'bg-white shadow text-primary' : 'text-gray-500'}`}>Hoy</button>
+                                            <button onClick={() => setFiltroPlanillaDate('week')} className={`px-3 py-1 text-xs font-medium rounded-md transition-all ${filtroPlanillaDate === 'week' ? 'bg-white shadow text-primary' : 'text-gray-500'}`}>Semana</button>
+                                            <button onClick={() => setFiltroPlanillaDate('month')} className={`px-3 py-1 text-xs font-medium rounded-md transition-all ${filtroPlanillaDate === 'month' ? 'bg-white shadow text-primary' : 'text-gray-500'}`}>Mes</button>
+                                        </div>
                                     </div>
-                                    <button 
-                                        type="submit" 
-                                        disabled={uploading}
-                                        className="w-full py-2 bg-primary text-white rounded-lg hover:bg-primary-dark font-medium disabled:opacity-50"
-                                    >
-                                        {uploading ? 'Subiendo...' : 'Subir Planilla'}
-                                    </button>
-                                </form>
-                            </div>
+
+                                    {/* List */}
+                                    <div className="grid grid-cols-1 gap-4">
+                                        {planillas
+                                            .filter(p => {
+                                                const matchSearch = !busquedaPlanilla || 
+                                                    p.nombreOriginal.toLowerCase().includes(busquedaPlanilla.toLowerCase()) || 
+                                                    (p.lider && (p.lider.nombre + ' ' + p.lider.apellido).toLowerCase().includes(busquedaPlanilla.toLowerCase()));
+                                                const matchStatus = filtroPlanillaStatus === 'all' || p.estado === filtroPlanillaStatus;
+                                                return matchSearch && matchStatus;
+                                            })
+                                            .map(p => {
+                                                const EstadoIcon = ESTADOS_PLANILLA.find(e => e.value === p.estado)?.icon || AlertTriangle;
+                                                const estadoConfig = ESTADOS_PLANILLA.find(e => e.value === p.estado) || ESTADOS_PLANILLA[0];
+                                                
+                                                const isEditing = editingPlanilla === p.id;
+
+                                                return (
+                                                    <div key={p.id} className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 hover:shadow-md transition-all">
+                                                        <div className="flex justify-between items-start gap-4">
+                                                            <div className="flex items-start gap-4 flex-1">
+                                                                <div className="bg-indigo-50 p-3 rounded-lg text-indigo-600">
+                                                                    <FileText className="w-6 h-6" />
+                                                                </div>
+                                                                <div className="space-y-1 flex-1">
+                                                                    <div className="flex items-center gap-2">
+                                                                        <h4 className="font-bold text-gray-900">{p.nombreOriginal}</h4>
+                                                                        <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider ${estadoConfig.color}`}>
+                                                                            {estadoConfig.label}
+                                                                        </span>
+                                                                    </div>
+                                                                    <p className="text-sm text-gray-600">
+                                                                        <span className="font-medium">Líder:</span> {p.lider?.nombre} {p.lider?.apellido}
+                                                                    </p>
+                                                                    <div className="flex items-center gap-4 text-xs text-gray-500 mt-1">
+                                                                        <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> Subido: {new Date(p.fechaCarga).toLocaleDateString()}</span>
+                                                                        {p.fechaInicio && <span>Rango: {new Date(p.fechaInicio).toLocaleDateString()} - {new Date(p.fechaFin).toLocaleDateString()}</span>}
+                                                                    </div>
+                                                                    
+                                                                    {/* Notes Display */}
+                                                                    {!isEditing && p.notas && (
+                                                                         <div className="mt-3 bg-yellow-50 p-3 rounded-lg border border-yellow-100 text-sm text-yellow-800 flex items-start gap-2">
+                                                                            <MessageSquare className="w-4 h-4 mt-0.5 flex-shrink-0 opacity-50" />
+                                                                            <p>{p.notas}</p>
+                                                                         </div>
+                                                                    )}
+
+                                                                    {/* Description */}
+                                                                    {p.descripcion && <p className="text-sm text-gray-500 mt-2 italic">"{p.descripcion}"</p>}
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div className="flex flex-col gap-2 items-end">
+                                                                <a 
+                                                                    href={clienteAxios.defaults.baseURL?.replace('/api', '') + p.url} 
+                                                                    target="_blank" 
+                                                                    rel="noreferrer"
+                                                                    className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                                                                >
+                                                                    <Download className="w-3.5 h-3.5" /> Descargar
+                                                                </a>
+                                                                {!isEditing && (
+                                                                    <button 
+                                                                        onClick={() => startEditPlanilla(p)} 
+                                                                        className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition-colors"
+                                                                    >
+                                                                        <Edit className="w-3.5 h-3.5" /> Gestionar
+                                                                    </button>
+                                                                )}
+                                                            </div>
+                                                        </div>
+
+                                                        {/* Edit Mode */}
+                                                        {isEditing && (
+                                                            <div className="mt-4 pt-4 border-t border-gray-100 bg-gray-50/50 -mx-5 -mb-5 p-5 rounded-b-xl animate-in slide-in-from-top-2">
+                                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                                     <div>
+                                                                        <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Estado</label>
+                                                                        <select 
+                                                                            className="w-full px-3 py-2 border rounded-lg text-sm"
+                                                                            value={editData.estado}
+                                                                            onChange={e => setEditData({...editData, estado: e.target.value})}
+                                                                        >
+                                                                            {ESTADOS_PLANILLA.map(st => (
+                                                                                <option key={st.value} value={st.value}>{st.label}</option>
+                                                                            ))}
+                                                                        </select>
+                                                                    </div>
+                                                                    <div>
+                                                                        <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Notas / Observaciones</label>
+                                                                        <textarea 
+                                                                            className="w-full px-3 py-2 border rounded-lg text-sm h-[38px] min-h-[38px] resize-none focus:h-20 transition-all"
+                                                                            value={editData.notas}
+                                                                            onChange={e => setEditData({...editData, notas: e.target.value})}
+                                                                            placeholder="Añadir nota..."
+                                                                        />
+                                                                    </div>
+                                                                </div>
+                                                                <div className="flex justify-end gap-2 mt-3">
+                                                                    <button onClick={() => setEditingPlanilla(null)} className="px-3 py-1.5 text-sm text-gray-600 hover:text-gray-800">Cancelar</button>
+                                                                    <button onClick={() => handleUpdatePlanilla(p.id)} className="px-4 py-1.5 text-sm bg-primary text-white rounded-lg hover:bg-primary-dark font-medium flex items-center gap-2">
+                                                                        <Save className="w-3.5 h-3.5" /> Guardar Cambios
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                );
+                                            })}
+                                        
+                                        {planillas.length === 0 && (
+                                            <div className="text-center py-10 bg-white rounded-xl border border-dashed border-gray-300">
+                                                <p className="text-gray-400">No hay planillas que coincidan con los filtros.</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                  </div>

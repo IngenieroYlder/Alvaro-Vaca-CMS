@@ -30,4 +30,10 @@ export class Planilla {
   @ManyToOne(() => Usuario)
   @JoinColumn({ name: 'liderId' })
   lider: Usuario;
+
+  @Column({ default: 'Pendiente para verificar' })
+  estado: string;
+
+  @Column({ type: 'text', nullable: true })
+  notas: string;
 }

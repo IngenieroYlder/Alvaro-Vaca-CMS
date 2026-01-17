@@ -31,6 +31,17 @@ export class PlanillasService {
     return await query.getMany();
   }
 
+  async update(id: string, data: { estado?: string; notas?: string }) {
+    const planilla = await this.planillaRepository.findOne({ where: { id } });
+    if (!planilla) throw new NotFoundException('Planilla no encontrada');
+    
+    // Only update allowed fields
+    if (data.estado !== undefined) planilla.estado = data.estado;
+    if (data.notas !== undefined) planilla.notas = data.notas;
+    
+    return await this.planillaRepository.save(planilla);
+  }
+
   async remove(id: string) {
     const result = await this.planillaRepository.delete(id);
     if (result.affected === 0) throw new NotFoundException('Planilla no encontrada');
