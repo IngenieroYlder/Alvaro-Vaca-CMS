@@ -187,8 +187,8 @@ export class ReunionesService {
     const reunion = await this.reunionRepository.findOne({ where: { id } });
     if (!reunion) throw new NotFoundException('Reunión no encontrada');
 
-    const baseUrl = process.env.FRONTEND_URL || 'https://patios.colombiapictures.co';
-    const codeUrl = `${baseUrl}/reuniones/formulario/${reunion.codigo}`;
+    const prodUrl = 'https://alvarovaca.com.co';
+    const codeUrl = `${prodUrl}/reuniones/formulario/${reunion.codigo}`;
 
     const qrBuffer = await QRCode.toBuffer(codeUrl);
     
@@ -198,7 +198,10 @@ export class ReunionesService {
         doc.on('data', buffers.push.bind(buffers));
         doc.on('end', () => resolve(Buffer.concat(buffers)));
 
-        // Standard Header (White Background, Logos)
+        // Header Background (Green)
+        doc.rect(0, 0, doc.page.width, 110).fill('#059669'); // Increased height to contain logos
+
+        // Logos
         const logoPath = path.join(process.cwd(), 'public', 'assets', 'logo.png');
         const secondaryLogoPath = path.join(process.cwd(), 'public', 'assets', '4_LOGO.png');
         
@@ -206,25 +209,27 @@ export class ReunionesService {
 
         // 1. Primary Logo
         if (fs.existsSync(logoPath)) {
-            doc.image(logoPath, 30, headerY, { height: 40 });
+            doc.image(logoPath, 30, headerY, { height: 50 });
         }
         
         // 2. Secondary Logo (Party)
         if (fs.existsSync(secondaryLogoPath)) {
-             doc.image(secondaryLogoPath, 150, headerY, { height: 40 });
+             // Calculate right position: Page Width (approx 420 for A5) - Margin - Image Width
+             // A5 width is ~420 points. 
+             doc.image(secondaryLogoPath, 320, headerY, { height: 50 });
         }
 
-        // Title text centered or aligned
-        doc.fillColor('#059669') // Green
-           .fontSize(16)
+        // Title (Centered & White)
+        doc.fillColor('white') 
+           .fontSize(18)
            .font('Helvetica-Bold')
-           .text('REGISTRO DE ASISTENCIA', 0, headerY + 50, { align: 'center' });
-           
-        doc.moveDown(2);
+           .text('REGISTRO DE ASISTENCIA', 0, headerY + 15, { align: 'center' }); // Centered vertically relative to logos
+
+        doc.moveDown(4);
         
         // Info (Centered)
         doc.fill('black');
-        doc.fontSize(12); // Slightly larger for readability
+        doc.fontSize(12);
         
         const liderText = `Líder: ${reunion.liderNombre || 'N/A'}`;
         const fechaText = `Fecha: ${reunion.fecha ? new Date(reunion.fecha).toLocaleString() : ''}`;
@@ -241,7 +246,7 @@ export class ReunionesService {
         const qrX = (doc.page.width - qrSize) / 2;
         doc.image(qrBuffer, qrX, doc.y, { fit: [qrSize, qrSize] }); 
         
-        // Move cursor down AFTER image (image doesn't move it automatically)
+        // Move cursor down AFTER image
         doc.y += qrSize + 20;
         
         // Code
@@ -252,16 +257,12 @@ export class ReunionesService {
         
         doc.moveDown(0.5);
         
-        // Link
-        const displayUrl = 'https://alvarovaca.com.co';
-        // Use environment variable if available, otherwise fallback to the correct domain
-        const actualUrl = process.env.FRONTEND_URL || displayUrl;
-        
+        // Link (Production URL)
         doc.fontSize(9).fill('#059669').text(codeUrl, { align: 'center', link: codeUrl, underline: true });
 
         // Footer
         const footerY = doc.page.height - 40;
-        const footerText = `${displayUrl} - Alvaro Vaca - Desarrollado por Ingeniero Ylder Gonzalez`;
+        const footerText = `${prodUrl} - Alvaro Vaca - Desarrollado por Ingeniero Ylder Gonzalez`;
         doc.fontSize(8).fill('gray').text(footerText, 0, footerY, { align: 'center' });
 
         doc.end();
