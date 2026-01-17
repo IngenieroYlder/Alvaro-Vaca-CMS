@@ -24,6 +24,12 @@ export default function Usuarios() {
     const { usuario: usuarioActual, esAdmin } = useAuth();
     const [usuarios, setUsuarios] = useState<Usuario[]>([]);
     const [coordinadores, setCoordinadores] = useState<Usuario[]>([]);
+    const [rolesDisponibles, setRolesDisponibles] = useState<Rol[]>([]);
+    const [cargando, setCargando] = useState(false);
+    const [busqueda, setBusqueda] = useState('');
+    const [modalAbierto, setModalAbierto] = useState(false);
+    const [usuarioEditar, setUsuarioEditar] = useState<Usuario | null>(null);
+    const [usuarioAEliminar, setUsuarioAEliminar] = useState<Usuario | null>(null);
 
     useEffect(() => {
         cargarUsuarios();
@@ -37,6 +43,27 @@ export default function Usuarios() {
             setCoordinadores(data);
         } catch (error) {
             console.error('Error cargando coordinadores:', error);
+        }
+    };
+
+    const cargarUsuarios = async () => {
+        setCargando(true);
+        try {
+            const { data } = await clienteAxios.get('/usuarios');
+            setUsuarios(data);
+        } catch (error) {
+            console.error('Error cargando usuarios:', error);
+        } finally {
+            setCargando(false);
+        }
+    };
+
+    const cargarRoles = async () => {
+        try {
+            const { data } = await clienteAxios.get('/roles');
+            setRolesDisponibles(data);
+        } catch (error) {
+            console.error('Error cargando roles:', error);
         }
     };
 
@@ -126,53 +153,7 @@ export default function Usuarios() {
     
     // ... (rest of methods until render)
     
-    // In Modal Render:
-                                <div className="space-y-2">
-                                    <label className="text-sm font-medium text-gray-700">Rol</label>
-                                    <select
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none bg-white"
-                                        value={formData.roles}
-                                        onChange={e => setFormData({ ...formData, roles: e.target.value })}
-                                        disabled={usuarioActual?.roles.includes('coordinador') && !esAdmin}
-                                    >
-                                        <option value="usuario">Seleccionar Rol...</option>
-                                        {rolesDisponibles
-                                            .filter(rol => {
-                                                if (usuarioActual?.roles.includes('coordinador') && !esAdmin) {
-                                                    return rol.nombre === 'lider';
-                                                }
-                                                return true;
-                                            })
-                                            .map(rol => (
-                                            <option key={rol.id} value={rol.nombre}>{rol.nombre.charAt(0).toUpperCase() + rol.nombre.slice(1)}</option>
-                                        ))}
 
-                                        {puedoAsignarGod && (
-                                            <option value="god">👑 Modo Dios (Super Admin)</option>
-                                        )}
-                                    </select>
-                                </div>
-                                
-                                {formData.roles === 'lider' && (esAdmin || usuarioActual?.roles.includes('god')) && (
-                                     <div className="space-y-2 col-span-2">
-                                        <label className="text-sm font-medium text-gray-700">Coordinador Asignado</label>
-                                        <select
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none bg-white"
-                                            value={formData.coordinatorId}
-                                            onChange={e => setFormData({ ...formData, coordinatorId: e.target.value })}
-                                        >
-                                            <option value="">-- Sin Coordinador --</option>
-                                            {coordinadores.map(c => (
-                                                <option key={c.id} value={c.id}>
-                                                    {c.nombre} {c.apellido}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <p className="text-xs text-gray-500">
-                                            Asigna este líder a un coordinador para que pueda gestionar sus reuniones.
-                                        </p>
-                                    </div>
-                                )}
 
     const confirmarEliminacion = (usuario: Usuario) => {
         setUsuarioAEliminar(usuario);
@@ -464,6 +445,27 @@ export default function Usuarios() {
                                         )}
                                     </select>
                                 </div>
+
+                                {formData.roles === 'lider' && (esAdmin || usuarioActual?.roles.includes('god')) && (
+                                     <div className="space-y-2 col-span-2">
+                                        <label className="text-sm font-medium text-gray-700">Coordinador Asignado</label>
+                                        <select
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none bg-white"
+                                            value={formData.coordinatorId}
+                                            onChange={e => setFormData({ ...formData, coordinatorId: e.target.value })}
+                                        >
+                                            <option value="">-- Sin Coordinador --</option>
+                                            {coordinadores.map(c => (
+                                                <option key={c.id} value={c.id}>
+                                                    {c.nombre} {c.apellido}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <p className="text-xs text-gray-500">
+                                            Asigna este líder a un coordinador para que pueda gestionar sus reuniones.
+                                        </p>
+                                    </div>
+                                )}
 
                                 <div className="space-y-2">
                                     <label className="text-sm font-medium text-gray-700">Estado</label>
