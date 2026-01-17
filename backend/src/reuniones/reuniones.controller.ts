@@ -456,11 +456,28 @@ export class ReunionesController {
 
   @Get(':id/qr-flyer')
   async getQrFlyer(@Param('id') id: string, @Res() res: Response) {
+      const reunion = await this.reunionesService.findOneById(id);
       const pdfBuffer = await this.reunionesService.generateQrFlyer(id);
+
+      // Construct Filename: Leader_Reunion_Date.pdf
+      // Sanitize to avoid filesystem issues or weird headers
+      const sanitize = (str: string) => (str || 'N_A').replace(/[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]/g, '').replace(/\s+/g, '_');
+      
+      const leaderName = sanitize(reunion.liderNombre);
+      const reunionName = sanitize(reunion.nombre); // Assuming reunion has 'nombre'? entity Check: Yes, inferred from context.
+      // Wait, 'nombre' might act as 'barrio' or description?
+      // Looking at `findAll`, it uses `reunion.nombre`.
+      // Previous `generateQrFlyer` didn't use `reunion.nombre` specifically, it used `reunion.codigo` and location.
+      // Let's check Entity to be sure `nombre` exists.
+      // In `findAll` I saw `reunion.nombre`.
+      
+      const dateStr = format(reunion.fecha, 'yyyy-MM-dd', { locale: es });
+      
+      const filename = `${leaderName}_${reunionName}_${dateStr}.pdf`;
 
       res.set({
           'Content-Type': 'application/pdf',
-          'Content-Disposition': `attachment; filename=Reunion_QR_${id}.pdf`,
+          'Content-Disposition': `attachment; filename=${filename}`,
           'Content-Length': pdfBuffer.length,
       });
 

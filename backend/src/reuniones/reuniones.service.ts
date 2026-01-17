@@ -66,6 +66,12 @@ export class ReunionesService {
     return reunion;
   }
 
+  async findOneById(id: string) {
+    const reunion = await this.reunionRepository.findOne({ where: { id } });
+    if (!reunion) throw new NotFoundException('Reunión no encontrada');
+    return reunion;
+  }
+
   async registerAttendee(registerDto: RegisterAttendeeDto) {
     const reunion = await this.findByCode(registerDto.codigoReunion);
     
