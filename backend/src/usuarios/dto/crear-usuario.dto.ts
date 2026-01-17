@@ -36,4 +36,8 @@ export class CrearUsuarioDto {
 
   @IsOptional()
   roles?: string[];
+
+  @IsOptional()
+  @IsString()
+  coordinatorId?: string;
 }

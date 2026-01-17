@@ -15,4 +15,8 @@ export class ActualizarUsuarioDto extends PartialType(CrearUsuarioDto) {
   @IsOptional()
   @IsString()
   fotoPerfil?: string;
+
+  @IsOptional()
+  @IsString()
+  coordinatorId?: string;
 }

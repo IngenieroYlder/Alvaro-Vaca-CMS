@@ -23,54 +23,38 @@ interface Rol {
 export default function Usuarios() {
     const { usuario: usuarioActual, esAdmin } = useAuth();
     const [usuarios, setUsuarios] = useState<Usuario[]>([]);
-    const [rolesDisponibles, setRolesDisponibles] = useState<Rol[]>([]);
-    const [cargando, setCargando] = useState(false);
-    const [busqueda, setBusqueda] = useState('');
-    const [modalAbierto, setModalAbierto] = useState(false);
-    const [usuarioEditar, setUsuarioEditar] = useState<Usuario | null>(null);
-    const [usuarioAEliminar, setUsuarioAEliminar] = useState<Usuario | null>(null);
+    const [coordinadores, setCoordinadores] = useState<Usuario[]>([]);
 
-    // Form State
+    useEffect(() => {
+        cargarUsuarios();
+        cargarRoles();
+        cargarCoordinadores();
+    }, []);
+
+    const cargarCoordinadores = async () => {
+        try {
+            const { data } = await clienteAxios.get('/usuarios?role=coordinador');
+            setCoordinadores(data);
+        } catch (error) {
+            console.error('Error cargando coordinadores:', error);
+        }
+    };
+
+    // Form State (Updated with coordinatorId)
     const [formData, setFormData] = useState({
         nombre: '',
         apellido: '',
         documento: '',
         email: '',
         contrasena: '',
-        roles: 'usuario', // Default
+        roles: 'usuario',
+        coordinatorId: '',
         activo: true
     });
-
-    useEffect(() => {
-        cargarUsuarios();
-        cargarRoles();
-    }, []);
-
-    const cargarUsuarios = async () => {
-        setCargando(true);
-        try {
-            const { data } = await clienteAxios.get('/usuarios');
-            setUsuarios(data);
-        } catch (error) {
-            console.error('Error cargando usuarios:', error);
-        } finally {
-            setCargando(false);
-        }
-    };
-
-    const cargarRoles = async () => {
-        try {
-            const { data } = await clienteAxios.get('/roles');
-            setRolesDisponibles(data);
-        } catch (error) {
-            console.error('Error cargando roles:', error);
-        }
-    };
 
     const handleOpenModal = (usuario?: Usuario) => {
         if (usuario) {
             setUsuarioEditar(usuario);
-            // Detect primary role or 'god'
             let initialRole = 'usuario';
             if (usuario.roles.includes('god')) initialRole = 'god';
             else if (usuario.roles.length > 0) initialRole = usuario.roles[0];
@@ -82,12 +66,11 @@ export default function Usuarios() {
                 email: usuario.email,
                 contrasena: '',
                 roles: initialRole,
+                coordinatorId: (usuario as any).coordinatorId || '',
                 activo: usuario.activo
             });
         } else {
             setUsuarioEditar(null);
-            
-            // Default role logic
             const isCoordinador = usuarioActual?.roles.includes('coordinador') && !esAdmin;
             
             setFormData({
@@ -97,6 +80,7 @@ export default function Usuarios() {
                 email: '',
                 contrasena: '',
                 roles: isCoordinador ? 'lider' : 'usuario',
+                coordinatorId: '',
                 activo: true
             });
         }
@@ -106,9 +90,6 @@ export default function Usuarios() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            // Logic for roles: if 'god' selected, imply admin too? Or just god.
-            // User requested: "convert them in admin too".
-            // If God is selected, we send ['god', 'admin'] to be safe and powerful.
             let rolesToSend = [formData.roles];
             if (formData.roles === 'god') {
                 rolesToSend = ['god', 'admin'];
@@ -120,7 +101,8 @@ export default function Usuarios() {
                 documento: formData.documento,
                 email: formData.email,
                 roles: rolesToSend,
-                activo: formData.activo
+                activo: formData.activo,
+                coordinatorId: formData.coordinatorId || null
             };
 
             if (formData.contrasena) {
@@ -141,6 +123,56 @@ export default function Usuarios() {
             alert('Error al guardar: ' + (error.response?.data?.message || error.message));
         }
     };
+    
+    // ... (rest of methods until render)
+    
+    // In Modal Render:
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium text-gray-700">Rol</label>
+                                    <select
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none bg-white"
+                                        value={formData.roles}
+                                        onChange={e => setFormData({ ...formData, roles: e.target.value })}
+                                        disabled={usuarioActual?.roles.includes('coordinador') && !esAdmin}
+                                    >
+                                        <option value="usuario">Seleccionar Rol...</option>
+                                        {rolesDisponibles
+                                            .filter(rol => {
+                                                if (usuarioActual?.roles.includes('coordinador') && !esAdmin) {
+                                                    return rol.nombre === 'lider';
+                                                }
+                                                return true;
+                                            })
+                                            .map(rol => (
+                                            <option key={rol.id} value={rol.nombre}>{rol.nombre.charAt(0).toUpperCase() + rol.nombre.slice(1)}</option>
+                                        ))}
+
+                                        {puedoAsignarGod && (
+                                            <option value="god">👑 Modo Dios (Super Admin)</option>
+                                        )}
+                                    </select>
+                                </div>
+                                
+                                {formData.roles === 'lider' && (esAdmin || usuarioActual?.roles.includes('god')) && (
+                                     <div className="space-y-2 col-span-2">
+                                        <label className="text-sm font-medium text-gray-700">Coordinador Asignado</label>
+                                        <select
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none bg-white"
+                                            value={formData.coordinatorId}
+                                            onChange={e => setFormData({ ...formData, coordinatorId: e.target.value })}
+                                        >
+                                            <option value="">-- Sin Coordinador --</option>
+                                            {coordinadores.map(c => (
+                                                <option key={c.id} value={c.id}>
+                                                    {c.nombre} {c.apellido}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <p className="text-xs text-gray-500">
+                                            Asigna este líder a un coordinador para que pueda gestionar sus reuniones.
+                                        </p>
+                                    </div>
+                                )}
 
     const confirmarEliminacion = (usuario: Usuario) => {
         setUsuarioAEliminar(usuario);
