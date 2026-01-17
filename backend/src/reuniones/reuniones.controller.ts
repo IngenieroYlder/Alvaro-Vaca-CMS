@@ -170,7 +170,7 @@ export class ReunionesController {
   @Get('unique')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin', 'god', 'permiso_ver_asistentes', 'lider') // Added 'lider'
-  findAllUnique(
+  async findAllUnique(
       @Req() req: any,
       @Query('dateStart') dateStart?: string,
       @Query('dateEnd') dateEnd?: string,
@@ -180,13 +180,22 @@ export class ReunionesController {
   ) {
       const user = req.user;
       const canViewAll = user.roles.includes('admin') || user.roles.includes('god') || user.roles.includes('permiso_ver_asistentes');
+      const isCoordinador = user.roles.includes('coordinador') && !canViewAll;
       
       let leaderId = undefined;
+      let leaderIds: string[] | undefined = undefined;
+
       if (!canViewAll) {
-          leaderId = user.id;
+          if (isCoordinador) {
+             const myLeaders = await this.usuariosService.listarTodos(undefined, user.id);
+             leaderIds = myLeaders.map(u => u.id);
+             leaderIds.push(user.id);
+          } else {
+             leaderId = user.id;
+          }
       }
 
-      return this.reunionesService.findAllUnique({ dateStart, dateEnd, municipio, departamento, reunionId, leaderId });
+      return this.reunionesService.findAllUnique({ dateStart, dateEnd, municipio, departamento, reunionId, leaderId, leaderIds });
   }
 
   @Get(':code')
