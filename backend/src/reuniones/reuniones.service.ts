@@ -211,38 +211,29 @@ export class ReunionesService {
         const logoPath = path.join(process.cwd(), 'public', 'assets', 'logo.png');
         const secondaryLogoPath = path.join(process.cwd(), 'public', 'assets', '4_LOGO.png');
         
-        let headerY = 20; // Slightly higher to accommodate larger logos
-        const logoHeight = 60;
+        let headerY = 20; 
+        const leftLogoHeight = 85; // Increased for visual balance
+        const rightLogoHeight = 60;
         
-        // Calculate center positions
-        // A5 Width ~420. Center ~210.
-        // We want to place two logos centered.
-        // Est width per logo ~100 (at height 60, depending on AR).
-        // Let's assume combined width is ~200 + gap 20 = 220.
-        // Start X approx: 210 - 110 = 100.
-        
-        const centerOffset = 20; // Gap between logos / 2
-
-        // 1. Primary Logo (Alvaro Vaca) - Place it to the Left of Center
+        // 1. Primary Logo (Alvaro Vaca) - Taller
         if (fs.existsSync(logoPath)) {
-            // Estimating width around 80-100. Let's align it such that it ends near center.
-            // But pdfkit requires top-left X.
-            // Let's try explicit hardcoded positions that looked calculated.
-            // X = 110.
-            doc.image(logoPath, 110, headerY, { height: logoHeight });
+            // Shift X left slightly to acccomodate wider aspect ratio at new height
+            doc.image(logoPath, 90, headerY, { height: leftLogoHeight });
         }
         
-        // 2. Secondary Logo (Party) - Place it to the Right of Center
+        // 2. Secondary Logo (Party) - Vertically Centered relative to Left
         if (fs.existsSync(secondaryLogoPath)) {
-             // X = 210 + margin.
-             doc.image(secondaryLogoPath, 230, headerY, { height: logoHeight });
+             const yOffset = (leftLogoHeight - rightLogoHeight) / 2;
+             // Shift X right to prevent overlap
+             doc.image(secondaryLogoPath, 240, headerY + yOffset, { height: rightLogoHeight });
         }
 
         // Title (Centered & White) - Moved DOWN below logos
+        // Use max height for offset
         doc.fillColor('white') 
            .fontSize(18)
            .font('Helvetica-Bold')
-           .text('REGISTRO DE ASISTENCIA', 0, headerY + logoHeight + 20, { align: 'center' }); // Dynamic Y
+           .text('REGISTRO DE ASISTENCIA', 0, headerY + leftLogoHeight + 15, { align: 'center' }); 
 
         doc.moveDown(4);
         
