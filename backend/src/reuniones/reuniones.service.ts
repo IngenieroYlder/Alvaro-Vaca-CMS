@@ -211,25 +211,38 @@ export class ReunionesService {
         const logoPath = path.join(process.cwd(), 'public', 'assets', 'logo.png');
         const secondaryLogoPath = path.join(process.cwd(), 'public', 'assets', '4_LOGO.png');
         
-        let headerY = 30;
+        let headerY = 20; // Slightly higher to accommodate larger logos
+        const logoHeight = 60;
+        
+        // Calculate center positions
+        // A5 Width ~420. Center ~210.
+        // We want to place two logos centered.
+        // Est width per logo ~100 (at height 60, depending on AR).
+        // Let's assume combined width is ~200 + gap 20 = 220.
+        // Start X approx: 210 - 110 = 100.
+        
+        const centerOffset = 20; // Gap between logos / 2
 
-        // 1. Primary Logo
+        // 1. Primary Logo (Alvaro Vaca) - Place it to the Left of Center
         if (fs.existsSync(logoPath)) {
-            doc.image(logoPath, 30, headerY, { height: 50 });
+            // Estimating width around 80-100. Let's align it such that it ends near center.
+            // But pdfkit requires top-left X.
+            // Let's try explicit hardcoded positions that looked calculated.
+            // X = 110.
+            doc.image(logoPath, 110, headerY, { height: logoHeight });
         }
         
-        // 2. Secondary Logo (Party)
+        // 2. Secondary Logo (Party) - Place it to the Right of Center
         if (fs.existsSync(secondaryLogoPath)) {
-             // Calculate right position: Page Width (approx 420 for A5) - Margin - Image Width
-             // A5 width is ~420 points. 
-             doc.image(secondaryLogoPath, 320, headerY, { height: 50 });
+             // X = 210 + margin.
+             doc.image(secondaryLogoPath, 230, headerY, { height: logoHeight });
         }
 
         // Title (Centered & White) - Moved DOWN below logos
         doc.fillColor('white') 
            .fontSize(18)
            .font('Helvetica-Bold')
-           .text('REGISTRO DE ASISTENCIA', 0, headerY + 65, { align: 'center' }); // y ~ 95
+           .text('REGISTRO DE ASISTENCIA', 0, headerY + logoHeight + 20, { align: 'center' }); // Dynamic Y
 
         doc.moveDown(4);
         
