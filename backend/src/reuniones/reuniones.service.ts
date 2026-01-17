@@ -221,20 +221,28 @@ export class ReunionesService {
         const qrSize = 180;
         const qrX = (doc.page.width - qrSize) / 2;
         doc.image(qrBuffer, qrX, doc.y, { fit: [qrSize, qrSize] }); 
-        doc.moveDown(0.5);
+        
+        // Move cursor down AFTER image (image doesn't move it automatically)
+        doc.y += qrSize + 20;
         
         // Code
         doc.fontSize(28).font('Helvetica-Bold').text(`${reunion.codigo}`, { align: 'center' });
+        doc.moveDown(0.5);
+        
         doc.fontSize(10).font('Helvetica').text('Escanea este código o ingresa el número para registrarte', { align: 'center' });
         
         doc.moveDown(0.5);
         
         // Link
+        const displayUrl = 'https://alvarovaca.com.co';
+        // Use environment variable if available, otherwise fallback to the correct domain
+        const actualUrl = process.env.FRONTEND_URL || displayUrl;
+        
         doc.fontSize(9).fill('#059669').text(codeUrl, { align: 'center', link: codeUrl, underline: true });
 
         // Footer
         const footerY = doc.page.height - 40;
-        const footerText = `${baseUrl} - Alvaro Vaca - Desarrollado por Ingeniero Ylder Gonzalez`;
+        const footerText = `${displayUrl} - Alvaro Vaca - Desarrollado por Ingeniero Ylder Gonzalez`;
         doc.fontSize(8).fill('gray').text(footerText, 0, footerY, { align: 'center' });
 
         doc.end();
