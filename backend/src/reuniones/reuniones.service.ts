@@ -205,37 +205,35 @@ export class ReunionesService {
         doc.on('end', () => resolve(Buffer.concat(buffers)));
 
         // Header Background (Green)
-        doc.rect(0, 0, doc.page.width, 130).fill('#059669'); // Increased height to 130
+        doc.rect(0, 0, doc.page.width, 160).fill('#059669'); // Increased height to 160 to fit title
 
         // Logos
         const logoPath = path.join(process.cwd(), 'public', 'assets', 'logo.png');
         const secondaryLogoPath = path.join(process.cwd(), 'public', 'assets', '4_LOGO.png');
         
         let headerY = 20; 
-        const leftLogoHeight = 85; // Increased for visual balance
+        const leftLogoHeight = 85; 
         const rightLogoHeight = 60;
         
-        // 1. Primary Logo (Alvaro Vaca) - Taller
+        // 1. Primary Logo (Alvaro Vaca) 
         if (fs.existsSync(logoPath)) {
-            // Shift X left slightly to acccomodate wider aspect ratio at new height
             doc.image(logoPath, 90, headerY, { height: leftLogoHeight });
         }
         
-        // 2. Secondary Logo (Party) - Vertically Centered relative to Left
+        // 2. Secondary Logo (Party)
         if (fs.existsSync(secondaryLogoPath)) {
              const yOffset = (leftLogoHeight - rightLogoHeight) / 2;
-             // Shift X right to prevent overlap
              doc.image(secondaryLogoPath, 240, headerY + yOffset, { height: rightLogoHeight });
         }
 
-        // Title (Centered & White) - Moved DOWN below logos
-        // Use max height for offset
+        // Title 
         doc.fillColor('white') 
            .fontSize(18)
            .font('Helvetica-Bold')
            .text('REGISTRO DE ASISTENCIA', 0, headerY + leftLogoHeight + 15, { align: 'center' }); 
 
-        doc.moveDown(4);
+        // Reduce spacing to fit everything on A5
+        doc.moveDown(2); // Reduced from 4
         
         // Info (Centered)
         doc.fill('black');
@@ -252,16 +250,16 @@ export class ReunionesService {
         doc.moveDown(1);
         
         // QR (Calculated Center)
-        const qrSize = 180;
+        const qrSize = 150; // Reduced from 180 to prevent footer overlap
         const qrX = (doc.page.width - qrSize) / 2;
         doc.image(qrBuffer, qrX, doc.y, { fit: [qrSize, qrSize] }); 
         
         // Move cursor down AFTER image
-        doc.y += qrSize + 20;
+        doc.y += qrSize + 15;
         
         // Code
         doc.fontSize(28).font('Helvetica-Bold').text(`${reunion.codigo}`, { align: 'center' });
-        doc.moveDown(0.5);
+        doc.moveDown(0.2);
         
         doc.fontSize(10).font('Helvetica').text('Escanea este código o ingresa el número para registrarte', { align: 'center' });
         
@@ -271,7 +269,7 @@ export class ReunionesService {
         doc.fontSize(9).fill('#059669').text(codeUrl, { align: 'center', link: codeUrl, underline: true });
 
         // Footer
-        const footerY = doc.page.height - 40;
+        const footerY = doc.page.height - 30; // Closer to bottom
         const footerText = `${prodUrl} - Alvaro Vaca - Desarrollado por Ingeniero Ylder Gonzalez`;
         doc.fontSize(8).fill('gray').text(footerText, 0, footerY, { align: 'center' });
 
