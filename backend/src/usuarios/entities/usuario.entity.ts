@@ -40,6 +40,9 @@ export class Usuario {
   @Column({ default: true })
   activo: boolean;
 
+  @Column({ nullable: true })
+  coordinatorId: string; // Link to the Coordinator who created this user (Hierarchy)
+
   // Roles como array simple por ahora (ej: ['admin', 'usuario'])
   // Más adelante se puede migrar a tabla Roles si se requiere granularidad extrema
   @Column('simple-array', { default: 'usuario' })

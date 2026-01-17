@@ -37,6 +37,8 @@ export class UsuariosController {
     if (isCoordinador) {
         // Force role to 'lider' if created by a coordinator
         crearUsuarioDto.roles = ['lider'];
+        // Assign the Creator as the Coordinator
+        (crearUsuarioDto as any).coordinatorId = req.user.id;
     }
     
     return this.usuariosService.crear(crearUsuarioDto);
@@ -79,8 +81,9 @@ export class UsuariosController {
     const isCoordinadorOnly = userRole.includes('coordinador') && !userRole.includes('admin') && !userRole.includes('god');
 
     if (isCoordinadorOnly) {
-        // Coordinators can ONLY see 'lider' users
-        return this.usuariosService.listarTodos('lider');
+        // Coordinators can ONLY see 'lider' users THAT THEY CREATED (or are assigned to)
+        // We pass the coordinator's ID to the service filter
+        return this.usuariosService.listarTodos('lider', req.user.id);
     }
 
     return this.usuariosService.listarTodos(role);

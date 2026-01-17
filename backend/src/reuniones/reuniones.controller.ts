@@ -11,9 +11,14 @@ import { JwtAuthGuard } from '../autenticacion/guards/jwt-auth.guard';
 import { RolesGuard } from '../autenticacion/guards/roles.guard';
 import { Roles } from '../autenticacion/decorators/roles.decorator';
 
+import { UsuariosService } from '../usuarios/usuarios.service';
+
 @Controller('reuniones')
 export class ReunionesController {
-  constructor(private readonly reunionesService: ReunionesService) {}
+  constructor(
+      private readonly reunionesService: ReunionesService,
+      private readonly usuariosService: UsuariosService // Injected
+  ) {}
 
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -107,7 +112,7 @@ export class ReunionesController {
 
   @Get()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('lider', 'admin', 'god', 'permiso_ver_asistentes')
+  @Roles('lider', 'admin', 'god', 'permiso_ver_asistentes', 'coordinador') // Ensure coordinador is here
   async findAll(
     @Req() req: any,
     @Query('leader') leader?: string,
@@ -120,11 +125,23 @@ export class ReunionesController {
   ) {
     const user = req.user;
     const canViewAll = user.roles.includes('admin') || user.roles.includes('god') || user.roles.includes('permiso_ver_asistentes');
+    const isCoordinador = user.roles.includes('coordinador') && !canViewAll;
     
     // Enforce leader filter if not privileged
     let leaderIdFilter = undefined;
+    let leaderIdsFilter: string[] | undefined = undefined;
+
     if (!canViewAll) {
-        leaderIdFilter = user.id;
+        if (isCoordinador) {
+            // Fetch leaders managed by this coordinator
+            const myLeaders = await this.usuariosService.listarTodos(undefined, user.id);
+            leaderIdsFilter = myLeaders.map(u => u.id);
+            // Also include self if coordinator acts as leader? Typically yes.
+            leaderIdsFilter.push(user.id);
+        } else {
+            // Ordinary Leader
+            leaderIdFilter = user.id;
+        }
     }
 
     const reuniones = await this.reunionesService.findAll({ 
@@ -135,7 +152,8 @@ export class ReunionesController {
         municipio,
         departamento,
         reunionId,
-        leaderId: leaderIdFilter // Pass restricted leader ID
+        leaderId: leaderIdFilter,
+        leaderIds: leaderIdsFilter // Pass list
     });
     
     // Even if they get the meetings, if they are restricted, they should only see their own.

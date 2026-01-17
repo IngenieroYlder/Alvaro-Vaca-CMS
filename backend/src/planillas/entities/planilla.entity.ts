@@ -18,6 +18,12 @@ export class Planilla {
   @Column({ nullable: true })
   descripcion: string;
 
+  @Column({ nullable: true })
+  fechaInicio: Date;
+
+  @Column({ nullable: true })
+  fechaFin: Date;
+
   @Column()
   liderId: string;
 

@@ -100,24 +100,16 @@ export class UsuariosService {
     return await this.usuariosRepository.findOne({ where: { id } });
   }
 
-  async listarTodos(role?: string): Promise<Usuario[]> {
+  async listarTodos(role?: string, coordinatorId?: string): Promise<Usuario[]> {
     const query = this.usuariosRepository.createQueryBuilder('usuario')
       .orderBy('usuario.creadoEn', 'DESC');
 
     if (role) {
-      // Postgres array contains: @>
-      // We need to match if the array contains the role. 
-      // simple-array in TypeORM is string, but in Postgres it's text or valid array?
-      // TypeORM 'simple-array' stores as comma separated string usually in some DBs, 
-      // but in Postgres with 'simple-array' it often treats it as text. 
-      // IF the entity uses @Column("simple-array"), it is a string in memory but text in DB (csv).
-      // IF @Column("text", { array: true }), it is native array.
-      // Let's check entity. Assuming simple-array (CSV string). 
-      // If it is CSV string, we use LIKE.
-      
-      // Checking entity... (I can't see it right now but standard in this project likely simple-array)
-      // Safest for 'simple-array' (string):
       query.andWhere('usuario.roles LIKE :role', { role: `%${role}%` });
+    }
+
+    if (coordinatorId) {
+        query.andWhere('usuario.coordinatorId = :coordId', { coordId: coordinatorId });
     }
 
     return await query.getMany();

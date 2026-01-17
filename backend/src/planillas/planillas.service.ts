@@ -10,18 +10,22 @@ export class PlanillasService {
     private readonly planillaRepository: Repository<Planilla>,
   ) {}
 
-  async create(data: { url: string; nombreOriginal: string; liderId: string; descripcion?: string }) {
+  async create(data: { url: string; nombreOriginal: string; liderId: string; descripcion?: string; fechaInicio?: Date; fechaFin?: Date }) {
     const planilla = this.planillaRepository.create(data);
     return await this.planillaRepository.save(planilla);
   }
 
-  async findAll(leaderId?: string) {
+  async findAll(leaderId?: string, leaderIds?: string[]) {
     const query = this.planillaRepository.createQueryBuilder('planilla')
         .leftJoinAndSelect('planilla.lider', 'lider')
         .orderBy('planilla.fechaCarga', 'DESC');
 
     if (leaderId) {
         query.andWhere('planilla.liderId = :leaderId', { leaderId });
+    }
+
+    if (leaderIds && leaderIds.length > 0) {
+        query.andWhere('planilla.liderId IN (:...leaderIds)', { leaderIds });
     }
 
     return await query.getMany();

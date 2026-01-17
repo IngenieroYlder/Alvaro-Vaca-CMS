@@ -31,6 +31,9 @@ export class Votante {
   municipio: string;
 
   @Column({ nullable: true })
+  comuna: string;
+
+  @Column({ nullable: true })
   puestoVotacion: string;
 
   @Column({ nullable: true })

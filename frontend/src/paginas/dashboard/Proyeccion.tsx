@@ -18,14 +18,14 @@ export default function Afiliados() {
     // Planillas Modal
     const [modalPlanillas, setModalPlanillas] = useState(false);
     const [planillas, setPlanillas] = useState<any[]>([]);
-    const [nuevaPlanilla, setNuevaPlanilla] = useState({ liderId: '', descripcion: '', file: null as File | null });
+    const [nuevaPlanilla, setNuevaPlanilla] = useState({ liderId: '', descripcion: '', fechaInicio: '', fechaFin: '', file: null as File | null });
     const [uploading, setUploading] = useState(false);
     
     // Manual Create Modal
     const [modalAbierto, setModalAbierto] = useState(false);
     const [nuevoVotante, setNuevoVotante] = useState({
         nombre: '', apellido: '', documento: '', telefono: '', email: '', direccion: '',
-        departamento: 'Meta', municipio: 'Villavicencio', puestoVotacion: '', mesa: ''
+        departamento: 'Meta', municipio: 'Villavicencio', comuna: '', puestoVotacion: '', mesa: ''
     });
     const [municipiosOptions, setMunicipiosOptions] = useState<string[]>([]);
     const [votanteEditar, setVotanteEditar] = useState<any | null>(null);
@@ -112,7 +112,7 @@ export default function Afiliados() {
             setVotanteEditar(null);
             setNuevoVotante({
                 nombre: '', apellido: '', documento: '', telefono: '', email: '', direccion: '',
-                departamento: 'Meta', municipio: 'Villavicencio', puestoVotacion: '', mesa: ''
+                departamento: 'Meta', municipio: 'Villavicencio', comuna: '', puestoVotacion: '', mesa: ''
             });
             cargarVotantes();
             alert('Votante guardado correctamente');
@@ -145,6 +145,7 @@ export default function Afiliados() {
             direccion: votante.direccion || '',
             departamento: votante.departamento,
             municipio: votante.municipio,
+            comuna: votante.comuna || '',
             puestoVotacion: votante.puestoVotacion || '',
             mesa: votante.mesa || ''
         });
@@ -194,13 +195,17 @@ export default function Afiliados() {
         formData.append('file', nuevaPlanilla.file);
         formData.append('liderId', nuevaPlanilla.liderId);
         if (nuevaPlanilla.descripcion) formData.append('descripcion', nuevaPlanilla.descripcion);
+        if (nuevaPlanilla.fechaInicio) formData.append('fechaInicio', nuevaPlanilla.fechaInicio);
+        if (nuevaPlanilla.fechaFin) formData.append('fechaFin', nuevaPlanilla.fechaFin);
 
         try {
             await clienteAxios.post('/planillas/upload', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
             alert('Planilla subida exitosamente');
-            setNuevaPlanilla({ liderId: '', descripcion: '', file: null });
+            alert('Planilla subida exitosamente');
+            setNuevaPlanilla({ liderId: '', descripcion: '', fechaInicio: '', fechaFin: '', file: null });
+            cargarPlanillas();
             cargarPlanillas();
         } catch (error: any) {
              alert('Error subiendo planilla: ' + (error.response?.data?.message || error.message));
@@ -339,6 +344,7 @@ export default function Afiliados() {
                                         </td>
                                         <td className="px-6 py-4 text-sm text-gray-600">
                                             {v.municipio}, {v.departamento}
+                                            {v.comuna && <div className="text-xs text-gray-500 font-medium">Comuna: {v.comuna}</div>}
                                         </td>
                                         <td className="px-6 py-4 text-sm text-gray-600">
                                             {v.puestoVotacion || '-'}
@@ -401,11 +407,14 @@ export default function Afiliados() {
                                     </select>
                                 </div>
                                 <div className="space-y-1">
-                                    <label className="text-sm font-medium text-gray-700">Municipio</label>
                                     <select className="w-full px-3 py-2 border rounded-lg bg-white" value={nuevoVotante.municipio} onChange={e => setNuevoVotante({...nuevoVotante, municipio: e.target.value})}>
                                         {municipiosOptions.map(m => <option key={m} value={m}>{m}</option>)}
                                     </select>
                                 </div>
+                            </div>
+                            <div className="space-y-1">
+                                <label className="text-sm font-medium text-gray-700">Comuna (Opcional)</label>
+                                <input type="text" className="w-full px-3 py-2 border rounded-lg" value={nuevoVotante.comuna} onChange={e => setNuevoVotante({...nuevoVotante, comuna: e.target.value})} placeholder="Ej: Comuna 5" />
                             </div>
                              <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-1">
@@ -547,9 +556,38 @@ export default function Afiliados() {
                             <div className="w-1/2 p-6 overflow-y-auto">
                                 <h3 className="font-bold text-gray-700 mb-4">Subir Nueva Planilla</h3>
                                 <form onSubmit={handleUploadPlanilla} className="space-y-4">
-                                     <div>
+                                    <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-1">Seleccionar Líder</label>
+                                        {/* Simple Search Filter for Leader Select */}
+                                        <input 
+                                            type="text" 
+                                            placeholder="Buscar líder por nombre o cédula..." 
+                                            className="w-full px-3 py-2 border border-gray-200 rounded-lg mb-2 text-sm"
+                                            onChange={(e) => {
+                                                // Filter logic handled in render, but for simplicity let's stick to native select or filtered options
+                                                // Wait, I can't easily change the map below without state.
+                                                // I'll add a state for 'leaderSearch' in Planillas context
+                                            }}
+                                            // Actually, let's implement the state update
+                                            onInput={(e: any) => {
+                                                const val = e.target.value.toLowerCase();
+                                                const options = document.getElementById('leader-select-options') as HTMLSelectElement;
+                                                if(options) {
+                                                    Array.from(options.options).forEach(opt => {
+                                                        if(opt.value === "") return; // Skip placeholder
+                                                        const text = opt.text.toLowerCase();
+                                                        // We can't hide options in all browsers easily, but we can try
+                                                        if(text.includes(val)) {
+                                                            opt.style.display = 'block';
+                                                        } else {
+                                                            opt.style.display = 'none';
+                                                        }
+                                                    })
+                                                }
+                                            }}
+                                        />
                                         <select 
+                                            id="leader-select-options"
                                             className="w-full px-3 py-2 border rounded-lg bg-white"
                                             required
                                             value={nuevaPlanilla.liderId}
@@ -557,9 +595,29 @@ export default function Afiliados() {
                                         >
                                             <option value="">-- Seleccionar --</option>
                                             {lideres.map(l => (
-                                                <option key={l.id} value={l.id}>{l.nombre} {l.apellido}</option>
+                                                <option key={l.id} value={l.id}>{l.nombre} {l.apellido} - CC: {l.documento}</option>
                                             ))}
                                         </select>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">Desde</label>
+                                            <input 
+                                                type="date"
+                                                className="w-full px-3 py-2 border rounded-lg"
+                                                value={nuevaPlanilla.fechaInicio}
+                                                onChange={e => setNuevaPlanilla({...nuevaPlanilla, fechaInicio: e.target.value})}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">Hasta</label>
+                                            <input 
+                                                type="date"
+                                                className="w-full px-3 py-2 border rounded-lg"
+                                                value={nuevaPlanilla.fechaFin}
+                                                onChange={e => setNuevaPlanilla({...nuevaPlanilla, fechaFin: e.target.value})}
+                                            />
+                                        </div>
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-1">Descripción (Opcional)</label>

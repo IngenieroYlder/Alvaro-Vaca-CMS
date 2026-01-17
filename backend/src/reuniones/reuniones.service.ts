@@ -85,12 +85,16 @@ export class ReunionesService {
     return await this.asistenteRepository.save(asistente);
   }
 
-  async findAll(filters: { leader?: string; dateStart?: string; dateEnd?: string; location?: string; leaderId?: string; municipio?: string; departamento?: string; reunionId?: string }) {
+  async findAll(filters: { leader?: string; dateStart?: string; dateEnd?: string; location?: string; leaderId?: string; leaderIds?: string[]; municipio?: string; departamento?: string; reunionId?: string }) {
     const query = this.reunionRepository.createQueryBuilder('reunion')
         .leftJoinAndSelect('reunion.asistentes', 'asistente');
 
     if (filters.leaderId) {
         query.andWhere('reunion.liderId = :leaderId', { leaderId: filters.leaderId });
+    }
+
+    if (filters.leaderIds && filters.leaderIds.length > 0) {
+        query.andWhere('reunion.liderId IN (:...leaderIds)', { leaderIds: filters.leaderIds });
     }
 
     if (filters.leader) {
@@ -193,26 +197,43 @@ export class ReunionesService {
         doc.on('end', () => resolve(Buffer.concat(buffers)));
 
         // Header Background
-        doc.rect(0, 0, doc.page.width, 80).fill('#5D40E8'); // Primary Color
+        doc.rect(0, 0, doc.page.width, 80).fill('#059669'); // Green Web Color
         
-        doc.fontSize(16).fill('white').text('REGISTRO DE ASISTENCIA', { align: 'center' });
+        // Header Text
+        doc.fontSize(16).fill('white').text('REGISTRO DE ASISTENCIA', 0, 30, { align: 'center' }); // Manually positioned Y=30 for vertical center approx
         doc.moveDown(4);
         
-        // Info
+        // Info (Centered)
         doc.fill('black');
-        doc.fontSize(10).font('Helvetica-Bold').text('Líder:', { continued: true }).font('Helvetica').text(` ${reunion.liderNombre || 'N/A'}`);
-        doc.font('Helvetica-Bold').text('Fecha:', { continued: true }).font('Helvetica').text(` ${reunion.fecha ? new Date(reunion.fecha).toLocaleString() : ''}`);
-        doc.font('Helvetica-Bold').text('Lugar:', { continued: true }).font('Helvetica').text(` ${reunion.barrio || ''}, ${reunion.comuna || reunion.municipio || ''}`);
+        doc.fontSize(12); // Slightly larger for readability
         
-        doc.moveDown(2);
+        const liderText = `Líder: ${reunion.liderNombre || 'N/A'}`;
+        const fechaText = `Fecha: ${reunion.fecha ? new Date(reunion.fecha).toLocaleString() : ''}`;
+        const lugarText = `Lugar: ${reunion.barrio || ''}, ${reunion.comuna || reunion.municipio || ''}`;
+
+        doc.font('Helvetica-Bold').text(liderText, { align: 'center' });
+        doc.font('Helvetica').text(fechaText, { align: 'center' });
+        doc.text(lugarText, { align: 'center' });
+        
+        doc.moveDown(1);
         
         // QR
-        doc.image(qrBuffer, { fit: [200, 200], align: 'center' });
-        doc.moveDown();
+        doc.image(qrBuffer, { fit: [180, 180], align: 'center' }); // Slightly smaller to fit everything
+        doc.moveDown(0.5);
         
-        doc.fontSize(24).font('Helvetica-Bold').text(`${reunion.codigo}`, { align: 'center' });
+        // Code
+        doc.fontSize(28).font('Helvetica-Bold').text(`${reunion.codigo}`, { align: 'center' });
         doc.fontSize(10).font('Helvetica').text('Escanea este código o ingresa el número para registrarte', { align: 'center' });
         
+        doc.moveDown(0.5);
+        
+        // Link
+        doc.fontSize(9).fill('#059669').text(codeUrl, { align: 'center', link: codeUrl, underline: true });
+
+        // Footer
+        const footerY = doc.page.height - 40;
+        doc.fontSize(8).fill('gray').text(`${baseUrl} - Desarrollado por Ingeniero Ylder Gonzalez`, 0, footerY, { align: 'center' });
+
         doc.end();
     });
   }
