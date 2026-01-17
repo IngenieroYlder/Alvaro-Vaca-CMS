@@ -120,15 +120,25 @@ export class VotantesController {
       const secondaryColor = '#8F8F8F';
       // Resolve logo path - assumption: running from dist so back out to project root or use absolute
       // Trying absolute path based on file structure exploration
-      const logoPath = 'd:/Colombia Picture/Alvaro Vaca CMS/backend/public/assets/logo.png';
+      const logoPath = 'd:/Colombia Picture/Alvaro Vaca CMS/backend/public/assets/logo.png'; // Prefer relative path if possible, but keeping for now or updating to process.cwd like others
+      // Let's use process.cwd for better portability if we can, matching others
+      const logoPathRel = require('path').join(process.cwd(), 'public', 'assets', 'logo.png');
+      const secondaryLogoPath = require('path').join(process.cwd(), 'public', 'assets', '4_LOGO.png');
       
       // --- HEADER ---
-      // Logo
+      // 1. Primary Logo
       try {
-        if (require('fs').existsSync(logoPath)) {
-            doc.image(logoPath, 40, 30, { width: 100 });
+        if (require('fs').existsSync(logoPathRel)) {
+            doc.image(logoPathRel, 40, 30, { height: 40 });
         }
-      } catch(e) { /* Ignore if logo missing */ }
+      } catch(e) { /* Ignore */ }
+
+      // 2. Secondary Logo
+      try {
+        if (require('fs').existsSync(secondaryLogoPath)) {
+            doc.image(secondaryLogoPath, 160, 30, { height: 40 });
+        }
+      } catch(e) { /* Ignore */ }
 
       // Title
       doc.fillColor(primaryColor)

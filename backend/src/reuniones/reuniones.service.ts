@@ -9,6 +9,8 @@ import { Response } from 'express';
 import * as QRCode from 'qrcode';
 import PDFDocument from 'pdfkit';
 import { UsuariosService } from '../usuarios/usuarios.service';
+import * as path from 'path';
+import * as fs from 'fs';
 
 @Injectable()
 export class ReunionesService {
@@ -196,12 +198,29 @@ export class ReunionesService {
         doc.on('data', buffers.push.bind(buffers));
         doc.on('end', () => resolve(Buffer.concat(buffers)));
 
-        // Header Background
-        doc.rect(0, 0, doc.page.width, 80).fill('#059669'); // Green Web Color
+        // Standard Header (White Background, Logos)
+        const logoPath = path.join(process.cwd(), 'public', 'assets', 'logo.png');
+        const secondaryLogoPath = path.join(process.cwd(), 'public', 'assets', '4_LOGO.png');
         
-        // Header Text
-        doc.fontSize(16).fill('white').text('REGISTRO DE ASISTENCIA', 0, 30, { align: 'center' }); // Manually positioned Y=30 for vertical center approx
-        doc.moveDown(4);
+        let headerY = 30;
+
+        // 1. Primary Logo
+        if (fs.existsSync(logoPath)) {
+            doc.image(logoPath, 30, headerY, { height: 40 });
+        }
+        
+        // 2. Secondary Logo (Party)
+        if (fs.existsSync(secondaryLogoPath)) {
+             doc.image(secondaryLogoPath, 150, headerY, { height: 40 });
+        }
+
+        // Title text centered or aligned
+        doc.fillColor('#059669') // Green
+           .fontSize(16)
+           .font('Helvetica-Bold')
+           .text('REGISTRO DE ASISTENCIA', 0, headerY + 50, { align: 'center' });
+           
+        doc.moveDown(2);
         
         // Info (Centered)
         doc.fill('black');

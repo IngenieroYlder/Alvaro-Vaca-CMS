@@ -12,6 +12,8 @@ import { ActualizarUsuarioDto } from './dto/actualizar-usuario.dto';
 import * as bcrypt from 'bcryptjs';
 import { Reunion } from '../reuniones/entities/reunion.entity';
 import { Postulacion } from '../postulaciones/entities/postulacion.entity';
+import * as path from 'path';
+import * as fs from 'fs';
 
 @Injectable()
 export class UsuariosService {
@@ -276,11 +278,34 @@ export class UsuariosService {
         resolve(pdfData);
       });
 
-      // Header
-      doc.fontSize(20).text('Reporte de Usuarios', { align: 'center' });
-      doc.moveDown();
-      doc.fontSize(10).text(`Generado: ${new Date().toLocaleString()}`, { align: 'center' });
-      doc.moveDown(2);
+      // Standard Header
+      const logoPath = path.join(process.cwd(), 'public', 'assets', 'logo.png');
+      const secondaryLogoPath = path.join(process.cwd(), 'public', 'assets', '4_LOGO.png');
+      
+      let headerY = 30;
+
+      // 1. Primary Logo
+      if (fs.existsSync(logoPath)) {
+          doc.image(logoPath, 30, headerY, { height: 40 });
+      }
+      
+      // 2. Secondary Logo (Party)
+      if (fs.existsSync(secondaryLogoPath)) {
+           doc.image(secondaryLogoPath, 150, headerY, { height: 40 });
+      }
+
+      // Title
+      doc.fillColor('#059669')
+         .fontSize(20)
+         .font('Helvetica-Bold')
+         .text('Reporte de Usuarios', 0, headerY + 10, { align: 'center' });
+      
+      doc.fontSize(10)
+         .font('Helvetica')
+         .fillColor('black')
+         .text(`Generado: ${new Date().toLocaleString()}`, 0, headerY + 35, { align: 'center' });
+         
+      doc.moveDown(3);
 
       const usuarios = await this.listarTodos();
       const usuariosExportables = usuarios.filter(u => !u.roles.includes('god'));
@@ -314,6 +339,17 @@ export class UsuariosService {
 
         y += 15;
       });
+
+      // Footer
+      const range = doc.bufferedPageRange();
+      for (let i = range.start; i < range.start + range.count; i++) {
+        doc.switchToPage(i);
+        const footerY = doc.page.height - 40;
+        const footerText = `alvarovaca.com.co - Alvaro Vaca - Desarrollado por Ingeniero Ylder Gonzalez`;
+        
+        doc.moveTo(30, footerY - 10).lineTo(580, footerY - 10).strokeColor('#EEEEEE').lineWidth(1).stroke();
+        doc.fontSize(8).fill('gray').text(footerText, 0, footerY, { align: 'center' });
+      }
 
       doc.end();
     });

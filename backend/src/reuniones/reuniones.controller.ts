@@ -382,6 +382,24 @@ export class ReunionesController {
     const secondaryColor = '#8F8F8F';
     const baseUrl = process.env.FRONTEND_URL || 'alvarovaca.com.co';
 
+    // Logos
+    const logoPath = require('path').join(process.cwd(), 'public', 'assets', 'logo.png');
+    const secondaryLogoPath = require('path').join(process.cwd(), 'public', 'assets', '4_LOGO.png');
+
+    // 1. Primary Logo
+    try {
+        if (require('fs').existsSync(logoPath)) {
+            doc.image(logoPath, 40, 30, { height: 40 });
+        }
+    } catch (e) { }
+
+    // 2. Secondary Logo
+    try {
+        if (require('fs').existsSync(secondaryLogoPath)) {
+            doc.image(secondaryLogoPath, 160, 30, { height: 40 });
+        }
+    } catch (e) { }
+
     // Header logic similar to Votantes
     doc.fillColor(primaryColor)
        .fontSize(20)
