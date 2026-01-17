@@ -205,7 +205,7 @@ export class ReunionesService {
         doc.on('end', () => resolve(Buffer.concat(buffers)));
 
         // Header Background (Green)
-        doc.rect(0, 0, doc.page.width, 110).fill('#059669'); // Increased height to contain logos
+        doc.rect(0, 0, doc.page.width, 130).fill('#059669'); // Increased height to 130
 
         // Logos
         const logoPath = path.join(process.cwd(), 'public', 'assets', 'logo.png');
@@ -225,11 +225,11 @@ export class ReunionesService {
              doc.image(secondaryLogoPath, 320, headerY, { height: 50 });
         }
 
-        // Title (Centered & White)
+        // Title (Centered & White) - Moved DOWN below logos
         doc.fillColor('white') 
            .fontSize(18)
            .font('Helvetica-Bold')
-           .text('REGISTRO DE ASISTENCIA', 0, headerY + 15, { align: 'center' }); // Centered vertically relative to logos
+           .text('REGISTRO DE ASISTENCIA', 0, headerY + 65, { align: 'center' }); // y ~ 95
 
         doc.moveDown(4);
         
