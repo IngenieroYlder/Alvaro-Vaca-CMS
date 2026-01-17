@@ -32,6 +32,9 @@ export class Reunion {
   @Column({ default: 'Villavicencio' })
   municipio: string;
 
+  @Column({ default: 'Meta' })
+  departamento: string;
+
   @Column({ nullable: true })
   comuna: string;
 

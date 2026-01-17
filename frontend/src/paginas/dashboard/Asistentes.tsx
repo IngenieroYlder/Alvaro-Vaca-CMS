@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import clienteAxios from '../../lib/cliente-axios';
+import { useAuth } from '../../contexto/ContextoAutenticacion';
 import { Download, Search, Filter } from 'lucide-react';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
@@ -93,6 +94,9 @@ export default function Asistentes() {
         }
     };
 
+    const { usuario } = useAuth();
+    const canExport = usuario?.roles?.some((r: string) => ['admin', 'god', 'coordinador'].includes(r));
+
     const exportarExcel = () => {
         const params = new URLSearchParams();
         params.append('unique', 'true');
@@ -102,7 +106,7 @@ export default function Asistentes() {
         if (departamento) params.append('departamento', departamento);
         if (municipio) params.append('municipio', municipio);
         if (liderId) params.append('leader', liderId); 
-
+        
         const url = `${clienteAxios.defaults.baseURL}/reuniones/export/excel?${params.toString()}`;
         window.open(url, '_blank');
     };
@@ -120,12 +124,14 @@ export default function Asistentes() {
                     <h1 className="text-2xl font-bold text-gray-900">Base de Datos de Asistentes</h1>
                     <p className="text-gray-500">Personas registradas en las reuniones</p>
                 </div>
-                <button 
-                    onClick={exportarExcel}
-                    className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 font-medium shadow-sm transition-colors"
-                >
-                    <Download className="w-5 h-5" /> Exportar Excel
-                </button>
+                {canExport && (
+                    <button 
+                        onClick={exportarExcel}
+                        className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 font-medium shadow-sm transition-colors"
+                    >
+                        <Download className="w-5 h-5" /> Exportar Excel
+                    </button>
+                )}
             </div>
 
             {/* Filtros Container */}

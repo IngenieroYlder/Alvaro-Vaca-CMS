@@ -31,6 +31,10 @@ export class CreateReunionDto {
 
   @IsString()
   @IsOptional()
+  departamento?: string;
+
+  @IsString()
+  @IsOptional()
   corregimiento?: string;
 
   @IsString()
