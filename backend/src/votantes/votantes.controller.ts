@@ -116,7 +116,7 @@ export class VotantesController {
       doc.pipe(res);
 
       // --- STYLES & ASSETS ---
-      const primaryColor = '#5D40E8';
+      const primaryColor = '#059669'; // Green Web Color
       const secondaryColor = '#8F8F8F';
       // Resolve logo path - assumption: running from dist so back out to project root or use absolute
       // Trying absolute path based on file structure exploration
@@ -197,7 +197,8 @@ export class VotantesController {
         
         // Footer Text
         doc.fontSize(8).fillColor(secondaryColor);
-        doc.text('Sistema desarrollado por Ingeniero Ylder Gonzalez', 40, 790, { align: 'center', width: 510 });
+        const baseUrl = process.env.FRONTEND_URL || 'alvarovaca.com.co';
+        doc.text(`${baseUrl} - Alvaro Vaca - Desarrollado por Ingeniero Ylder Gonzalez`, 40, 790, { align: 'center', width: 510 });
         doc.text(`Página ${i + 1} de ${pages.count}`, 40, 790, { align: 'right' });
       }
 

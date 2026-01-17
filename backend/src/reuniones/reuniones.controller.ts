@@ -370,7 +370,7 @@ export class ReunionesController {
         leaderId: leaderIdFilter 
     });
     
-    // PDF Generation Logic (Simplified for now)
+    // PDF Generation Logic
     const doc = new PDFDocument({ margin: 40, size: 'A4', bufferPages: true });
     const filename = `Reporte_Asistencia_${format(new Date(), 'yyyy-MM-dd')}.pdf`;
     
@@ -378,26 +378,52 @@ export class ReunionesController {
     res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
     doc.pipe(res);
 
-    doc.fontSize(20).text('Reporte de Asistencia', { align: 'center' });
-    doc.moveDown();
+    const primaryColor = '#059669'; // Green
+    const secondaryColor = '#8F8F8F';
+    const baseUrl = process.env.FRONTEND_URL || 'alvarovaca.com.co';
 
-    reuniones.forEach(reunion => {
-        doc.fontSize(14).font('Helvetica-Bold').text(`Reunión: ${reunion.nombre} (${reunion.codigo})`);
-        doc.fontSize(10).font('Helvetica').text(`Líder: ${reunion.liderNombre} | Fecha: ${format(reunion.fecha, 'PPP p', { locale: es })}`);
+    // Header logic similar to Votantes
+    doc.fillColor(primaryColor)
+       .fontSize(20)
+       .font('Helvetica-Bold')
+       .text('ALVARO VACA', { align: 'right' }); // Align right 
+    
+    doc.fillColor('black')
+       .fontSize(10)
+       .font('Helvetica')
+       .text('Reporte de Reuniones y Asistencia', { align: 'right' });
+
+    doc.moveDown(2);
+
+    reuniones.forEach((reunion, rIdx) => {
+        // Avoid page break at start if not needed, but ensure grouping
+        if (doc.y > 650) doc.addPage();
+
+        doc.fillColor(primaryColor).fontSize(14).font('Helvetica-Bold').text(`Reunión: ${reunion.nombre} (${reunion.codigo})`);
+        doc.fillColor('black').fontSize(10).font('Helvetica').text(`Líder: ${reunion.liderNombre} | Fecha: ${format(reunion.fecha, 'PPP p', { locale: es })}`);
         doc.text(`Lugar: ${reunion.barrio}, ${reunion.comuna || reunion.municipio}`);
         
         doc.moveDown(0.5);
-        doc.fontSize(10).font('Helvetica-Bold').text('Asistentes:', { underline: true });
+        doc.fontSize(10).font('Helvetica-Bold').text('Asistentes:', { underline: false });
         
         reunion.asistentes.forEach((asistente: any, idx) => {
             let line = `${idx + 1}. ${asistente.nombre} - CC: ${asistente.documento} - Tel: ${asistente.telefono}`;
             if (asistente.direccion) line += ` - Dir: ${asistente.direccion}`;
-            doc.font('Helvetica').text(line);
+            doc.font('Helvetica').text(line, { indent: 15 });
         });
         
         doc.moveDown(1.5);
     });
 
+    // Footer
+    const pages = doc.bufferedPageRange();
+    for (let i = 0; i < pages.count; i++) {
+        doc.switchToPage(i);
+        doc.moveTo(40, doc.page.height - 50).lineTo(550, doc.page.height - 50).lineWidth(1).stroke(primaryColor);
+        doc.fontSize(8).fillColor(secondaryColor);
+        doc.text(`${baseUrl} - Alvaro Vaca - Desarrollado por Ingeniero Ylder Gonzalez`, 40, doc.page.height - 40, { align: 'center', width: 510 });
+        doc.text(`Página ${i + 1} de ${pages.count}`, 40, doc.page.height - 40, { align: 'right' });
+    }
 
     doc.end();
   }

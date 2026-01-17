@@ -217,8 +217,10 @@ export class ReunionesService {
         
         doc.moveDown(1);
         
-        // QR
-        doc.image(qrBuffer, { fit: [180, 180], align: 'center' }); // Slightly smaller to fit everything
+        // QR (Calculated Center)
+        const qrSize = 180;
+        const qrX = (doc.page.width - qrSize) / 2;
+        doc.image(qrBuffer, qrX, doc.y, { fit: [qrSize, qrSize] }); 
         doc.moveDown(0.5);
         
         // Code
@@ -232,7 +234,8 @@ export class ReunionesService {
 
         // Footer
         const footerY = doc.page.height - 40;
-        doc.fontSize(8).fill('gray').text(`${baseUrl} - Desarrollado por Ingeniero Ylder Gonzalez`, 0, footerY, { align: 'center' });
+        const footerText = `${baseUrl} - Alvaro Vaca - Desarrollado por Ingeniero Ylder Gonzalez`;
+        doc.fontSize(8).fill('gray').text(footerText, 0, footerY, { align: 'center' });
 
         doc.end();
     });
