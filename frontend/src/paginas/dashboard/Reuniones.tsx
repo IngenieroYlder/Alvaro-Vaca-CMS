@@ -128,10 +128,21 @@ export default function Reuniones() {
         try {
              // Request blob with auth headers (clienteAxios handles auth)
              const response = await clienteAxios.get(`/reuniones/${reunionId}/qr-flyer`, { responseType: 'blob' });
+             
+             // Extract filename from header
+             const contentDisposition = response.headers['content-disposition'];
+             let filename = `Flyer_QR_${codigo}.pdf`; // Fallback
+             if (contentDisposition) {
+                 const filenameMatch = contentDisposition.match(/filename=(.+)/);
+                 if (filenameMatch && filenameMatch.length > 1) {
+                     filename = filenameMatch[1].replace(/['"]/g, '');
+                 }
+             }
+
              const url = window.URL.createObjectURL(new Blob([response.data]));
              const link = document.createElement('a');
              link.href = url;
-             link.setAttribute('download', `Flyer_QR_${codigo}.pdf`);
+             link.setAttribute('download', filename);
              document.body.appendChild(link);
              link.click();
              link.remove();
