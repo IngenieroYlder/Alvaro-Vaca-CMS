@@ -78,6 +78,7 @@ export default function Asistentes() {
             if (reunionId) params.append('reunionId', reunionId);
             if (departamento) params.append('departamento', departamento);
             if (municipio) params.append('municipio', municipio);
+            if (liderId) params.append('leaderId', liderId);
             // Unique endpoint seems to not handle 'leaderId' directly in controller if not admin? 
             // In controller findAllUnique: it accepts reunionId from query. 
             // If we filter by reunionId which belongs to the leader, it is safe.

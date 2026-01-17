@@ -177,6 +177,7 @@ export class ReunionesController {
       @Query('municipio') municipio?: string,
       @Query('departamento') departamento?: string,
       @Query('reunionId') reunionId?: string,
+      @Query('leaderId') leaderIdQuery?: string, 
   ) {
       const user = req.user;
       const canViewAll = user.roles.includes('admin') || user.roles.includes('god') || user.roles.includes('permiso_ver_asistentes');
@@ -190,9 +191,25 @@ export class ReunionesController {
              const myLeaders = await this.usuariosService.listarTodos(undefined, user.id);
              leaderIds = myLeaders.map(u => u.id);
              leaderIds.push(user.id);
+             
+             // If coordinator filters by a leader, ensure it is in their managed list
+             if (leaderIdQuery) {
+                 if (leaderIds.includes(leaderIdQuery)) {
+                     leaderId = leaderIdQuery; // Apply specific filter
+                 } else {
+                     // If trying to filter by a leader not managed, return empty or ignore?
+                     // Let's safe-guard by forcing an impossible condition or just keeping leaderIds scope which effectively returns 0 if intersection is null.
+                     // But simplest is: pass leaderIdQuery, and Service's "AND" logic will handle it:
+                     // (liderId IN [A,B] AND liderId = Z) -> if Z not in [A,B], result is empty. Correct.
+                     leaderId = leaderIdQuery;
+                 }
+             }
           } else {
-             leaderId = user.id;
+             leaderId = user.id; // Enforce self for simple leaders
           }
+      } else {
+          // Admin/God can filter by any leader
+          if (leaderIdQuery) leaderId = leaderIdQuery;
       }
 
       return this.reunionesService.findAllUnique({ dateStart, dateEnd, municipio, departamento, reunionId, leaderId, leaderIds });
