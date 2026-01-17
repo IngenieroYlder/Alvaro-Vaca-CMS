@@ -42,9 +42,7 @@ export default function Reuniones() {
         }
     }, [isCoordinador, filtroLider, fechaFiltro]); // Updates when filter changes
 
-    // ... (rest of code) ...
 
-}
 
     useEffect(() => {
         if (nuevaReunion.departamento) {
@@ -261,7 +259,7 @@ export default function Reuniones() {
                                         </div>
                                          <div 
                                             className="px-4 py-2 hover:bg-gray-50 cursor-pointer text-sm font-medium text-primary"
-                                            onClick={() => { setFiltroLider(usuario?.id); setBusquedaLider('Mis Reuniones'); }}
+                                            onClick={() => { setFiltroLider(usuario?.id || ''); setBusquedaLider('Mis Reuniones'); }}
                                         >
                                             Mis Reuniones
                                         </div>
