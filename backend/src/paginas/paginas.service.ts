@@ -46,6 +46,35 @@ export class PaginasService {
   async onModuleInit() {
     await this.seedPaginas();
     await this.fixHeroImage();
+    await this.fixBioSection();
+  }
+
+  private async fixBioSection() {
+    try {
+      const inicio = await this.paginaRepository.findOneBy({ slug: 'inicio' });
+      if (inicio && inicio.meta && inicio.meta.bio) {
+        let changed = false;
+        
+        const newDescription = "De Paratebueno para Colombia: nacido en este municipio, hoy vive en Restrepo y trabaja en Villavicencio, donde lidera la oficina principal de HOLA INTERNET; una historia de superación, servicio y emprendimiento.";
+        
+        if (inicio.meta.bio.description !== newDescription) {
+          inicio.meta.bio.description = newDescription;
+          changed = true;
+        }
+
+        if (inicio.meta.bio.linkUrl !== '/biografia') {
+          inicio.meta.bio.linkUrl = '/biografia';
+          changed = true;
+        }
+
+        if (changed) {
+          console.log('--- MIGRATION: UPDATING BIO SECTION ---');
+          await this.paginaRepository.save(inicio);
+        }
+      }
+    } catch (error) {
+      console.error('Error migrating bio section:', error);
+    }
   }
 
   private async fixHeroImage() {
@@ -93,7 +122,7 @@ export class PaginasService {
           },
           bio: {
             title: 'Una Vida de Servicio',
-            description: 'Reservista de la Fuerza Aérea Colombiana, Ingeniero de Transportes y Vías, Especialista en Gobierno y Gestión Pública, Magíster en Logística Integral y Doctorando en Administración de Empresas (DBA). Gerente de importantes empresas de transporte durante 14 años, generando empleo y desarrollo en el Meta.',
+            description: 'De Paratebueno para Colombia: nacido en este municipio, hoy vive en Restrepo y trabaja en Villavicencio, donde lidera la oficina principal de HOLA INTERNET; una historia de superación, servicio y emprendimiento.',
             image: '/assets/alvaro.png',
             linkText: 'Leer Biografía Completa',
             linkUrl: '/biografia'
