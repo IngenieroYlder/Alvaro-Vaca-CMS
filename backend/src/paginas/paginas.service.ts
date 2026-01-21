@@ -1,12 +1,13 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreatePaginaDto } from './dto/create-pagina.dto';
 import { UpdatePaginaDto } from './dto/update-pagina.dto';
 import { Pagina } from './entities/pagina.entity';
+import { PaginaMeta } from './interfaces/pagina-meta.interface';
 
 @Injectable()
-export class PaginasService {
+export class PaginasService implements OnModuleInit {
   constructor(
     @InjectRepository(Pagina)
     private paginaRepository: Repository<Pagina>,
@@ -47,29 +48,65 @@ export class PaginasService {
     await this.seedPaginas();
     await this.fixHeroImage();
     await this.fixBioSection();
+    await this.fixPropuestas();
+  }
+
+  private async fixPropuestas() {
+    try {
+      const inicio = await this.paginaRepository.findOneBy({ slug: 'inicio' });
+      if (inicio && inicio.meta) {
+        const meta = inicio.meta as PaginaMeta;
+        if (!meta.propuestas) {
+          meta.propuestas = [];
+        }
+
+        const internetProposalExists = meta.propuestas.some(p => p.title.includes('Subsidio de Conectividad'));
+
+        if (!internetProposalExists) {
+          const newProposal = {
+            title: 'Subsidio de Conectividad',
+            description: 'Impulsaremos un subsidio vital para garantizar internet, iniciando con estratos 1, 2 y 3. Conectividad es igualdad de oportunidades.',
+            icon: 'wifi',
+            color: 'secondary'
+          };
+          
+          // Add to the end
+          meta.propuestas.push(newProposal);
+          
+          console.log('--- MIGRATION: ADDING INTERNET PROPOSAL ---');
+          await this.paginaRepository.save(inicio);
+        }
+      }
+    } catch (error) {
+      console.error('Error migrating proposals:', error);
+    }
   }
 
   private async fixBioSection() {
     try {
       const inicio = await this.paginaRepository.findOneBy({ slug: 'inicio' });
-      if (inicio && inicio.meta && inicio.meta.bio) {
-        let changed = false;
-        
-        const newDescription = "De Paratebueno para Colombia: nacido en este municipio, hoy vive en Restrepo y trabaja en Villavicencio, donde lidera la oficina principal de HOLA INTERNET; una historia de superación, servicio y emprendimiento.";
-        
-        if (inicio.meta.bio.description !== newDescription) {
-          inicio.meta.bio.description = newDescription;
-          changed = true;
-        }
+      if (inicio && inicio.meta) {
+        const meta = inicio.meta as PaginaMeta;
 
-        if (inicio.meta.bio.linkUrl !== '/biografia') {
-          inicio.meta.bio.linkUrl = '/biografia';
-          changed = true;
-        }
+        if (meta.bio) {
+          let changed = false;
 
-        if (changed) {
-          console.log('--- MIGRATION: UPDATING BIO SECTION ---');
-          await this.paginaRepository.save(inicio);
+          const newDescription = "De Paratebueno para Colombia: nacido en este municipio, hoy vive en Restrepo y trabaja en Villavicencio, donde lidera la oficina principal de HOLA INTERNET; una historia de superación, servicio y emprendimiento.";
+
+          if (meta.bio.description !== newDescription) {
+            meta.bio.description = newDescription;
+            changed = true;
+          }
+
+          if (meta.bio.linkUrl !== '/biografia') {
+            meta.bio.linkUrl = '/biografia';
+            changed = true;
+          }
+
+          if (changed) {
+            console.log('--- MIGRATION: UPDATING BIO SECTION ---');
+            await this.paginaRepository.save(inicio);
+          }
         }
       }
     } catch (error) {
@@ -80,22 +117,25 @@ export class PaginasService {
   private async fixHeroImage() {
     try {
       const inicio = await this.paginaRepository.findOneBy({ slug: 'inicio' });
-      if (inicio && inicio.meta && inicio.meta.hero) {
-        let changed = false;
-        // Fix Desktop Image
-        if (inicio.meta.hero.image === '/assets/FOTO CAMPAÑA.png') {
-          inicio.meta.hero.image = '/assets/FOTO_CAMPANA_V2.png';
-          changed = true;
-        }
-        // Fix Mobile Image
-        if (inicio.meta.hero.mobileImage === '/assets/FOTO CAMPAÑA.png') {
-          inicio.meta.hero.mobileImage = '/assets/FOTO_CAMPANA_V2.png';
-          changed = true;
-        }
+      if (inicio && inicio.meta) {
+        const meta = inicio.meta as PaginaMeta;
+        if (meta.hero) {
+          let changed = false;
+          // Fix Desktop Image
+          if (meta.hero.image === '/assets/FOTO CAMPAÑA.png') {
+            meta.hero.image = '/assets/FOTO_CAMPANA_V2.png';
+            changed = true;
+          }
+          // Fix Mobile Image
+          if (meta.hero.mobileImage === '/assets/FOTO CAMPAÑA.png') {
+            meta.hero.mobileImage = '/assets/FOTO_CAMPANA_V2.png';
+            changed = true;
+          }
 
-        if (changed) {
-          console.log('--- MIGRATION: UPDATING HERO IMAGE TO V2 ---');
-          await this.paginaRepository.save(inicio);
+          if (changed) {
+            console.log('--- MIGRATION: UPDATING HERO IMAGE TO V2 ---');
+            await this.paginaRepository.save(inicio);
+          }
         }
       }
     } catch (error) {
