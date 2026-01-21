@@ -70,12 +70,47 @@ export class PaginasService implements OnModuleInit {
             color: 'secondary'
           };
           
-          // Add to the end
+          // Add to the end initially, then sort
           meta.propuestas.push(newProposal);
-          
           console.log('--- MIGRATION: ADDING INTERNET PROPOSAL ---');
-          await this.paginaRepository.save(inicio);
         }
+
+        // Reorder Logic
+        const desiredOrder = [
+          'Educación para emprender',
+          'Subsidio de Conectividad',
+          'Cero impunidad',
+          'Ley de Seguridad Digital e IA'
+        ];
+
+        let orderChanged = false;
+        const currentTitles = meta.propuestas.map(p => p.title);
+        
+        // Check if current order matches desired order (filtering out any unknown proposals just in case, or strict match)
+        // Simple check: are the first 4 titles in the correct order?
+        const reorderedProposals = [];
+        
+        for (const title of desiredOrder) {
+          const proposal = meta.propuestas.find(p => p.title === title || p.title.includes(title));
+          if (proposal) {
+            reorderedProposals.push(proposal);
+          }
+        }
+        
+        // Add any remaining proposals that weren't in the desired list
+        const remaining = meta.propuestas.filter(p => !desiredOrder.some(t => p.title === t || p.title.includes(t)));
+        reorderedProposals.push(...remaining);
+
+        // Compare reordered with current
+        if (JSON.stringify(meta.propuestas) !== JSON.stringify(reorderedProposals)) {
+          meta.propuestas = reorderedProposals;
+          console.log('--- MIGRATION: REORDERING PROPOSALS ---');
+          await this.paginaRepository.save(inicio);
+        } else if (!internetProposalExists) {
+           // Case where we added but order happened to be fine or just need to save the addition
+           await this.paginaRepository.save(inicio);
+        }
+
       }
     } catch (error) {
       console.error('Error migrating proposals:', error);
