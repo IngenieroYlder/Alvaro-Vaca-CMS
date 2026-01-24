@@ -124,15 +124,15 @@ export class PaginasService implements OnModuleInit {
       if (inicio && inicio.meta) {
         const meta = inicio.meta as PaginaMeta;
         
-        const oldDescriptionStart = "Soy Álvaro Vaca, un candidato nuevo";
-        const newDescription = "SOY EMPRESARIO DEL SECTOR DE TELECOMUNICACIONES EMPRESA PRIVADA Y ENTENDIENDO LAS NECESIDADES DE LOS COLOMBIANOS.";
+        const introPart = "Soy Álvaro Vaca, un candidato nuevo, que no hace parte de la politiquería tradicional.";
+        const newPart = "Soy empresario del sector de telecomunicaciones empresa privada y entendiendo las necesidades de los colombianos.";
+        const fullDescription = `${introPart} ${newPart}`;
         
-        if (meta.hero && meta.hero.description && (meta.hero.description.startsWith(oldDescriptionStart) || meta.hero.description.includes('Vengo del sector transporte'))) {
-           if (meta.hero.description !== newDescription) {
-             meta.hero.description = newDescription;
-             console.log('--- MIGRATION: UPDATING HERO DESCRIPTION ---');
+        // Check if description is different from what we want
+        if (meta.hero && meta.hero.description !== fullDescription) {
+             meta.hero.description = fullDescription;
+             console.log('--- MIGRATION: CORRECTING HERO DESCRIPTION CASE ---');
              await this.paginaRepository.save(inicio);
-           }
         }
       }
     } catch (error) {
@@ -212,7 +212,7 @@ export class PaginasService implements OnModuleInit {
           hero: {
             badge: 'Elecciones Congreso 2026, Marzo 8',
             title: 'Un Senador que <br><span class="text-gradient">Conecte con la Gente</span>',
-            description: 'SOY EMPRESARIO DEL SECTOR DE TELECOMUNICACIONES EMPRESA PRIVADA Y ENTENDIENDO LAS NECESIDADES DE LOS COLOMBIANOS.',
+            description: 'Soy Álvaro Vaca, un candidato nuevo, que no hace parte de la politiquería tradicional. Soy empresario del sector de telecomunicaciones empresa privada y entendiendo las necesidades de los colombianos.',
             ctaPrimary: { text: 'Conoce mis Propuestas', url: '#propuestas' },
             ctaSecondary: { text: 'Ver Historia', url: '#biografia' },
             image: '/assets/FOTO_CAMPANA_V2.png',
