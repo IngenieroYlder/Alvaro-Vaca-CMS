@@ -49,6 +49,7 @@ export class PaginasService implements OnModuleInit {
     await this.fixHeroImage();
     await this.fixBioSection();
     await this.fixPropuestas();
+    await this.fixHomeDescription();
   }
 
   private async fixPropuestas() {
@@ -114,6 +115,28 @@ export class PaginasService implements OnModuleInit {
       }
     } catch (error) {
       console.error('Error migrating proposals:', error);
+    }
+  }
+
+  private async fixHomeDescription() {
+    try {
+      const inicio = await this.paginaRepository.findOneBy({ slug: 'inicio' });
+      if (inicio && inicio.meta) {
+        const meta = inicio.meta as PaginaMeta;
+        
+        const oldDescriptionStart = "Soy Álvaro Vaca, un candidato nuevo";
+        const newDescription = "SOY EMPRESARIO DEL SECTOR DE TELECOMUNICACIONES EMPRESA PRIVADA Y ENTENDIENDO LAS NECESIDADES DE LOS COLOMBIANOS.";
+        
+        if (meta.hero && meta.hero.description && (meta.hero.description.startsWith(oldDescriptionStart) || meta.hero.description.includes('Vengo del sector transporte'))) {
+           if (meta.hero.description !== newDescription) {
+             meta.hero.description = newDescription;
+             console.log('--- MIGRATION: UPDATING HERO DESCRIPTION ---');
+             await this.paginaRepository.save(inicio);
+           }
+        }
+      }
+    } catch (error) {
+      console.error('Error migrating home description:', error);
     }
   }
 
@@ -189,7 +212,7 @@ export class PaginasService implements OnModuleInit {
           hero: {
             badge: 'Elecciones Congreso 2026, Marzo 8',
             title: 'Un Senador que <br><span class="text-gradient">Conecte con la Gente</span>',
-            description: 'Soy Álvaro Vaca, un candidato nuevo, que no hace parte de la politiquería tradicional. Vengo del sector transporte, empresa privada, y entiendo las necesidades reales de los colombianos.',
+            description: 'SOY EMPRESARIO DEL SECTOR DE TELECOMUNICACIONES EMPRESA PRIVADA Y ENTENDIENDO LAS NECESIDADES DE LOS COLOMBIANOS.',
             ctaPrimary: { text: 'Conoce mis Propuestas', url: '#propuestas' },
             ctaSecondary: { text: 'Ver Historia', url: '#biografia' },
             image: '/assets/FOTO_CAMPANA_V2.png',

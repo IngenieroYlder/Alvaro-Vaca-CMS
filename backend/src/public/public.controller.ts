@@ -128,6 +128,7 @@ export class PublicController {
   @Get('inicio')
   async getHomeslug() { return this.getHome(); }
 
+  /*
   @Get('nosotros')
   @Render('nosotros')
   async getNosotros() {
@@ -139,6 +140,7 @@ export class PublicController {
     } catch (e) { }
     return { ...common, meta: pageData };
   }
+  */
 
   @Get('sst')
   @Render('sst')
@@ -263,62 +265,15 @@ export class PublicController {
   }
 
   @Get('vacantes')
-  @Render('vacantes')
+  // @Render('vacantes')
   async getVacantes(@Query('categoria') categoriaSlug?: string) {
-    const common = await this.getCommonData();
-    let vacantes = await this.vacantesService.findAll();
-
-    if (categoriaSlug) {
-      vacantes = vacantes.filter((v) => v.categoria && v.categoria.slug === categoriaSlug);
-    }
-
-    const categoriasMap = new Map();
-    vacantes.forEach((v) => {
-      if (v.categoria) categoriasMap.set(v.categoria.slug, v.categoria);
-    });
-    const categorias = Array.from(categoriasMap.values());
-
-    return { ...common, vacantes, categorias };
+    return "No tienes permiso de ver esto";
   }
 
   @Get('vacantes/:slug')
-  @Render('vacante-detalle')
+  // @Render('vacante-detalle')
   async getVacante(@Param('slug') slug: string, @Req() req: Request) {
-    const common = await this.getCommonData();
-    try {
-      const vacante = await this.vacantesService.findBySlug(slug);
-
-      // Inject Fixed Steps for Display
-      const fixedStepsDetails = [
-        { titulo: 'Registro y Login', descripcion: 'Crea tu cuenta o inicia sesión para postularte.' },
-        { titulo: 'Envío de Hoja de Vida', descripcion: 'Sube tu CV actualizado en formato ZIP.' },
-      ];
-      vacante.pasos = [...fixedStepsDetails, ...(vacante.pasos || [])];
-
-      let yaPostulado = false;
-
-      if (req.cookies && req.cookies['Authentication']) {
-        try {
-          const token = req.cookies['Authentication'];
-          const decoded = this.autenticacionService.decodificarToken(token);
-          if (decoded && decoded.sub) {
-            yaPostulado = await this.postulacionesService.haPostulado(decoded.sub, vacante.id);
-          }
-        } catch (e) {
-          console.error('Error checking postulation status', e);
-        }
-      }
-
-      return {
-        ...common,
-        vacante,
-        yaPostulado,
-        meta: {
-          title: vacante.titulo,
-          description: vacante.descripcion,
-        },
-      };
-    } catch (e) { throw e; }
+    return "No tienes permiso de ver esto";
   }
 
   @Get('candidato/registro')
