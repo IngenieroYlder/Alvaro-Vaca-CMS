@@ -124,14 +124,12 @@ export class PaginasService implements OnModuleInit {
       if (inicio && inicio.meta) {
         const meta = inicio.meta as PaginaMeta;
         
-        const introPart = "Soy Álvaro Vaca, un candidato nuevo, que no hace parte de la politiquería tradicional.";
-        const newPart = "Soy empresario del sector de telecomunicaciones empresa privada y entendiendo las necesidades de los colombianos.";
-        const fullDescription = `${introPart} ${newPart}`;
+        const refinedDescription = "Soy Álvaro Vaca, un candidato nuevo que no hace parte de la politiquería tradicional. Soy empresario del sector de telecomunicaciones y conozco de primera mano las necesidades de los colombianos.";
         
         // Check if description is different from what we want
-        if (meta.hero && meta.hero.description !== fullDescription) {
-             meta.hero.description = fullDescription;
-             console.log('--- MIGRATION: CORRECTING HERO DESCRIPTION CASE ---');
+        if (meta.hero && meta.hero.description !== refinedDescription) {
+             meta.hero.description = refinedDescription;
+             console.log('--- MIGRATION: REFINING HERO DESCRIPTION ---');
              await this.paginaRepository.save(inicio);
         }
       }
@@ -212,7 +210,7 @@ export class PaginasService implements OnModuleInit {
           hero: {
             badge: 'Elecciones Congreso 2026, Marzo 8',
             title: 'Un Senador que <br><span class="text-gradient">Conecte con la Gente</span>',
-            description: 'Soy Álvaro Vaca, un candidato nuevo, que no hace parte de la politiquería tradicional. Soy empresario del sector de telecomunicaciones empresa privada y entendiendo las necesidades de los colombianos.',
+            description: 'Soy Álvaro Vaca, un candidato nuevo que no hace parte de la politiquería tradicional. Soy empresario del sector de telecomunicaciones y conozco de primera mano las necesidades de los colombianos.',
             ctaPrimary: { text: 'Conoce mis Propuestas', url: '#propuestas' },
             ctaSecondary: { text: 'Ver Historia', url: '#biografia' },
             image: '/assets/FOTO_CAMPANA_V2.png',
