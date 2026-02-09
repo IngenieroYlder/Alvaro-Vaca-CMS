@@ -61,56 +61,162 @@
     <!-- Navigation -->
     {{> header}}
 
-    <!-- Hero Section -->
+    <!-- Nuevo Hero Section (Marzo 2026) -->
     <section id="inicio"
-        class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
+        class="relative pt-32 pb-12 lg:pt-40 lg:pb-20 overflow-hidden bg-gradient-to-br from-green-900 via-primary to-green-800 text-white h-auto lg:min-h-[85vh] flex items-center">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
+        </div>
+        <!-- Decorative blobs -->
+        <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-secondary/30 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
+        <div class="absolute bottom-0 left-0 w-[600px] h-[600px] bg-sunflower/10 rounded-full blur-[100px] translate-y-1/3 -translate-x-1/3"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+                <!-- Left Content -->
+                <div class="space-y-6 text-center lg:text-left order-2 lg:order-1 relative">
+                    <!-- Mobile Badge removed as it is now in the photo card -->
+
+                    <!-- Main Headline -->
+                    <div class="py-2">
+                        <h1 class="font-display font-black text-5xl lg:text-7xl leading-[0.9] text-white drop-shadow-xl">
+                            Internet <br>
+                            <span class="text-sunflower">Subsidiado</span> <br>
+                            <span class="text-3xl lg:text-5xl font-bold">Para el Pueblo</span>
+                        </h1>
+                    </div>
+
+                    <!-- Ribbon -->
+                    <div class="relative py-4 inline-block transform hover:scale-105 transition-transform duration-300">
+                        <div class="absolute inset-0 bg-gradient-to-r from-sunflower to-yellow-400 transform -skew-x-6 rounded-lg shadow-xl border-b-4 border-yellow-600"></div>
+                        <h3
+                            class="relative text-primary font-black text-lg lg:text-2xl px-8 uppercase tracking-wider drop-shadow-sm">
+                            Es Momento de Votar Diferente
+                        </h3>
+                    </div>
+
+                    <!-- Sub Headline -->
+                    <h4 class="font-display font-bold text-2xl lg:text-4xl text-white/90 leading-tight">
+                        CONÉCTATE CON EL <span class="text-sunflower underline decoration-4 decoration-primary">FUTURO</span>
+                    </h4>
+
+                    <!-- Description -->
+                    <p class="text-lg lg:text-xl text-white/80 max-w-xl mx-auto lg:mx-0 font-medium leading-relaxed">
+                        Internet subsidiado para estratos 1, 2 y 3, como los demás servicios públicos que cuentan con subsidio (energía, agua y gas).
+                    </p>
+
+                    <!-- Features -->
+                    <!-- Features -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 text-center pt-8 border-t border-white/20">
+                        <!-- Feature 1 -->
+                        <div class="flex flex-col items-center gap-4 relative group">
+                            <div class="w-24 h-24 flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300">
+                                <img src="/assets/ico_one.png" alt="Inclusión Digital" class="w-full h-full object-contain filter drop-shadow-lg">
+                            </div>
+                            <p class="text-[0.7rem] lg:text-xs font-bold text-white uppercase tracking-wider leading-tight max-w-[150px]">
+                                INCLUSIÓN DIGITAL <br> <span class="text-sunflower text-sm">PARA FAMILIAS</span> <br> DE BAJOS RECURSOS
+                            </p>
+                            <!-- Divider (Desktop) -->
+                            <div class="hidden lg:block absolute right-0 top-1/2 -translate-y-1/2 w-px h-12 bg-white/30"></div>
+                        </div>
+
+                        <!-- Feature 2 -->
+                        <div class="flex flex-col items-center gap-4 relative group">
+                            <div class="w-24 h-24 flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300">
+                                <img src="/assets/ico-two.png" alt="Educación Online" class="w-full h-full object-contain filter drop-shadow-lg">
+                            </div>
+
+                            <p class="text-[0.7rem] lg:text-xs font-bold text-white uppercase tracking-wider leading-tight max-w-[150px]">
+                                ACCESO A LA <br> <span class="text-sunflower text-sm">EDUCACIÓN</span> <br> Y OPORTUNIDADES <span class="text-sunflower">ONLINE</span>
+                            </p>
+                            <!-- Divider (Desktop) -->
+                            <div class="hidden lg:block absolute right-0 top-1/2 -translate-y-1/2 w-px h-12 bg-white/30"></div>
+                        </div>
+
+                        <!-- Feature 3 -->
+                        <div class="flex flex-col items-center gap-4 group">
+                            <div class="w-24 h-24 flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300">
+                                <img src="/assets/ico-three.png" alt="Herramientas para Emprender" class="w-full h-full object-contain filter drop-shadow-lg">
+                            </div>
+                            <p class="text-[0.7rem] lg:text-xs font-bold text-white uppercase tracking-wider leading-tight max-w-[150px]">
+                                MÁS HERRAMIENTAS <br> <span class="text-sunflower text-sm">PARA EMPRENDER</span> <br> Y PROGRESAR
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- CTA / Voting Guide -->
+                    <div
+                        class="bg-white rounded-2xl p-4 mt-8 shadow-2xl transform rotate-1 border-4 border-sunflower/80 max-w-md mx-auto lg:mx-0">
+                        <div class="flex items-center justify-between gap-4">
+                            <div class="text-left flex-1">
+                                <span class="block text-primary font-black text-3xl leading-none tracking-tight mb-2" style="-webkit-text-stroke: 2px currentColor;">VOTA ASÍ</span>
+                                <span class="inline-block text-gray-800 text-sm font-bold bg-sunflower/20 px-3 py-1 rounded-lg leading-tight">
+                                    ESTE 8 DE MARZO <br> DE 2026
+                                </span>
+                            </div>
+                            <div class="flex items-center justify-center pl-4 border-l-2 border-gray-100">
+                                <img src="/assets/5_LOGO.png" class="h-16 w-auto object-contain" alt="Alianza Verde #75">
+                            </div>
+                        </div>
+                        <p class="text-center text-[10px] font-bold text-primary mt-2 border-t border-gray-100 pt-2 tracking-widest uppercase">
+                            Marca el Girasol y el Número 75
+                        </p>
+                    </div>
+
+                </div>
+
+                <!-- Right Image -->
+                <div class="relative flex justify-center items-center order-1 lg:order-2 mb-8 lg:mb-0">
+                    <div
+                        class="w-full max-w-[350px] lg:max-w-[650px] aspect-square lg:w-full bg-white p-3 lg:p-4 rounded-[40px] lg:rounded-[50px] shadow-2xl shadow-black/40 transform rotate-1 hover:rotate-0 transition-transform duration-500 ease-out border-4 border-white/20 backdrop-blur-sm relative">
+                        <!-- Badge: Absolute Positioned Inside Photo Card (Visible on all screens now) -->
+                        <div class="absolute top-4 left-4 lg:top-8 lg:left-8 z-30 animate-fade-in-up">
+                            <div class="bg-primary/90 backdrop-blur-md px-4 py-2 lg:px-5 lg:py-3 rounded-xl border border-white/30 shadow-2xl transform -rotate-2 hover:rotate-0 transition-transform duration-300">
+                                <h2 class="font-display font-black text-lg lg:text-2xl tracking-tighter leading-none text-white">
+                                    ÁLVARO <br> <span class="text-sunflower">VACA</span>
+                                </h2>
+                                <div class="w-full h-0.5 bg-sunflower rounded-full my-1"></div>
+                                <span class="text-[0.6rem] lg:text-[0.7rem] font-bold uppercase tracking-[0.2em] block text-right text-white/90">Al Senado</span>
+                            </div>
+                        </div>
+
+                        <div class="w-full h-full bg-gray-100 rounded-[30px] lg:rounded-[40px] overflow-hidden relative">
+                            <!-- Subtle grain or pattern for 'photo' feel -->
+                            <div class="absolute inset-0 opacity-30 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]"></div>
+                            
+                            <img src="/assets/FOTO_CAMPANA_V2.png" alt="Candidato Alvaro Vaca"
+                                class="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-1000">
+                        </div>
+                    </div>
+                    
+                    <!-- Floating Badge re-added for flair -->
+                    <div class="absolute bottom-4 right-10 z-20 bg-white p-4 rounded-2xl shadow-xl border border-gray-100 animate-bounce cursor-pointer hover:scale-110 transition-transform"
+                        style="animation-duration: 3s;">
+                        <img src="/assets/5_LOGO.png" alt="Vota #75" class="w-24 h-auto">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Old Hero Section (Recycled as Section 2) -->
+    <section id="candidato"
+        class="relative py-20 overflow-hidden bg-gray-50 border-b border-gray-200">
         <!-- Background Elements -->
-        <div class="absolute inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 z-0 pointer-events-none opacity-50">
             <div class="absolute inset-0 pattern-grid"></div>
-            <div
-                class="absolute top-0 right-0 w-1/2 h-1/2 bg-sunflower/20 rounded-full blur-3xl translate-x-1/3 -translate-y-1/3">
-            </div>
-            <div
-                class="absolute bottom-0 left-0 w-1/2 h-1/2 bg-secondary/10 rounded-full blur-3xl -translate-x-1/3 translate-y-1/3">
-            </div>
         </div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
                 <!-- Text Content -->
-                <div class="text-center lg:text-left space-y-8">
-                    <div
-                        class="inline-flex items-center px-4 py-2 rounded-full bg-white border border-gray-200 shadow-sm text-primary font-semibold text-sm">
-                        <span class="w-2 h-2 rounded-full bg-sunflower mr-2 animate-pulse"></span>
-                        {{#if meta.hero.badge}}{{meta.hero.badge}}{{else}}Elecciones Congreso 2026, Marzo 8{{/if}}
-                    </div>
-
-                    <h1
-                        class="font-display font-black text-4xl lg:text-7xl leading-[0.95] lg:leading-tight text-gray-900">
+                <div class="text-center lg:text-left space-y-8 order-2 lg:order-1">
+                    <h2
+                        class="font-display font-black text-3xl lg:text-5xl leading-tight text-gray-900">
                         {{#if meta.hero.title}}{{{meta.hero.title}}}{{else}}Un Senador que <br><span
                             class="text-gradient">Conecte con la Gente</span>{{/if}}
-                    </h1>
-
-                    <!-- Mobile Image (Visible only on mobile) -->
-                    <div class="relative h-[400px] flex justify-center items-end lg:hidden w-full my-4 -mt-4">
-                        <div
-                            class="absolute inset-x-0 bottom-0 h-4/5 bg-gradient-to-t from-primary/10 to-transparent rounded-[2rem] transform rotate-3">
-                        </div>
-                        <div
-                            class="absolute inset-x-0 bottom-0 h-4/5 bg-sunflower/20 rounded-[2rem] transform -rotate-3">
-                        </div>
-
-                        <img src="{{#if meta.hero.mobileImage}}{{meta.hero.mobileImage}}{{else}}/assets/FOTO_CAMPANA_V2.png{{/if}}"
-                            alt="Candidato Alvaro Vaca"
-                            class="relative z-10 max-h-full object-contain drop-shadow-2xl scale-110 origin-bottom">
-
-                        <!-- Floating Badge -->
-                        <div class="absolute bottom-4 right-4 z-20 bg-white p-3 rounded-xl shadow-xl border border-gray-100 animate-bounce"
-                            style="animation-duration: 3s;">
-                            <img src="/assets/5_LOGO.png" alt="Vota #75" class="w-16 h-auto">
-                        </div>
-                    </div>
+                    </h2>
 
                     <p class="text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto lg:mx-0">
                         {{#if meta.hero.description}}{{meta.hero.description}}{{else}}Soy Álvaro Vaca, un candidato
@@ -141,22 +247,12 @@
                     </div>
                 </div>
 
-                <!-- Image -->
-                <div class="relative lg:h-[600px] hidden lg:flex justify-center items-end">
-                    <div
-                        class="absolute inset-x-0 bottom-0 h-4/5 bg-gradient-to-t from-primary/10 to-transparent rounded-[3rem] transform rotate-3">
-                    </div>
-                    <div class="absolute inset-x-0 bottom-0 h-4/5 bg-sunflower/20 rounded-[3rem] transform -rotate-3">
-                    </div>
-
-                    <img src="{{#if meta.hero.image}}{{meta.hero.image}}{{else}}/assets/FOTO_CAMPANA_V2.png{{/if}}"
-                        alt="Candidato Alvaro Vaca"
-                        class="relative z-10 max-h-full object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-700">
-
-                    <!-- Floating Badge -->
-                    <div class="absolute bottom-10 right-10 z-20 bg-white p-4 rounded-2xl shadow-xl border border-gray-100 animate-bounce"
-                        style="animation-duration: 3s;">
-                        <img src="/assets/5_LOGO.png" alt="Vota #75" class="w-24 h-auto">
+                <!-- Image (Simplified for secondary section) -->
+                <div class="relative flex justify-center items-center order-1 lg:order-2">
+                    <div class="w-full max-w-md bg-white p-4 rounded-3xl shadow-xl transform rotate-2">
+                         <img src="/assets/FOTO%20CAMPA%C3%91A-version%20vieja.png"
+                            alt="Candidato Alvaro Vaca"
+                            class="w-full h-auto rounded-2xl bg-gray-100">
                     </div>
                 </div>
 
