@@ -14,6 +14,12 @@ async function bootstrap() {
   // Enable CORS for API requests from other domains
   app.enableCors();
 
+  // SEO: X-Robots-Tag header (was flagged as missing in audit)
+  app.use((req: any, res: any, next: any) => {
+    res.setHeader('X-Robots-Tag', 'index, follow');
+    next();
+  });
+
   // Cookie Parser
   const cookieParser = require('cookie-parser');
   app.use(cookieParser());
