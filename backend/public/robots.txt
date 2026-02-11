@@ -1,0 +1,13 @@
+# robots.txt - alvarovaca.com.co
+User-agent: *
+Allow: /
+
+# Bloquear áreas administrativas y API
+Disallow: /api/
+Disallow: /admin/
+Disallow: /candidato/
+Disallow: /login-candidato
+Disallow: /uploads/
+
+# Sitemap
+Sitemap: https://alvarovaca.com.co/sitemap.xml

@@ -109,7 +109,8 @@
                             <div class="relative h-64 md:h-full overflow-hidden">
                                 {{#if this.imagenPrincipal}}
                                 <img src="{{this.imagenPrincipal}}" alt="{{this.titulo}}"
-                                    class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                                    class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                                    loading="lazy">
                                 {{else}}
                                 <div
                                     class="absolute inset-0 w-full h-full bg-gray-200 flex items-center justify-center">

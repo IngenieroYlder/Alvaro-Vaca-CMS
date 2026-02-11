@@ -119,7 +119,7 @@ export class PublicController {
       const page = await this.paginasService.findBySlug('inicio');
       if (page) pageData = page.meta || {};
     } catch (e) { }
-    return { ...common, meta: pageData };
+    return { ...common, meta: pageData, currentPath: '/', breadcrumbName: 'Inicio' };
   }
 
   @Get('inicio-v2')
@@ -163,7 +163,7 @@ export class PublicController {
       const page = await this.paginasService.findBySlug('contacto');
       if (page) pageData = page.meta || {};
     } catch (e) { }
-    return { ...common, meta: pageData, activePage: 'contacto' };
+    return { ...common, meta: pageData, activePage: 'contacto', currentPath: '/contacto', breadcrumbName: 'Contacto' };
   }
 
   @Get('servicios')
@@ -175,7 +175,7 @@ export class PublicController {
       const page = await this.paginasService.findBySlug('servicios');
       if (page) pageData = page.meta || {};
     } catch (e) { }
-    return { ...common, meta: pageData };
+    return { ...common, meta: pageData, currentPath: '/servicios', breadcrumbName: 'Servicios' };
   }
 
   @Get('tarifas')
@@ -217,6 +217,8 @@ export class PublicController {
       categorias,
       filtros: { categoria: categoriaSlug, busqueda },
       title: 'Noticias y Actualidad', // Fix: Override default title
+      currentPath: '/noticias',
+      breadcrumbName: 'Noticias',
     };
   }
 
@@ -249,7 +251,7 @@ export class PublicController {
       const page = await this.paginasService.findBySlug('biografia');
       if (page) pageData = page.meta || {};
     } catch (e) { }
-    return { ...common, meta: pageData, activePage: 'biografia' };
+    return { ...common, meta: pageData, activePage: 'biografia', currentPath: '/biografia', breadcrumbName: 'Biografía' };
   }
 
   @Get('propuestas')
@@ -261,7 +263,7 @@ export class PublicController {
       const page = await this.paginasService.findBySlug('propuestas');
       if (page) pageData = page.meta || {};
     } catch (e) { }
-    return { ...common, meta: pageData, activePage: 'propuestas' };
+    return { ...common, meta: pageData, activePage: 'propuestas', currentPath: '/propuestas', breadcrumbName: 'Propuestas' };
   }
 
   @Get('vacantes')

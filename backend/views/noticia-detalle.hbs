@@ -1,5 +1,45 @@
 {{#> main}}
 
+<!-- JSON-LD: NewsArticle Schema (Google News rich results) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "NewsArticle",
+  "headline": "{{noticia.titulo}}",
+  "description": "{{noticia.resumen}}",
+  {{#if noticia.imagenPrincipal}}"image": "https://alvarovaca.com.co{{noticia.imagenPrincipal}}",{{/if}}
+  "datePublished": "{{noticia.fechaPublicacion}}",
+  "author": {
+    "@type": "Person",
+    "name": "{{#if noticia.autor.nombre}}{{noticia.autor.nombre}}{{else}}Alvaro Vaca{{/if}}",
+    "url": "https://alvarovaca.com.co/biografia"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Alvaro Vaca - Senado 2026",
+    "url": "https://alvarovaca.com.co",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://alvarovaca.com.co/assets/1_LOGO.png"
+    }
+  },
+  "mainEntityOfPage": "https://alvarovaca.com.co/noticias/{{noticia.slug}}"
+}
+</script>
+
+<!-- JSON-LD: BreadcrumbList for Article -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://alvarovaca.com.co/" },
+    { "@type": "ListItem", "position": 2, "name": "Noticias", "item": "https://alvarovaca.com.co/noticias" },
+    { "@type": "ListItem", "position": 3, "name": "{{noticia.titulo}}", "item": "https://alvarovaca.com.co/noticias/{{noticia.slug}}" }
+  ]
+}
+</script>
+
 {{!-- Header / Breadcrumbs --}}
 <div class="bg-gray-50 border-b border-gray-200 pt-32 pb-8">
     <div class="container mx-auto px-4">
@@ -97,7 +137,8 @@
                 {{#each noticia.galeria}}
                 <div class="rounded-xl overflow-hidden aspect-square">
                     <img src="{{this}}"
-                        class="w-full h-full object-cover hover:scale-110 transition-transform cursor-zoom-in">
+                        class="w-full h-full object-cover hover:scale-110 transition-transform cursor-zoom-in"
+                        loading="lazy">
                 </div>
                 {{/each}}
             </div>
@@ -119,7 +160,7 @@
             <article class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all">
                 <a href="/noticias/{{this.slug}}" class="block aspect-video relative overflow-hidden">
                     {{#if this.imagenPrincipal}}
-                    <img src="{{this.imagenPrincipal}}" class="w-full h-full object-cover">
+                    <img src="{{this.imagenPrincipal}}" class="w-full h-full object-cover" loading="lazy">
                     {{else}}
                     <div class="w-full h-full bg-gray-200"></div>
                     {{/if}}

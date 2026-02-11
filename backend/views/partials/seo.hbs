@@ -9,9 +9,12 @@
     content="Alvaro Vaca, Senado 2026, Congreso, Colombia, Elecciones, Candidato, Alianza Verde, Partido Verde, #75, Educación, Seguridad Digital, Villavicencio, Meta">
 <meta name="author" content="Alvaro Vaca">
 <meta name="robots" content="index, follow">
+<link rel="canonical" href="https://alvarovaca.com.co{{#if currentPath}}{{currentPath}}{{/if}}">
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website">
+<meta property="og:locale" content="es_CO">
+<meta property="og:site_name" content="Alvaro Vaca - Senado 2026">
 <meta property="og:url" content="https://alvarovaca.com.co{{#if currentPath}}{{currentPath}}{{/if}}">
 <meta property="og:title"
     content="{{#if meta.ogTitle}}{{meta.ogTitle}}{{else}}{{#if meta.browserTitle}}{{meta.browserTitle}}{{else}}{{#if meta.title}}{{meta.title}}{{else}}{{#if title}}{{title}}{{else}}Alvaro Vaca - Candidato al Senado 2026 - Alianza Verde #75{{/if}}{{/if}}{{/if}}{{/if}}">
@@ -45,6 +48,22 @@
   },
   "url": "https://alvarovaca.com.co",
   "image": "https://alvarovaca.com.co/assets/FOTO_CAMPANA_V2.png",
+  "telephone": "+57-3223171673",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Carrera 17A No. 15A - 66",
+    "addressLocality": "Villavicencio",
+    "addressRegion": "Meta",
+    "addressCountry": "CO"
+  },
+  "knowsAbout": [
+    "Conectividad digital",
+    "Subsidio de internet",
+    "Educación para emprender",
+    "Seguridad digital",
+    "Inteligencia artificial",
+    "Cero impunidad"
+  ],
   "sameAs": [
     "https://www.facebook.com/AlvaroVaca",
     "https://twitter.com/AlvaroVaca",
@@ -52,4 +71,54 @@
   ],
   "description": "Alvaro Vaca es candidato al Senado de la República de Colombia para el periodo 2026-2030 por el Partido Alianza Verde, número 75 en el tarjetón."
 }
+</script>
+
+<!-- JSON-LD: WebSite with SearchAction (enables sitelinks searchbox in Google) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "url": "https://alvarovaca.com.co",
+  "name": "Alvaro Vaca - Candidato al Senado 2026",
+  "description": "Sitio oficial de Alvaro Vaca, candidato al Senado por Alianza Verde #75",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://alvarovaca.com.co/noticias?busqueda={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+
+<!-- JSON-LD: BreadcrumbList (rich breadcrumbs in Google results) -->
+{{#if breadcrumbName}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://alvarovaca.com.co/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "{{breadcrumbName}}",
+      "item": "https://alvarovaca.com.co{{currentPath}}"
+    }
+  ]
+}
+</script>
+{{/if}}
+
+<!-- Google Analytics GA4 -->
+<!-- IMPORTANTE: Reemplaza G-XXXXXXXXXX con tu ID de medición real de analytics.google.com -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
 </script>

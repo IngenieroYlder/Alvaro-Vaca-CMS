@@ -1,5 +1,5 @@
 <nav class="fixed w-full z-50 top-0 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm"
-    x-data="{ mobileMenuOpen: false }">
+    x-data="{ mobileMenuOpen: false }" aria-label="Navegación principal" role="navigation">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-20 md:h-auto py-2">
             <!-- Logo -->
@@ -37,7 +37,8 @@
                 </button>
                 <!-- Mobile Menu Button -->
                 <button @click="mobileMenuOpen = !mobileMenuOpen"
-                    class="lg:hidden p-2 text-gray-600 hover:text-primary focus:outline-none">
+                    class="lg:hidden p-2 text-gray-600 hover:text-primary focus:outline-none"
+                    aria-label="Abrir menú de navegación">
                     <span class="material-icons-round text-3xl">menu</span>
                 </button>
             </div>
