@@ -110,7 +110,7 @@
                                 {{#if this.imagenPrincipal}}
                                 <img src="{{this.imagenPrincipal}}" alt="{{this.titulo}}"
                                     class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                                    loading="lazy">
+                                    loading="lazy" width="800" height="600">
                                 {{else}}
                                 <div
                                     class="absolute inset-0 w-full h-full bg-gray-200 flex items-center justify-center">
@@ -133,7 +133,7 @@
                                         class="font-display font-bold text-2xl text-gray-900 mb-3 leading-tight group-hover:text-primary transition-colors">
                                         <a href="/noticias/{{this.slug}}">{{this.titulo}}</a>
                                     </h2>
-                                    <p class="text-gray-600 line-clamp-3 mb-6">{{this.resumen}}</p>
+                                    <p class="text-gray-700 line-clamp-3 mb-6">{{this.resumen}}</p>
                                 </div>
                                 <a href="/noticias/{{this.slug}}"
                                     class="inline-flex items-center text-primary font-bold hover:text-green-800 transition-colors group/link">

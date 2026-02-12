@@ -58,7 +58,19 @@ async function bootstrap() {
   });
 
   // Serve static assets (images, CSS for public site)
-  app.useStaticAssets(join(__dirname, '..', 'public'));
+  app.useStaticAssets(join(__dirname, '..', 'public'), {
+    maxAge: 31536000000, // 1 year (in milliseconds)
+    setHeaders: (res, path) => {
+      // Cache images/fonts effectively
+      if (path.endsWith('.jpg') || path.endsWith('.png') || path.endsWith('.webp') || path.endsWith('.css') || path.endsWith('.js')) {
+        res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      }
+      // Do not cache HTML files (if any served statically) to ensure updates are seen
+      if (path.endsWith('.html')) {
+        res.setHeader('Cache-Control', 'public, max-age=0');
+      }
+    },
+  });
 
   await app.listen(process.env.PORT ?? 3000);
 }
