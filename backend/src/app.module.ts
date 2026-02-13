@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ServeStaticModule } from '@nestjs/serve-static';
@@ -26,6 +26,8 @@ import { CandidatoModule } from './candidato/candidato.module';
 import { ReunionesModule } from './reuniones/reuniones.module';
 import { VotantesModule } from './votantes/votantes.module';
 import { PlanillasModule } from './planillas/planillas.module';
+import { ConfiguracionModule } from './configuracion/configuracion.module';
+import { ConfiguracionMiddleware } from './configuracion/configuracion.middleware';
 
 @Module({
   imports: [
@@ -71,8 +73,15 @@ import { PlanillasModule } from './planillas/planillas.module';
     ReunionesModule,
     VotantesModule,
     PlanillasModule,
+    ConfiguracionModule,
   ],
   controllers: [],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(ConfiguracionMiddleware)
+      .forRoutes({ path: '*', method: RequestMethod.GET });
+  }
+}

@@ -4,33 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buscar Reunión - Alvaro Vaca</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: "#006838",
-                        secondary: "#0D9A49",
-                        sunflower: "#D7DF23",
-                    },
-                    fontFamily: {
-                        display: ["Montserrat", "sans-serif"],
-                        body: ["Open Sans", "sans-serif"],
-                    },
-                },
-            },
-        }
-    </script>
+    <link rel="stylesheet" href="/assets/styles.css?v={{appVersion}}">
 </head>
 <body class="bg-gray-50 font-body min-h-screen flex flex-col items-center justify-center p-4">
 
     <div class="max-w-md w-full bg-white rounded-3xl shadow-xl overflow-hidden">
         <div class="bg-primary p-8 text-center relative overflow-hidden">
             <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl translate-x-10 -translate-y-10"></div>
-            <img src="/assets/1_LOGO.png" alt="Logo Alvaro Vaca" class="h-16 mx-auto mb-4 relative z-10 brightness-0 invert">
+            <img src="/assets/1_LOGO.webp" alt="Logo Alvaro Vaca" class="h-16 mx-auto mb-4 relative z-10 brightness-0 invert">
             <h1 class="text-2xl font-display font-bold text-white relative z-10">Registro de Asistencia</h1>
             <p class="text-green-100 text-sm mt-2 relative z-10">Ingresa el código de la reunión para continuar</p>
         </div>

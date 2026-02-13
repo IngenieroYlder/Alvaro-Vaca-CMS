@@ -2,7 +2,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 <!-- Performance: Preload & DNS Prefetch -->
-<link rel="preload" href="/assets/FOTO_CAMPANA_V2.png" as="image">
+<link rel="preload" href="/assets/FOTO_CAMPANA_V2.webp?v={{appVersion}}" as="image">
 <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
 <link rel="dns-prefetch" href="https://www.googletagmanager.com">
 <link rel="dns-prefetch" href="https://fonts.googleapis.com">
@@ -20,28 +20,8 @@
     rel="stylesheet">
 
 <!-- Tailwind CSS -->
-<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
-<script>
-    tailwind.config = {
-        darkMode: 'class',
-        theme: {
-            extend: {
-                colors: {
-                    primary: "#006838",
-                    secondary: "#0D9A49",
-                    sunflower: "#D7DF23",
-                    accent: "#F89621",
-                    "background-light": "#F9FAFB",
-                    "background-dark": "#111827",
-                },
-                fontFamily: {
-                    display: ["Montserrat", "sans-serif"],
-                    body: ["Open Sans", "sans-serif"],
-                },
-            },
-        },
-    }
-</script>
+<link rel="stylesheet" href="/assets/styles.css?v={{appVersion}}">
+
 <style>
     .text-gradient {
         background-clip: text;
@@ -61,5 +41,5 @@
 {{#if faviconUrl}}
 <link rel="icon" href="{{faviconUrl}}" />
 {{else}}
-<link rel="icon" type="image/png" href="/favicon.png" />
+<link rel="icon" type="image/png" href="/favicon.png?v={{appVersion}}" />
 {{/if}}

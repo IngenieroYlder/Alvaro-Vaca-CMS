@@ -17,6 +17,7 @@ import Asistentes from './paginas/dashboard/Asistentes';
 import Proyeccion from './paginas/dashboard/Proyeccion';
 import PaginaPublica from './paginas/publica/PaginaPublica';
 import Perfil from './paginas/dashboard/Perfil';
+import Ajustes from './paginas/dashboard/Ajustes';
 import DisenoTablero from './layouts/DisenoTablero';
 import { tienePermiso, PERMISOS } from './config/permisos';
 
@@ -80,6 +81,10 @@ function App() {
 
               <Route element={<RutaAutorizada permiso={PERMISOS.TEMAS} />}>
                 <Route path="/temas" element={<ThemeEditor />} />
+              </Route>
+
+              <Route element={<RutaAutorizada permiso={PERMISOS.AJUSTES} />}>
+                <Route path="/ajustes" element={<Ajustes />} />
               </Route>
 
               <Route element={<RutaAutorizada permiso={PERMISOS.NEGOCIO} />}>

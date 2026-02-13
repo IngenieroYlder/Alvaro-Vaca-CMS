@@ -13,7 +13,8 @@ export const PERMISOS = {
     NOTICIAS: 'noticias',
     MENUS: 'menus',
     REUNIONES: 'reuniones',
-    PROYECCION: 'proyeccion'
+    PROYECCION: 'proyeccion',
+    AJUSTES: 'ajustes'
 };
 
 export const MENU_ITEMS = [
@@ -109,6 +110,12 @@ export const MENU_ITEMS = [
         path: '/menus',
         icon: 'Menu',
         permiso: PERMISOS.MENUS
+    },
+    {
+        label: 'Ajustes',
+        path: '/ajustes',
+        icon: 'Settings',
+        permiso: PERMISOS.AJUSTES
     },
 ];
 
