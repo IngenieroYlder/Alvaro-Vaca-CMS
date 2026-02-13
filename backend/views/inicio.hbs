@@ -2,58 +2,7 @@
 <html lang="es" class="scroll-smooth">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {{> seo}}
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;600&display=swap"
-        rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-        rel="stylesheet">
-
-    <!-- Tailwind CSS (via CDN for simplicity as per design) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: "#006838",     // Official Dark Green
-                        secondary: "#0D9A49",   // Medium Green
-                        sunflower: "#D7DF23",   // Yellow-Green
-                        accent: "#F89621",      // Orange
-                        "background-light": "#F9FAFB",
-                        "background-dark": "#111827",
-                    },
-                    fontFamily: {
-                        display: ["Montserrat", "sans-serif"],
-                        body: ["Open Sans", "sans-serif"],
-                    },
-                },
-            },
-        }
-    </script>
-    <style>
-        .text-gradient {
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-image: linear-gradient(to right, #006838, #0D9A49);
-        }
-
-        .pattern-grid {
-            background-image: radial-gradient(#0D9A49 1px, transparent 1px);
-            background-size: 20px 20px;
-            opacity: 0.1;
-        }
-    </style>
+    {{> head}}
 </head>
 
 <body class="bg-background-light text-gray-800 font-body antialiased">
