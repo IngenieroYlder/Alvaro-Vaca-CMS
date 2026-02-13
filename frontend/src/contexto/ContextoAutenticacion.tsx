@@ -17,6 +17,7 @@ interface Usuario {
 
 interface AuthContextType {
     usuario: Usuario | null;
+    token: string | null;
     cargando: boolean;
     iniciarSesion: (email: string, contrasena: string) => Promise<void>;
     cerrarSesion: () => void;
@@ -30,6 +31,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [usuario, setUsuario] = useState<Usuario | null>(null);
+    const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
     const [cargando, setCargando] = useState(true);
 
     const actualizarUsuario = (nuevoUsuario: Usuario) => {
@@ -37,15 +39,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
 
     const recargarUsuario = async () => {
-        const token = localStorage.getItem('token');
-        if (!token) {
+        const currentToken = localStorage.getItem('token');
+        if (!currentToken) {
             setUsuario(null);
+            setToken(null);
             setCargando(false);
             return;
         }
 
+        setToken(currentToken);
         try {
-            const decoded: any = jwtDecode(token);
+            const decoded: any = jwtDecode(currentToken);
 
             // Función auxiliar para asegurar que sea array y normalizar
             const toArray = (val: any) => {
@@ -102,6 +106,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         } catch (error) {
             localStorage.removeItem('token');
             setUsuario(null);
+            setToken(null);
         } finally {
             setCargando(false);
         }
@@ -116,6 +121,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         try {
             const { data } = await clienteAxios.post('/autenticacion/login', { email, contrasena });
             localStorage.setItem('token', data.access_token);
+            setToken(data.access_token);
             await recargarUsuario();
         } catch (error) {
             console.error('[AUTH DEBUG] Error in iniciarSesion:', error);
@@ -126,6 +132,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const cerrarSesion = () => {
         localStorage.removeItem('token');
         setUsuario(null);
+        setToken(null);
     };
 
     useEffect(() => {
@@ -137,7 +144,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const esAdmin = usuario?.roles?.includes('admin') || usuario?.roles?.includes('god') || false;
 
     return (
-        <AuthContext.Provider value={{ usuario, cargando, iniciarSesion, cerrarSesion, recargarUsuario, actualizarUsuario, esAdmin }}>
+        <AuthContext.Provider value={{ usuario, token, cargando, iniciarSesion, cerrarSesion, recargarUsuario, actualizarUsuario, esAdmin }}>
             {children}
         </AuthContext.Provider>
     );

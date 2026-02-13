@@ -1,20 +1,18 @@
 import { useState, useEffect } from 'react';
 import { RefreshCw, Check, AlertTriangle } from 'lucide-react';
 import { useAuth } from '../../contexto/ContextoAutenticacion';
+import clienteAxios from '../../lib/cliente-axios';
 
 export default function Ajustes() {
-    const { token } = useAuth();
+    const { usuario } = useAuth();
     const [loading, setLoading] = useState(false);
     const [version, setVersion] = useState<string>('');
     const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
 
     const fetchVersion = async () => {
         try {
-            const res = await fetch('http://localhost:4000/api/configuracion/version', {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            const data = await res.json();
-            setVersion(data.version);
+            const res = await clienteAxios.get('/configuracion/version');
+            setVersion(res.data.version);
         } catch (error) {
             console.error(error);
         }
@@ -31,24 +29,17 @@ export default function Ajustes() {
         setMessage(null);
 
         try {
-            const res = await fetch('http://localhost:4000/api/configuracion/limpiar-cache', {
-                method: 'POST',
-                headers: { 
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                }
+            const res = await clienteAxios.post('/configuracion/limpiar-cache');
+            
+            const data = res.data;
+            
+            setVersion(data.version);
+            setMessage({ type: 'success', text: 'Caché limpiado correctamente. Nueva versión: ' + data.version });
+        } catch (error: any) {
+            setMessage({ 
+                type: 'error', 
+                text: error.response?.data?.message || 'Error al limpiar caché' 
             });
-            
-            const data = await res.json();
-            
-            if (res.ok) {
-                setVersion(data.version);
-                setMessage({ type: 'success', text: 'Caché limpiado correctamente. Nueva versión: ' + data.version });
-            } else {
-                setMessage({ type: 'error', text: data.message || 'Error al limpiar caché' });
-            }
-        } catch (error) {
-            setMessage({ type: 'error', text: 'Error de conexión' });
         } finally {
             setLoading(false);
         }
