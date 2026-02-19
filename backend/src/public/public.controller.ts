@@ -381,4 +381,67 @@ export class PublicController {
     }
   }
 
+  @Get('sitemap.xml')
+  async getSitemap(@Res() res: Response) {
+    res.set('Content-Type', 'text/xml');
+    
+    const baseUrl = 'https://alvarovaca.com.co';
+    const staticRoutes = [
+      '', 
+      'biografia', 
+      'propuestas', 
+      'noticias', 
+      'contacto', 
+      'terminos-y-condiciones',
+      'politica-de-privacidad'
+    ];
+
+    let xml = '<?xml version="1.0" encoding="UTF-8"?>';
+    xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+
+    // 1. Static Routes
+    staticRoutes.forEach(route => {
+      xml += `
+      <url>
+        <loc>${baseUrl}/${route}</loc>
+        <changefreq>weekly</changefreq>
+        <priority>${route === '' ? '1.0' : '0.8'}</priority>
+      </url>`;
+    });
+
+    // 2. Dynamic Routes: Noticias
+    try {
+      const noticias = await this.noticiasService.findAll();
+      noticias.forEach(noticia => {
+        if (noticia.slug) {
+           xml += `
+          <url>
+            <loc>${baseUrl}/noticias/${noticia.slug}</loc>
+            <lastmod>${noticia.fechaActualizacion ? new Date(noticia.fechaActualizacion).toISOString() : new Date().toISOString()}</lastmod>
+            <changefreq>daily</changefreq>
+            <priority>0.7</priority>
+          </url>`;
+        }
+      });
+    } catch (e) { console.error('Error adding noticias to sitemap', e); }
+
+    xml += '</urlset>';
+    return res.send(xml);
+  }
+
+  @Get('robots.txt')
+  getRobots(@Res() res: Response) {
+    res.set('Content-Type', 'text/plain');
+    const robots = `User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /candidato/
+Disallow: /servicios
+Disallow: /tarifas
+
+Sitemap: https://alvarovaca.com.co/sitemap.xml`;
+    return res.send(robots);
+  }
+
 }
